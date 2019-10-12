@@ -18,7 +18,7 @@ data class AdventurerJSON(
     val ElementalType: String,
     val ElementalTypeId: Int,
     val CharaType: String,
-    val valiationId: Int,
+    val validationId: Int,
     val MinHp3: Int,
     val MinHp4: Int,
     val MinHp5: Int,
