@@ -1,4 +1,4 @@
-package com.github.lamba92.entities
+package com.github.lamba92.entities.support
 
 data class ManaCircleBonusStats(
     val bonus1: Int,
