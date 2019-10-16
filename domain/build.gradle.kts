@@ -24,21 +24,21 @@ kotlin {
 
         val klockVersion: String by project
 
-        val commonMain by getting {
+        @Suppress("UNUSED_VARIABLE") val commonMain by getting {
             dependencies {
                 api(kotlin("stdlib-common"))
                 api("com.soywiz.korlibs.klock:klock:$klockVersion")
             }
         }
 
-        val jvmMain by getting {
+        @Suppress("UNUSED_VARIABLE") val jvmMain by getting {
             dependencies {
                 api(kotlin("stdlib-jdk8"))
                 api("com.soywiz.korlibs.klock:klock-jvm:$klockVersion")
             }
         }
 
-        val jsMain by getting {
+        @Suppress("UNUSED_VARIABLE") val jsMain by getting {
             dependencies {
                 api(kotlin("stdlib-js"))
                 api("com.soywiz.korlibs.klock:klock-js:$klockVersion")

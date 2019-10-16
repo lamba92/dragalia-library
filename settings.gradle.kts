@@ -3,8 +3,8 @@ val kotlinVersion: String by settings
 pluginManagement {
     repositories {
         jcenter()
-        mavenCentral()
         gradlePluginPortal()
+        maven("https://dl.bintray.com/kotlin/kotlin-eap")
     }
     resolutionStrategy {
         eachPlugin {
@@ -18,7 +18,5 @@ pluginManagement {
 }
 
 rootProject.name = "dragalia-library"
-
-include(":domain", ":data")
-
+include(":domain", ":data", ":core")
 enableFeaturePreview("GRADLE_METADATA")

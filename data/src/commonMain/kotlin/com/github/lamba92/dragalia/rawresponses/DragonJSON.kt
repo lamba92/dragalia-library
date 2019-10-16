@@ -1,0 +1,8 @@
+package com.github.lamba92.dragalia.rawresponses
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class DragonJSON(
+    val Id: String
+) : CargoQueryable

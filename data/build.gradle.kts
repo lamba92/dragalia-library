@@ -28,7 +28,7 @@ kotlin {
         val ktorVersion: String by project
         val kotlinxSerializationVersion: String by project
 
-        val commonMain by getting {
+        @Suppress("UNUSED_VARIABLE") val commonMain by getting {
             dependencies {
 
                 api(ktor("http", ktorVersion))
@@ -38,15 +38,16 @@ kotlin {
             }
         }
 
-        val jvmMain by getting {
+        @Suppress("UNUSED_VARIABLE") val jvmMain by getting {
             dependencies {
                 api(ktor("http-jvm", ktorVersion))
                 api(ktor("utils-jvm", ktorVersion))
                 api(serialization("runtime", kotlinxSerializationVersion))
+                api(kotlin("reflect"))
             }
         }
 
-        val jsMain by getting {
+        @Suppress("UNUSED_VARIABLE") val jsMain by getting {
             dependencies {
                 api(ktor("http-js", ktorVersion))
                 api(ktor("utils-js", ktorVersion))
