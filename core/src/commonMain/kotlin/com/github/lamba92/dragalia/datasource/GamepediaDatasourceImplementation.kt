@@ -1,9 +1,9 @@
 package com.github.lamba92.dragalia.datasource
 
-import com.github.lamba92.dragalia.rawresponses.AdventurerJSON
-import com.github.lamba92.dragalia.rawresponses.CargoJSON
-import com.github.lamba92.dragalia.rawresponses.DragonJSON
-import com.github.lamba92.dragalia.rawresponses.WyrmprintJSON
+import com.github.lamba92.dragalia.rawresponses.AbilityCargoJSON
+import com.github.lamba92.dragalia.rawresponses.AdventurerCargoJSON
+import com.github.lamba92.dragalia.rawresponses.DragonCargoJSON
+import com.github.lamba92.dragalia.rawresponses.WyrmprintCargoJSON
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 
@@ -19,7 +19,7 @@ class GamepediaDatasourceImplementation(
         heroClass: String?,
         rarity: Int?,
         limit: Int
-    ) = httpClient.get<CargoJSON<AdventurerJSON>>(
+    ) = httpClient.get<AdventurerCargoJSON>(
         endpoints.searchAdventurersUrl(
             name,
             weaponType,
@@ -35,7 +35,7 @@ class GamepediaDatasourceImplementation(
         element: String?,
         rarity: Int?,
         limit: Int
-    ) = httpClient.get<CargoJSON<DragonJSON>>(
+    ) = httpClient.get<DragonCargoJSON>(
         endpoints.searchDragonsUrl(
             name,
             element,
@@ -49,8 +49,8 @@ class GamepediaDatasourceImplementation(
         element: String?,
         rarity: Int?,
         limit: Int
-    ) = httpClient.get<CargoJSON<WyrmprintJSON>>(
-        endpoints.searchDragonsUrl(
+    ) = httpClient.get<WyrmprintCargoJSON>(
+        endpoints.searchWyrmprintsUrl(
             name,
             element,
             rarity,
@@ -58,4 +58,6 @@ class GamepediaDatasourceImplementation(
         )
     )
 
+    override suspend fun searchAbility(name: String?, limit: Int) =
+        httpClient.get<AbilityCargoJSON>(endpoints.searchAbilityUrl(name, limit))
 }

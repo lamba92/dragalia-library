@@ -1,11 +1,8 @@
 package com.github.lamba92.dragalia.datasource
 
-import com.github.lamba92.dragalia.rawresponses.AdventurerJSON
-import com.github.lamba92.dragalia.rawresponses.CargoQueryable
-import com.github.lamba92.dragalia.rawresponses.DragonJSON
-import com.github.lamba92.dragalia.rawresponses.WyrmprintJSON
+import com.github.lamba92.dragalia.rawresponses.*
+import com.github.lamba92.dragalia.utils.Utils.cargoPropertiesOf
 import com.github.lamba92.dragalia.utils.buildWhereClause
-import com.github.lamba92.dragalia.utils.propertiesOf
 import io.ktor.http.URLProtocol
 import io.ktor.http.Url
 
@@ -18,7 +15,7 @@ class GamepediaEndpointsImplementation(
     private fun parametersOf(vararg headers: Pair<String, Any>) =
         io.ktor.http.parametersOf(*headers.map { it.first to listOf(it.second.toString()) }.toTypedArray())
 
-    private inline fun <reified T : CargoQueryable> buildUrl(
+    private inline fun <reified T : CargoQueryable> buildUrl1(
         table: String,
         limit: Int = 500,
         path: String = "api.php",
@@ -29,12 +26,23 @@ class GamepediaEndpointsImplementation(
             "format" to "json",
             "limit" to limit,
             "tables" to table,
-            "fields" to propertiesOf<T>().joinToString(","),
+            "fields" to cargoPropertiesOf<T>().joinToString(","),
             "where" to buildWhereClause(builder)
         ), "", null, null, false
     )
 
-    private inline fun <reified T : CargoQueryable> buildUrl(
+    private inline fun <reified T : CargoQueryable> buildUrl2(
+        table: String,
+        name: String?,
+        limit: Int,
+        path: String = "api.php",
+        noinline builder: CargoQueryWhereClauseBuilder.() -> Unit = {}
+    ) = buildUrl1<T>(table, limit, path) {
+        name?.let { appendLike("name", it) }
+        builder()
+    }
+
+    private inline fun <reified T : CargoQueryable> buildUrl3(
         table: String,
         name: String?,
         element: String?,
@@ -42,8 +50,7 @@ class GamepediaEndpointsImplementation(
         limit: Int,
         path: String = "api.php",
         noinline builder: CargoQueryWhereClauseBuilder.() -> Unit = {}
-    ) = buildUrl<AdventurerJSON>(table, limit, path) {
-        name?.let { appendLike("name", it) }
+    ) = buildUrl2<T>(table, name, limit, path) {
         element?.let { appendEquality("element", it) }
         rarity?.let { appendEquality("rarity", it) }
         builder()
@@ -56,15 +63,17 @@ class GamepediaEndpointsImplementation(
         heroClass: String?,
         rarity: Int?,
         limit: Int
-    ) = buildUrl<AdventurerJSON>("Adventurers", name, element, rarity, limit) {
+    ) = buildUrl3<AdventurerJSON>("Adventurers", name, element, rarity, limit) {
         weaponType?.let { appendEquality("weaponType", it) }
         heroClass?.let { appendEquality("heroClass", it) }
     }
 
     override fun searchDragonsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
-        buildUrl<DragonJSON>("Dragons", name, element, rarity, limit)
+        buildUrl3<DragonJSON>("Dragons", name, element, rarity, limit)
 
     override fun searchWyrmprintsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
-        buildUrl<WyrmprintJSON>("Wyrmprints", name, element, rarity, limit)
+        buildUrl3<WyrmprintJSON>("Wyrmprints", name, element, rarity, limit)
 
+    override fun searchAbilityUrl(name: String?, limit: Int) =
+        buildUrl2<AbilityJSON>("Abilities", name, limit)
 }

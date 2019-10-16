@@ -20,6 +20,7 @@ kotlin {
 
         @Suppress("UNUSED_VARIABLE") val commonMain by getting {
             dependencies {
+                api(project(":data"))
                 api(ktor("client-core", ktorVersion))
                 api(kodein("core", kodeinVersion))
                 api(kodein("erased", kodeinVersion))
@@ -28,6 +29,7 @@ kotlin {
 
         @Suppress("UNUSED_VARIABLE") val jvmMain by getting {
             dependencies {
+                api(project(":data"))
                 api(ktor("client-okhttp", ktorVersion))
                 api(ktor("client-apache", ktorVersion))
                 api(ktor("client-json-jvm", ktorVersion))
@@ -40,16 +42,12 @@ kotlin {
 
         @Suppress("UNUSED_VARIABLE") val jsMain by getting {
             dependencies {
+                api(project(":data"))
                 api(ktor("client-js", ktorVersion))
                 api(ktor("client-serialization-js", ktorVersion))
             }
         }
 
-        all {
-            dependencies {
-                api(project(":data"))
-            }
-        }
     }
 }
 

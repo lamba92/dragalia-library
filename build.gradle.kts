@@ -14,3 +14,9 @@ subprojects {
         maven("https://dl.bintray.com/kotlin/kotlin-eap")
     }
 }
+
+tasks.register<Delete>("turboClean") {
+    allprojects {
+        delete(buildDir)
+    }
+}

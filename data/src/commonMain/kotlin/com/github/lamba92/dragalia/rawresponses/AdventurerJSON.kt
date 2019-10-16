@@ -4,6 +4,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class AdventurerCargoJSON(val cargoquery: List<AdventurerNestedTitleJson>)
+
+@Serializable
+data class AdventurerNestedTitleJson(val title: AdventurerJSON)
+
+@Serializable
 data class AdventurerJSON(
     val Abilities11: String,
     val Abilities12: String,
