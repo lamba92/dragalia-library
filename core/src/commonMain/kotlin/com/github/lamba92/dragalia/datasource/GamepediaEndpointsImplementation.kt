@@ -2,7 +2,7 @@ package com.github.lamba92.dragalia.datasource
 
 import com.github.lamba92.dragalia.rawresponses.*
 import com.github.lamba92.dragalia.utils.Utils.cargoPropertiesOf
-import com.github.lamba92.dragalia.utils.buildWhereClause
+import com.github.lamba92.dragalia.utils.buildCargoWhereClause
 import io.ktor.http.URLProtocol
 import io.ktor.http.Url
 
@@ -27,7 +27,7 @@ class GamepediaEndpointsImplementation(
             "limit" to limit,
             "tables" to table,
             "fields" to cargoPropertiesOf<T>().joinToString(","),
-            "where" to buildWhereClause(builder)
+            "where" to buildCargoWhereClause(builder)
         ), "", null, null, false
     )
 

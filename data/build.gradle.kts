@@ -17,11 +17,9 @@ kotlin {
     }
 
     js {
-        compilations.all {
-            kotlinOptions {
-                moduleKind = "commonjs"
-            }
-        }
+        browser()
+        nodejs()
+        useCommonJs()
     }
 
     sourceSets {
@@ -74,6 +72,23 @@ publishing {
             }
         }
     }
+}
+
+tasks.register<Copy>("buildNodePackage") {
+    group = "nodejs"
+    val jsJar by tasks.named<Jar>("jsJar")
+    val jsPackageJson by tasks.named<org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinPackageJsonTask>("jsPackageJson")
+    dependsOn(jsJar, jsPackageJson)
+
+    into(file("$buildDir/nodePackage"))
+
+    from(jsPackageJson.packageJson)
+
+    from(zipTree(jsJar.archiveFile)) {
+        include("*.js")
+        into("kotlin")
+    }
+
 }
 
 @Suppress("unused")

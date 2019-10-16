@@ -11,12 +11,18 @@ kotlin {
             kotlinOptions.jvmTarget = "1.8"
         }
     }
-    js()
+    js {
+        browser()
+        nodejs()
+        useCommonJs()
+    }
 
+    val rxjsVersion: String by project
     sourceSets {
 
         val ktorVersion: String by project
         val kodeinVersion: String by project
+        val textEncodingVersion: String by project
 
         @Suppress("UNUSED_VARIABLE") val commonMain by getting {
             dependencies {
@@ -51,10 +57,13 @@ kotlin {
                 api(project(":data"))
                 api(ktor("client-js", ktorVersion))
                 api(ktor("client-serialization-js", ktorVersion))
+                api(npm("rxjs", rxjsVersion))
+                api(npm("text-encoding", textEncodingVersion))
             }
         }
 
     }
+
 }
 
 fun property(propertyName: String): String =
@@ -70,6 +79,23 @@ publishing {
             }
         }
     }
+}
+
+tasks.register<Copy>("buildNodePackage") {
+    group = "nodejs"
+    val jsJar by tasks.named<Jar>("jsJar")
+    val jsPackageJson by tasks.named<org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinPackageJsonTask>("jsPackageJson")
+    dependsOn(jsJar, jsPackageJson)
+
+    into(file("$buildDir/nodePackage"))
+
+    from(jsPackageJson.packageJson)
+
+    from(zipTree(jsJar.archiveFile)) {
+        include("*.js")
+        into("kotlin")
+    }
+
 }
 
 @Suppress("unused")
