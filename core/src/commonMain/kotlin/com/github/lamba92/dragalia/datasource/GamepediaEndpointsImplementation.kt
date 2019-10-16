@@ -74,6 +74,27 @@ class GamepediaEndpointsImplementation(
     override fun searchWyrmprintsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
         buildUrl3<WyrmprintJSON>("Wyrmprints", name, element, rarity, limit)
 
-    override fun searchAbilityUrl(name: String?, limit: Int) =
+    override fun searchAbilitiesUrl(name: String?, limit: Int) =
         buildUrl2<AbilityJSON>("Abilities", name, limit)
+
+    override fun searchWeaponsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
+        buildUrl3<WeaponsJSON>("Weapons", name, element, rarity, limit)
+
+    override fun searchCoAbilitiesUrl(name: String?, limit: Int) =
+        buildUrl2<CoAbilityJSON>("CoAbilities", name, limit)
+
+    override fun searchSkillsUrl(name: String?, limit: Int) =
+        buildUrl2<SkillJSON>("Skills", name, limit)
+
+    override fun searchAbilityLimitedGroupsUrl(
+        name: String?,
+        isEffectMIx: Boolean?,
+        maxLimitedValue: Int?,
+        abilityLimitedText: String?,
+        limit: Int
+    ) = buildUrl2<AbilityLimitedGroupJSON>("AbilityLimitedGroup", name, limit) {
+        isEffectMIx?.let { appendEquality("isEffectMIx", it) }
+        maxLimitedValue?.let { appendEquality("maxLimitedValue", it) }
+        abilityLimitedText?.let { appendEquality("abilityLimitedText", it) }
+    }
 }

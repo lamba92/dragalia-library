@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform")
+    `maven-publish`
 }
 
 kotlin {
@@ -51,4 +52,19 @@ kotlin {
 
     }
 
+}
+
+fun property(propertyName: String): String =
+    project.property(propertyName) as String? ?: System.getenv(propertyName) as String
+
+publishing {
+    repositories {
+        maven("https://maven.pkg.github.com/${property("githubAccount")}/${rootProject.name}") {
+            name = "GitHubPackages"
+            credentials {
+                username = property("githubAccount")
+                password = property("githubToken")
+            }
+        }
+    }
 }

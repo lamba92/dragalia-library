@@ -17,6 +17,9 @@ pluginManagement {
     }
 }
 
+
+
 rootProject.name = "dragalia-library"
 include(":domain", ":data", ":core")
+
 enableFeaturePreview("GRADLE_METADATA")

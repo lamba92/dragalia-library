@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 
 plugins {
     kotlin("multiplatform")
-    kotlin("plugin.serialization")
+    `maven-publish`
 }
 
 kotlin {
@@ -40,6 +40,12 @@ kotlin {
             }
         }
 
+        @Suppress("UNUSED_VARIABLE") val jvmTest by getting {
+            dependencies {
+                api(kotlin("test-junit"))
+            }
+        }
+
         @Suppress("UNUSED_VARIABLE") val jsMain by getting {
             dependencies {
                 api(project(":data"))
@@ -51,6 +57,20 @@ kotlin {
     }
 }
 
+fun property(propertyName: String): String =
+    project.property(propertyName) as String? ?: System.getenv(propertyName) as String
+
+publishing {
+    repositories {
+        maven("https://maven.pkg.github.com/${property("githubAccount")}/${rootProject.name}") {
+            name = "GitHubPackages"
+            credentials {
+                username = property("githubAccount")
+                password = property("githubToken")
+            }
+        }
+    }
+}
 
 @Suppress("unused")
 fun KotlinDependencyHandler.ktor(module: String, version: String? = null): Any =

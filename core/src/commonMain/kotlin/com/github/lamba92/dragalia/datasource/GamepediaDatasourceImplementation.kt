@@ -1,9 +1,6 @@
 package com.github.lamba92.dragalia.datasource
 
-import com.github.lamba92.dragalia.rawresponses.AbilityCargoJSON
-import com.github.lamba92.dragalia.rawresponses.AdventurerCargoJSON
-import com.github.lamba92.dragalia.rawresponses.DragonCargoJSON
-import com.github.lamba92.dragalia.rawresponses.WyrmprintCargoJSON
+import com.github.lamba92.dragalia.rawresponses.*
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 
@@ -30,34 +27,37 @@ class GamepediaDatasourceImplementation(
         )
     )
 
-    override suspend fun searchDragons(
+    override suspend fun searchDragons(name: String?, element: String?, rarity: Int?, limit: Int) =
+        httpClient.get<DragonCargoJSON>(endpoints.searchDragonsUrl(name, element, rarity, limit))
+
+    override suspend fun searchWyrmprints(name: String?, element: String?, type: String?, rarity: Int?, limit: Int) =
+        httpClient.get<WyrmprintCargoJSON>(endpoints.searchWyrmprintsUrl(name, element, rarity, limit))
+
+    override suspend fun searchWeapons(name: String?, element: String?, rarity: Int?, limit: Int) =
+        httpClient.get<WeaponCargoJSON>(endpoints.searchWeaponsUrl(name, element, rarity, limit))
+
+    override suspend fun searchAbilities(name: String?, limit: Int) =
+        httpClient.get<AbilityCargoJSON>(endpoints.searchAbilitiesUrl(name, limit))
+
+    override suspend fun searchCoAbilities(name: String?, limit: Int) =
+        httpClient.get<CoAbilityCargoJSON>(endpoints.searchCoAbilitiesUrl(name, limit))
+
+    override suspend fun searchSkills(name: String?, limit: Int) =
+        httpClient.get<SkillCargoJSON>(endpoints.searchSkillsUrl(name, limit))
+
+    override suspend fun searchAbilityLimitedGroups(
         name: String?,
-        element: String?,
-        rarity: Int?,
+        isEffectMIx: Boolean?,
+        maxLimitedValue: Int?,
+        abilityLimitedText: String?,
         limit: Int
-    ) = httpClient.get<DragonCargoJSON>(
-        endpoints.searchDragonsUrl(
+    ) = httpClient.get<AbilityLimitedGroupCargoJSON>(
+        endpoints.searchAbilityLimitedGroupsUrl(
             name,
-            element,
-            rarity,
+            isEffectMIx,
+            maxLimitedValue,
+            abilityLimitedText,
             limit
         )
     )
-
-    override suspend fun searchWyrmprints(
-        name: String?,
-        element: String?,
-        rarity: Int?,
-        limit: Int
-    ) = httpClient.get<WyrmprintCargoJSON>(
-        endpoints.searchWyrmprintsUrl(
-            name,
-            element,
-            rarity,
-            limit
-        )
-    )
-
-    override suspend fun searchAbility(name: String?, limit: Int) =
-        httpClient.get<AbilityCargoJSON>(endpoints.searchAbilityUrl(name, limit))
 }

@@ -163,6 +163,92 @@ object Utils {
             "AbilityLimitedGroupId2",
             "AbilityLimitedGroupId3"
         )
+        CoAbilityJSON::class -> listOf(
+            "Id",
+            "GenericName",
+            "Name",
+            "Details",
+            "AbilityIconName",
+            "Category",
+            "PartyPowerWeight"
+        )
+        WeaponsJSON::class -> listOf(
+            "Id",
+            "BaseId",
+            "FormId",
+            "WeaponName",
+            "WeaponNameJP",
+            "Type",
+            "TypeId",
+            "Rarity",
+            "ElementalType",
+            "ElementalTypeId",
+            "MinHp",
+            "MaxHp",
+            "MinAtk",
+            "MaxAtk",
+            "VariationId",
+            "Skill",
+            "SkillName",
+            "SkillDesc",
+            "Abilities11",
+            "Abilities21",
+            "IsPlayable",
+            "FlavorText",
+            "SellCoin",
+            "SellDewPoint",
+            "ReleaseDate",
+            "CraftNodeId",
+            "ParentCraftNodeId",
+            "CraftGroupId",
+            "FortCraftLevel",
+            "AssembleCoin",
+            "DisassembleCoin",
+            "DisassembleCost",
+            "MainWeaponId",
+            "MainWeaponQuantity",
+            "CraftMaterialType1",
+            "CraftMaterial1",
+            "CraftMaterialQuantity1",
+            "CraftMaterialType2",
+            "CraftMaterial2",
+            "CraftMaterialQuantity2",
+            "CraftMaterialType3",
+            "CraftMaterial3",
+            "CraftMaterialQuantity3",
+            "CraftMaterialType4",
+            "CraftMaterial4",
+            "CraftMaterialQuantity4",
+            "CraftMaterialType5",
+            "CraftMaterial5",
+            "CraftMaterialQuantity5",
+            "Obtain",
+            "Availability",
+            "AvailabilityId"
+        )
+        SkillJSON::class -> listOf(
+            "SkillId",
+            "Name",
+            "SkillLv1IconName",
+            "SkillLv2IconName",
+            "SkillLv3IconName",
+            "Description1",
+            "Description2",
+            "Description3",
+            "HideLevel3",
+            "Sp",
+            "SPLv2",
+            "SpRegen",
+            "IsAffectedByTension",
+            "CrisisModifier",
+            "IframeDuration"
+        )
+        AbilityLimitedGroupJSON::class -> listOf(
+            "Id",
+            "IsEffectMix",
+            "MaxLimitedValue",
+            "AbilityLimitedText"
+        )
         else -> throw IllegalArgumentException("${T::class.simpleName} properties have not been listed")
     }
 }
