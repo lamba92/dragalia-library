@@ -65,7 +65,7 @@ kotlin {
 }
 
 fun property(propertyName: String): String =
-    project.property(propertyName) as String? ?: System.getenv(propertyName) as String
+    project.findProperty(propertyName) as String? ?: System.getenv(propertyName) as String
 
 publishing {
     repositories {
