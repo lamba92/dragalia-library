@@ -10,7 +10,7 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
-script: ./gradle check
+script: ./gradlew check
 
 before_install:
   - chmod +x gradlew
