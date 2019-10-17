@@ -4,7 +4,7 @@ plugins {
 
 allprojects {
     group = "com.github.lamba92"
-    version = "0.0.1-alpha"
+    version = "0.0.2-alpha"
 }
 
 subprojects {
@@ -22,25 +22,31 @@ tasks.register<Delete>("turboClean") {
     }
 }
 
-val nodePackagesCopyTask by tasks.register<Copy>("copyNodePackagesFromSubprojects") {
-    evaluationDependsOnChildren()
-    into(file("$buildDir/nodePackages"))
-    subprojects {
-        if ("buildNodePackage" in tasks.map { it.name }) {
-            val t by tasks.named<Copy>("buildNodePackage")
-            dependsOn(t)
-            from(t.destinationDir) {
-                into("${rootProject.name}-$name")
-            }
-        }
-    }
-}
+//val nodePackagesCopyTask by tasks.register<Copy>("copyNodePackagesFromSubprojects") {
+//    evaluationDependsOnChildren()
+//    into(file("$buildDir/nodePackages"))
+//    subprojects {
+//        if ("buildNodePackage" in tasks.map { it.name }) {
+//            val t by tasks.named<Copy>("buildNodePackage")
+//            dependsOn(t)
+//            from(t.destinationDir) {
+//                into("${rootProject.name}-$name")
+//            }
+//        }
+//    }
+//}
 
 tasks.register<Zip>("zipNodePackages") {
-    dependsOn(nodePackagesCopyTask)
-    from(nodePackagesCopyTask.destinationDir)
-    include("*")
-    include("*/*")
-    archiveBaseName.set("zipNodePackages")
+    dependsOn(tasks.named("build"))
+    from("$buildDir/js") {
+        include("*")
+        include("**/*")
+        exclude("node_modules")
+        exclude("node_modules.state")
+        exclude("yarn.lock")
+        exclude("*/.visited")
+
+    }
+    archiveBaseName.set("node_package")
     destinationDirectory.set(buildDir)
 }

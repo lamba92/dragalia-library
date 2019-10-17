@@ -17,6 +17,11 @@ kotlin {
     }
 
     js {
+        compilations.all {
+            kotlinOptions {
+                moduleKind = "umd"
+            }
+        }
         browser()
         nodejs()
         useCommonJs()
@@ -74,22 +79,47 @@ publishing {
     }
 }
 
-tasks.register<Copy>("buildNodePackage") {
-    group = "nodejs"
-    val jsJar by tasks.named<Jar>("jsJar")
-    val jsPackageJson by tasks.named<org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinPackageJsonTask>("jsPackageJson")
-    dependsOn(jsJar, jsPackageJson)
-
-    into(file("$buildDir/nodePackage"))
-
-    from(jsPackageJson.packageJson)
-
-    from(zipTree(jsJar.archiveFile)) {
-        include("*.js")
-        into("kotlin")
-    }
-
-}
+//tasks.register<Sync>("extractMavenJsDependencies") {
+//
+//
+//    val jsClasses by tasks.named("jsMainClasses")
+//    dependsOn(jsClasses)
+//    val e = configurations["jsMainApi"].files(*configurations["jsMainApi"].dependencies.toTypedArray())
+//
+//    println(e)
+//
+//    e.forEach { file ->
+//        from(zipTree(file)) {
+//            includeEmptyDirs = false
+//            include {
+//                it.path.endsWith(".js") &&
+//                        (it.path.startsWith("META-INF/resources/") || !it.path.startsWith("META-INF/"))
+//            }
+//        }
+//    }
+//
+//    into("$buildDir/web")
+//
+//}
+//
+//tasks.register<Copy>("buildNodePackage") {
+//
+//    group = "nodejs"
+//
+//    val jsJar by tasks.named<Jar>("jsJar")
+//    val jsPackageJson by tasks.named<KotlinPackageJsonTask>("jsPackageJson")
+//    dependsOn(jsJar, jsPackageJson)
+//
+//    into(file("$buildDir/nodePackage"))
+//
+//    from(jsPackageJson.packageJson)
+//
+//    from(zipTree(jsJar.archiveFile)) {
+//        include("*.js")
+//        into("kotlin")
+//    }
+//
+//}
 
 @Suppress("unused")
 fun KotlinDependencyHandler.ktor(module: String, version: String? = null): Any =

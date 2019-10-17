@@ -12,9 +12,12 @@ cache:
 
 script: ./gradle check
 
+before_install:
+  - chmod +x gradlew
+
 deploy:
   provider: script
   script: ./gradlew publish
   skip_cleanup: true
   on:
-    branch: releases
+    branch: release

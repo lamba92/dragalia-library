@@ -15,7 +15,7 @@ class GamepediaEndpointsImplementation(
     private fun parametersOf(vararg headers: Pair<String, Any>) =
         io.ktor.http.parametersOf(*headers.map { it.first to listOf(it.second.toString()) }.toTypedArray())
 
-    private inline fun <reified T : CargoQueryable> buildUrl1(
+    private inline fun <reified T : CargoQueryable> buildUrl(
         table: String,
         limit: Int = 500,
         path: String = "api.php",
@@ -31,18 +31,18 @@ class GamepediaEndpointsImplementation(
         ), "", null, null, false
     )
 
-    private inline fun <reified T : CargoQueryable> buildUrl2(
+    private inline fun <reified T : CargoQueryable> buildUrl(
         table: String,
         name: String?,
         limit: Int,
         path: String = "api.php",
         noinline builder: CargoQueryWhereClauseBuilder.() -> Unit = {}
-    ) = buildUrl1<T>(table, limit, path) {
+    ) = buildUrl<T>(table, limit, path) {
         name?.let { appendLike("name", it) }
         builder()
     }
 
-    private inline fun <reified T : CargoQueryable> buildUrl3(
+    private inline fun <reified T : CargoQueryable> buildUrl(
         table: String,
         name: String?,
         element: String?,
@@ -50,7 +50,7 @@ class GamepediaEndpointsImplementation(
         limit: Int,
         path: String = "api.php",
         noinline builder: CargoQueryWhereClauseBuilder.() -> Unit = {}
-    ) = buildUrl2<T>(table, name, limit, path) {
+    ) = buildUrl<T>(table, name, limit, path) {
         element?.let { appendEquality("element", it) }
         rarity?.let { appendEquality("rarity", it) }
         builder()
@@ -63,28 +63,28 @@ class GamepediaEndpointsImplementation(
         heroClass: String?,
         rarity: Int?,
         limit: Int
-    ) = buildUrl3<AdventurerJSON>("Adventurers", name, element, rarity, limit) {
+    ) = buildUrl<AdventurerJSON>("Adventurers", name, element, rarity, limit) {
         weaponType?.let { appendEquality("weaponType", it) }
         heroClass?.let { appendEquality("heroClass", it) }
     }
 
     override fun searchDragonsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
-        buildUrl3<DragonJSON>("Dragons", name, element, rarity, limit)
+        buildUrl<DragonJSON>("Dragons", name, element, rarity, limit)
 
     override fun searchWyrmprintsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
-        buildUrl3<WyrmprintJSON>("Wyrmprints", name, element, rarity, limit)
+        buildUrl<WyrmprintJSON>("Wyrmprints", name, element, rarity, limit)
 
     override fun searchAbilitiesUrl(name: String?, limit: Int) =
-        buildUrl2<AbilityJSON>("Abilities", name, limit)
+        buildUrl<AbilityJSON>("Abilities", name, limit)
 
     override fun searchWeaponsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
-        buildUrl3<WeaponsJSON>("Weapons", name, element, rarity, limit)
+        buildUrl<WeaponsJSON>("Weapons", name, element, rarity, limit)
 
     override fun searchCoAbilitiesUrl(name: String?, limit: Int) =
-        buildUrl2<CoAbilityJSON>("CoAbilities", name, limit)
+        buildUrl<CoAbilityJSON>("CoAbilities", name, limit)
 
     override fun searchSkillsUrl(name: String?, limit: Int) =
-        buildUrl2<SkillJSON>("Skills", name, limit)
+        buildUrl<SkillJSON>("Skills", name, limit)
 
     override fun searchAbilityLimitedGroupsUrl(
         name: String?,
@@ -92,7 +92,7 @@ class GamepediaEndpointsImplementation(
         maxLimitedValue: Int?,
         abilityLimitedText: String?,
         limit: Int
-    ) = buildUrl2<AbilityLimitedGroupJSON>("AbilityLimitedGroup", name, limit) {
+    ) = buildUrl<AbilityLimitedGroupJSON>("AbilityLimitedGroup", name, limit) {
         isEffectMIx?.let { appendEquality("isEffectMIx", it) }
         maxLimitedValue?.let { appendEquality("maxLimitedValue", it) }
         abilityLimitedText?.let { appendEquality("abilityLimitedText", it) }

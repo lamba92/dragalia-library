@@ -8,9 +8,12 @@ plugins {
 kotlin {
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
         }
     }
+
     js {
         compilations.all {
             kotlinOptions {
@@ -24,31 +27,38 @@ kotlin {
 
     sourceSets {
 
+        val kodeinVersion: String by project
         val ktorVersion: String by project
+
 
         @Suppress("UNUSED_VARIABLE") val commonMain by getting {
             dependencies {
-                api(project(":data"))
-                api(ktor("client-core", ktorVersion))
+                api(project(":core"))
+                api(kodein("core", kodeinVersion))
+                api(kodein("erased", kodeinVersion))
+                api(ktor("client-serialization", ktorVersion))
             }
         }
 
         @Suppress("UNUSED_VARIABLE") val jvmMain by getting {
             dependencies {
-                api(project(":data"))
-                api(ktor("client-core-jvm", ktorVersion))
+                api(ktor("client-okhttp", ktorVersion))
+                api(ktor("client-serialization-jvm", ktorVersion))
             }
         }
 
         @Suppress("UNUSED_VARIABLE") val jsMain by getting {
             dependencies {
-                api(project(":data"))
-                api(ktor("client-core-js", ktorVersion))
+                api(ktor("client-js", ktorVersion))
+                api(ktor("client-serialization-js", ktorVersion))
             }
         }
 
-    }
+        all {
+            languageSettings.enableLanguageFeature("InlineClasses")
+        }
 
+    }
 }
 
 fun property(propertyName: String): String =
@@ -65,23 +75,10 @@ publishing {
         }
     }
 }
-//
-//tasks.register<Copy>("buildNodePackage") {
-//    group = "nodejs"
-//    val jsJar by tasks.named<Jar>("jsJar")
-//    val jsPackageJson by tasks.named<org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinPackageJsonTask>("jsPackageJson")
-//    dependsOn(jsJar, jsPackageJson)
-//
-//    into(file("$buildDir/nodePackage"))
-//
-//    from(jsPackageJson.packageJson)
-//
-//    from(zipTree(jsJar.archiveFile)) {
-//        include("*.js")
-//        into("kotlin")
-//    }
-//
-//}
+
+@Suppress("unused")
+fun KotlinDependencyHandler.kodein(module: String, version: String? = null): Any =
+    "org.kodein.di:kodein-di-$module${version?.let { ":$version" } ?: ""}"
 
 @Suppress("unused")
 fun KotlinDependencyHandler.ktor(module: String, version: String? = null): Any =

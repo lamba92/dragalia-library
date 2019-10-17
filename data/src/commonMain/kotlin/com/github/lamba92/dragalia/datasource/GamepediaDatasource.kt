@@ -1,5 +1,6 @@
 package com.github.lamba92.dragalia.datasource
 
+import com.github.lamba92.dragalia.datasource.queries.*
 import com.github.lamba92.dragalia.rawresponses.*
 import io.ktor.http.URLProtocol
 import io.ktor.http.Url
@@ -7,57 +8,43 @@ import io.ktor.http.Url
 interface GamepediaDatasource {
 
     suspend fun searchAdventurers(
-        name: String? = null,
-        weaponType: String? = null,
-        element: String? = null,
-        heroClass: String? = null,
-        rarity: Int? = null,
-        limit: Int = 10
+        query: AdventurersCargoQuery,
+        limit: Int = 500
     ): AdventurerCargoJSON
 
     suspend fun searchDragons(
-        name: String? = null,
-        element: String? = null,
-        rarity: Int? = null,
-        limit: Int = 10
+        query: DragonsCargoQuery,
+        limit: Int = 500
     ): DragonCargoJSON
 
     suspend fun searchWyrmprints(
-        name: String? = null,
-        element: String? = null,
-        type: String? = null,
-        rarity: Int? = null,
-        limit: Int = 10
+        query: WyrmprintsCargoQuery,
+        limit: Int = 500
     ): WyrmprintCargoJSON
 
     suspend fun searchWeapons(
-        name: String? = null,
-        element: String? = null,
-        rarity: Int? = null,
-        limit: Int = 10
+        query: WeaponsCargoQuery,
+        limit: Int = 500
     ): WeaponCargoJSON
 
     suspend fun searchAbilities(
-        name: String? = null,
-        limit: Int = 10
+        query: AbilitiesCargoQuery,
+        limit: Int = 500
     ): AbilityCargoJSON
 
     suspend fun searchCoAbilities(
-        name: String? = null,
-        limit: Int = 10
+        query: CoAbilitiesCargoQuery,
+        limit: Int = 500
     ): CoAbilityCargoJSON
 
     suspend fun searchSkills(
-        name: String? = null,
-        limit: Int = 10
+        query: SkillsCargoQuery,
+        limit: Int = 500
     ): SkillCargoJSON
 
     suspend fun searchAbilityLimitedGroups(
-        name: String? = null,
-        isEffectMIx: Boolean? = null,
-        maxLimitedValue: Int? = null,
-        abilityLimitedText: String? = null,
-        limit: Int = 10
+        query: AbilityLimitedGroupsCargoQuery,
+        limit: Int = 500
     ): AbilityLimitedGroupCargoJSON
 
     interface Endpoints {
@@ -72,43 +59,43 @@ interface GamepediaDatasource {
             element: String? = null,
             heroClass: String? = null,
             rarity: Int? = null,
-            limit: Int = 10
+            limit: Int = 500
         ): Url
 
         fun searchDragonsUrl(
             name: String? = null,
             element: String? = null,
             rarity: Int? = null,
-            limit: Int = 10
+            limit: Int = 500
         ): Url
 
         fun searchWyrmprintsUrl(
             name: String? = null,
             element: String? = null,
             rarity: Int? = null,
-            limit: Int = 10
+            limit: Int = 500
         ): Url
 
         fun searchWeaponsUrl(
             name: String? = null,
             element: String? = null,
             rarity: Int? = null,
-            limit: Int = 10
+            limit: Int = 500
         ): Url
 
         fun searchAbilitiesUrl(
             name: String? = null,
-            limit: Int = 10
+            limit: Int = 500
         ): Url
 
         fun searchCoAbilitiesUrl(
             name: String? = null,
-            limit: Int = 10
+            limit: Int = 500
         ): Url
 
         fun searchSkillsUrl(
             name: String? = null,
-            limit: Int = 10
+            limit: Int = 500
         ): Url
 
         fun searchAbilityLimitedGroupsUrl(
@@ -116,7 +103,7 @@ interface GamepediaDatasource {
             isEffectMIx: Boolean? = null,
             maxLimitedValue: Int? = null,
             abilityLimitedText: String? = null,
-            limit: Int = 10
+            limit: Int = 500
         ): Url
 
     }

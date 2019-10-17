@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinPackageJsonTask
-
 plugins {
     kotlin("multiplatform")
     `maven-publish`
@@ -74,19 +72,36 @@ publishing {
     }
 }
 
-tasks.register<Copy>("buildNodePackage") {
-    group = "nodejs"
-    val jsJar by tasks.named<Jar>("jsJar")
-    val jsPackageJson by tasks.named<KotlinPackageJsonTask>("jsPackageJson")
-    dependsOn(jsJar, jsPackageJson)
-
-    into(file("$buildDir/nodePackage"))
-
-    from(jsPackageJson.packageJson)
-
-    from(zipTree(jsJar.archiveFile)) {
-        include("*.js")
-        into("kotlin")
-    }
-
-}
+//tasks.register<Copy>("buildPackageJson") {
+//    group = "nodejs"
+//    val klockVersion: String by project
+//    val kotlinVersion: String by project
+//    from("package.json") {
+//        filter<ReplaceTokens>(
+//            "tokens" to mapOf(
+//                "LIBRARY-NAME" to "${rootProject.name}-${project.name}",
+//                "KOTLIN-VERSION" to kotlinVersion,
+//                "LIBRARY-VERSION" to version,
+//                "KLOCK-VERSION" to klockVersion
+//            )
+//        )
+//    }
+//    into(file("$buildDir/tmp"))
+//}
+//
+//tasks.register<Copy>("buildNodePackage") {
+//    group = "nodejs"
+//    val jsJar by tasks.named<Jar>("jsJar")
+//    val jsPackageJson by tasks.named<KotlinPackageJsonTask>("jsPackageJson")
+//    dependsOn(jsJar, jsPackageJson)
+//
+//    into(file("$buildDir/nodePackage"))
+//
+//    from(jsPackageJson.packageJson)
+//
+//    from(zipTree(jsJar.archiveFile)) {
+//        include("*.js")
+//        into("kotlin")
+//    }
+//
+//}
