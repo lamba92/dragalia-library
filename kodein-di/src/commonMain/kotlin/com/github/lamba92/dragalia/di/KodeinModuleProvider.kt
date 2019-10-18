@@ -1,4 +1,4 @@
-package com.github.lamba92.dragalia.modules
+package com.github.lamba92.dragalia.di
 
 import org.kodein.di.Kodein
 import org.kodein.di.Kodein.OverridingException
@@ -25,3 +25,18 @@ fun Kodein.MainBuilder.import(
     moduleProvider: KodeinModuleProvider,
     allowOverride: Boolean = false
 ) = import(moduleProvider.getModule(), allowOverride)
+
+
+/**
+ * Imports all bindings defined in the given [Kodein.Module] into this builder's definition.
+ *
+ * Note that modules are *definitions*, they will re-declare their bindings in each kodein instance you use.
+ *
+ * @param module The module object to import.
+ * @param allowOverride Whether this module is allowed to override existing bindings.
+ *                      If it is not, overrides (even explicit) will throw an [OverridingException].
+ * @throws OverridingException If this module overrides an existing binding and is not allowed to
+ *                             OR [allowOverride] is true while YOU don't have the permission to override.
+ */
+fun Kodein.Builder.import(module: KodeinModuleProvider, allowOverride: Boolean = false) =
+    import(module.getModule(), allowOverride)

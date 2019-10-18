@@ -1,5 +1,6 @@
-package com.github.lamba92.dragalia.modules
+package com.github.lamba92.dragalia.di.modules
 
+import com.github.lamba92.dragalia.di.KodeinModuleProvider
 import com.github.lamba92.dragalia.mappers.*
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind

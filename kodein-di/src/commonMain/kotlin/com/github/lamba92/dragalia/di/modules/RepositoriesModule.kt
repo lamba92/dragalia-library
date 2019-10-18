@@ -1,6 +1,7 @@
-package com.github.lamba92.dragalia.modules
+package com.github.lamba92.dragalia.di.modules
 
-import com.github.lamba92.dragalia.expects.platformSpecificRepositoriesBindings
+import com.github.lamba92.dragalia.di.KodeinModuleProvider
+import com.github.lamba92.dragalia.di.expects.platformSpecificRepositoriesBindings
 import com.github.lamba92.dragalia.repositories.DragaliaLostRepository
 import com.github.lamba92.dragalia.repositories.DragaliaLostRepositoryImplementation
 import org.kodein.di.Kodein

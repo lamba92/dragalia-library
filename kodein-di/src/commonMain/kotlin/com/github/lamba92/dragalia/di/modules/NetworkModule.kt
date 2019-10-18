@@ -1,5 +1,6 @@
-package com.github.lamba92.dragalia.modules
+package com.github.lamba92.dragalia.di.modules
 
+import com.github.lamba92.dragalia.di.KodeinModuleProvider
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer

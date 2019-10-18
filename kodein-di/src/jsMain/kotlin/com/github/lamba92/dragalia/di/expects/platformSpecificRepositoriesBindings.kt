@@ -1,4 +1,4 @@
-package com.github.lamba92.dragalia.expects
+package com.github.lamba92.dragalia.di.expects
 
 import com.github.lamba92.dragalia.js.repositories.DragaliaLostJsRepository
 import com.github.lamba92.dragalialost.js.repository.DragaliaLostJsRepositoryImplementation

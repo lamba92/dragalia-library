@@ -1,8 +1,9 @@
-package com.github.lamba92.dragalia.modules
+package com.github.lamba92.dragalia.di.modules
 
 import com.github.lamba92.dragalia.datasource.GamepediaDatasource
 import com.github.lamba92.dragalia.datasource.GamepediaDatasourceImplementation
 import com.github.lamba92.dragalia.datasource.GamepediaEndpointsImplementation
+import com.github.lamba92.dragalia.di.KodeinModuleProvider
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
