@@ -31,7 +31,8 @@ The library is divided into 4 group - each one has their respective artifact for
 
  ##### USING KODEIN-DI
  When building your `kodein` just `import(dragaliaLostModule())` and ask for an `instance<DragaliaLostRepository>()`! Easy right?
- 
+ ⬆️⬆️⬆️⬆️
+ This do not work atm. just be content to get an `instance<GamepediaDatasource>`!
 
 ## Install [![](https://jitpack.io/v/lamba92/dragalia-library.svg)](https://jitpack.io/#lamba92/dragalia-library)
 
