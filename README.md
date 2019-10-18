@@ -13,8 +13,8 @@ At the moment only raw data from Gamepedia is available using the `GamepediaData
 but development is going fast. 
 
 ## Project structure
-The library is divided into 4 group - each one has their respective artifact for any given platform - and is build using a [clean architecture](https://www.google.com/search?q=clean+architecture):
- - **core**: definitions of the entities and `DragaliaLostRepository` interface with suspending functions. The Js build has as well `DragaliaLostJsRepository` with promises instead.
+The library is divided into 4 groups - each one has their respective artifact for any given platform - and is written using a [clean architecture](https://www.google.com/search?q=clean+architecture):
+ - **core**: definitions of the entities and `DragaliaLostRepository` interface with suspending functions. The JS build has as well `DragaliaLostJsRepository` with promises instead.
  
  - **data**: definition of gamepedia types and its `GamepediaDatasource` interface. Contains the implementation of the repository using the available datasource.
  
@@ -30,7 +30,7 @@ The library is divided into 4 group - each one has their respective artifact for
  
 
  ##### USING KODEIN-DI
- When building your `kodein` just `import(dragaliaLostModule())` and ask for an `instance<DragaliaLostRepository>()`! Easy right?
+ When building your `kodein` just `import(dragaliaLostModule())` and ask for an `instance<DragaliaLostRepository>()`! Easy right? 
  ⬆️⬆️⬆️⬆️
  This do not work atm. just be content to get an `instance<GamepediaDatasource>`!
 
