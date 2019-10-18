@@ -25,6 +25,7 @@ kotlin {
     sourceSets {
 
         val ktorVersion: String by project
+        val textEncodingVersion: String by project
 
         @Suppress("UNUSED_VARIABLE") val commonMain by getting {
             dependencies {
@@ -40,10 +41,17 @@ kotlin {
             }
         }
 
+        @Suppress("UNUSED_VARIABLE") val jvmTest by getting {
+            dependencies {
+                api(kotlin("test-junit"))
+            }
+        }
+
         @Suppress("UNUSED_VARIABLE") val jsMain by getting {
             dependencies {
                 api(project(":data"))
                 api(ktor("client-core-js", ktorVersion))
+                api(npm("text-encoding", textEncodingVersion))
             }
         }
 

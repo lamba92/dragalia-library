@@ -1,3 +1,7 @@
+@file:Suppress("UNUSED_VARIABLE")
+
+import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
+
 plugins {
     kotlin("multiplatform")
     `maven-publish`
@@ -27,25 +31,48 @@ kotlin {
     sourceSets {
 
         val klockVersion: String by project
+        val coroutinesVersion: String by project
 
-        @Suppress("UNUSED_VARIABLE") val commonMain by getting {
+        val commonMain by getting {
             dependencies {
                 api(kotlin("stdlib-common"))
                 api("com.soywiz.korlibs.klock:klock:$klockVersion")
+                api(kotlinx("coroutines-core-common", coroutinesVersion))
             }
         }
 
-        @Suppress("UNUSED_VARIABLE") val jvmMain by getting {
+        val commonTest by getting {
+            dependencies {
+                api(kotlin("test-annotations-common"))
+                api(kotlin("test-common"))
+            }
+        }
+
+        val jvmMain by getting {
             dependencies {
                 api(kotlin("stdlib-jdk8"))
                 api("com.soywiz.korlibs.klock:klock-jvm:$klockVersion")
+                api(kotlinx("coroutines-core", coroutinesVersion))
             }
         }
 
-        @Suppress("UNUSED_VARIABLE") val jsMain by getting {
+        val jvmTest by getting {
+            dependencies {
+                api(kotlin("test-junit"))
+            }
+        }
+
+        val jsMain by getting {
             dependencies {
                 api(kotlin("stdlib-js"))
                 api("com.soywiz.korlibs.klock:klock-js:$klockVersion")
+                api(kotlinx("coroutines-core-js", coroutinesVersion))
+            }
+        }
+
+        val jsTest by getting {
+            dependencies {
+                api(kotlin("test-js"))
             }
         }
 
@@ -71,6 +98,10 @@ publishing {
         }
     }
 }
+
+@Suppress("unused")
+fun KotlinDependencyHandler.kotlinx(module: String, version: String? = null): Any =
+    "org.jetbrains.kotlinx:kotlinx-$module${version?.let { ":$version" } ?: ""}"
 
 //tasks.register<Copy>("buildPackageJson") {
 //    group = "nodejs"
