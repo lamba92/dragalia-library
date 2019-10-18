@@ -1,4 +1,9 @@
 # Dragalia Lost library
+
+ - **MASTER** [![Build Status](https://travis-ci.org/lamba92/dragalia-library.svg?branch=master)](https://travis-ci.org/lamba92/dragalia-library)
+ 
+ - **RELEASE** [![Build Status](https://travis-ci.org/lamba92/dragalia-library.svg?branch=release)](https://travis-ci.org/lamba92/dragalia-library)
+
 This library allows to easily query the Gamepedia page at https://dragalialost.gamepedia.com.
 
 It is written using Kotlin multiplatform and builds an publishes in JVM and JS for now.
@@ -23,6 +28,7 @@ The library is divided into 4 group - each one has their respective artifact for
  ##### USING CORE
  When importing just `core` you need to instantiate `DragaliaLostRepositoryImplementation` wich needs a `GamepediaDatasourceImplementation` (and a bunch of mappers!), which needs a [Ktor `HttpClient`](https://ktor.io/clients/index.html) (with the [`JsonFeature`](https://ktor.io/clients/http-client/features/json-feature.html) installed), which needs `GamepediaEndpointsImplementation`, and so on and so forth.
  
+
  ##### USING KODEIN-DI
  When building your `kodein` just `import(dragaliaLostModule())` and ask for an `instance<DragaliaLostRepository>()`! Easy right?
  
