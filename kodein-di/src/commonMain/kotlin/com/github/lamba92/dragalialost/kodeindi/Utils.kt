@@ -1,9 +1,6 @@
 package com.github.lamba92.dragalialost.kodeindi
 
-import com.github.lamba92.dragalialost.kodeindi.modules.DatasourcesModule
-import com.github.lamba92.dragalialost.kodeindi.modules.MappersModule
-import com.github.lamba92.dragalialost.kodeindi.modules.NetworkModule
-import com.github.lamba92.dragalialost.kodeindi.modules.RepositoriesModule
+import com.github.lamba92.dragalialost.kodeindi.modules.*
 import org.kodein.di.Kodein
 
 fun dragaliaLostModule() = Kodein.Module("Dragalia Lost Module") {
@@ -11,4 +8,5 @@ fun dragaliaLostModule() = Kodein.Module("Dragalia Lost Module") {
     import(MappersModule)
     import(NetworkModule)
     import(RepositoriesModule)
+    import(ConstantsModule)
 }

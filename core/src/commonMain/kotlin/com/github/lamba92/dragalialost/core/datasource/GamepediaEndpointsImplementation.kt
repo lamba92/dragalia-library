@@ -13,8 +13,8 @@ import kotlin.js.JsName
 class GamepediaEndpointsImplementation(
     override val protocol: URLProtocol,
     override val host: String,
-    override val port: Int = protocol.defaultPort,
-    override val path: String
+    override val path: String,
+    override val port: Int = protocol.defaultPort
 ) : GamepediaDatasource.Endpoints {
 
     private fun parametersOf(vararg headers: Pair<String, Any>) =
@@ -145,8 +145,8 @@ class GamepediaEndpointsImplementation(
     override fun getCoAbilityByIdUrl(id: String) =
         buildAllFieldsByIdUrl<CoAbilityJSON>(CO_ABILITIES_TABLE, id)
 
-    override fun getSkillByIdUrl(id: String) =
-        buildAllFieldsByIdUrl<SkillJSON>(SKILLS_TABLE, id)
+    override fun getSkillByNameUrl(name: String) =
+        buildAllFieldsByIdUrl<SkillJSON>(SKILLS_TABLE, name)
 
     override fun getAbilityLimitedGroupByIdUrl(id: String) =
         buildAllFieldsByIdUrl<AbilityLimitedGroupJSON>(ABILITY_LIMITED_GROUPS_TABLE, id)

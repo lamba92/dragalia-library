@@ -33,4 +33,9 @@ data class AdventurerEntity(
     val ability2: Ability?,
     val ability3: Ability?,
     val coAbility: CoAbility
-) : DragaliaEntity
+) : DragaliaEntity {
+    companion object {
+        const val FORCE_STRIKE_LVL2_MIGHT = 120
+        const val MAX_LVL = 80
+    }
+}

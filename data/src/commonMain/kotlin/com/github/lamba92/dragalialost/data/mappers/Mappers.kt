@@ -2,6 +2,9 @@ package com.github.lamba92.dragalialost.data.mappers
 
 interface SingleFromRemoteMapper<SingleRemote, Entity> {
     fun fromRemoteSingle(remote: SingleRemote): Entity
+
+    operator fun invoke(remote: SingleRemote) =
+        fromRemoteSingle(remote)
 }
 
 interface MultipleFromRemoteMapper<MultipleRemote, SingleRemote, Entity> :

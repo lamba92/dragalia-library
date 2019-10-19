@@ -97,7 +97,8 @@ object MockEntities {
                             "in total.",
                     AbilityLevel.TWO,
                     80
-                )
+                ),
+                AbilityLevelData(lvl2.Details, AbilityLevel.ONE, lvl2.PartyPowerWeight.toInt())
             ),
             Ability(
                 "Stun Res",
@@ -112,7 +113,8 @@ object MockEntities {
                     "Reduces susceptibility to stun by 100%.",
                     AbilityLevel.TWO,
                     80
-                )
+                ),
+                AbilityLevelData(lvl2.Details, AbilityLevel.ONE, lvl2.PartyPowerWeight.toInt())
             ),
             Ability(
                 "Player EXP",
@@ -129,7 +131,8 @@ object MockEntities {
                             "other similar abilities; the highest value will be applied.",
                     AbilityLevel.TWO,
                     80
-                )
+                ),
+                AbilityLevelData(lvl2.Details, AbilityLevel.ONE, lvl2.PartyPowerWeight.toInt())
             ),
             CoAbility(
                 "Dragon Hast",
@@ -222,7 +225,8 @@ object MockEntities {
                     "If the user is attuned to Flame: increases strength by 50%.",
                     AbilityLevel.TWO,
                     85
-                )
+                ),
+                AbilityLevelData(lvl2.Details, AbilityLevel.ONE, lvl2.PartyPowerWeight.toInt())
             ),
             Ability(
                 "(Flame) Burning Punisher",
@@ -237,7 +241,8 @@ object MockEntities {
                     "If the user is attuned to Flame: increases damage to burning enemies by 20%.",
                     AbilityLevel.TWO,
                     15
-                )
+                ),
+                AbilityLevelData(lvl2.Details, AbilityLevel.ONE, lvl2.PartyPowerWeight.toInt())
             ),
             AttackModifier(
                 AttackComboData(AttackComboNumber.ONE, 190, 1),

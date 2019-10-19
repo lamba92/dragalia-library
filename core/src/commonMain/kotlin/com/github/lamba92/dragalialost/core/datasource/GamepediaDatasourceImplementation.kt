@@ -56,28 +56,28 @@ class GamepediaDatasourceImplementation(
         ).cargoquery.map { it.title.Id }
     }
 
-    override suspend fun searchAdventurersById(id: String) =
+    override suspend fun getAdventurersById(id: String) =
         httpClient.get<AdventurerCargoJSON>(endpoints.getAdventurerByIdUrl(id)).cargoquery.first().title
 
-    override suspend fun searchDragonsById(id: String) =
+    override suspend fun getDragonsById(id: String) =
         httpClient.get<DragonCargoJSON>(endpoints.getDragonByIdUrl(id)).cargoquery.first().title
 
-    override suspend fun searchWyrmprintsById(id: String) =
+    override suspend fun getWyrmprintsById(id: String) =
         httpClient.get<WyrmprintCargoJSON>(endpoints.getWyrmprintByIdUrl(id)).cargoquery.first().title
 
-    override suspend fun searchWeaponsById(id: String) =
+    override suspend fun getWeaponsById(id: String) =
         httpClient.get<WeaponCargoJSON>(endpoints.getWeaponByIdUrl(id)).cargoquery.first().title
 
-    override suspend fun searchAbilitiesById(id: String) =
+    override suspend fun getAbilitiesById(id: String) =
         httpClient.get<AbilityCargoJSON>(endpoints.getAbilityByIdUrl(id)).cargoquery.first().title
 
-    override suspend fun searchCoAbilitiesById(id: String) =
+    override suspend fun getCoAbilitiesById(id: String) =
         httpClient.get<CoAbilityCargoJSON>(endpoints.getCoAbilityByIdUrl(id)).cargoquery.first().title
 
-    override suspend fun searchSkillsById(id: String) =
-        httpClient.get<SkillCargoJSON>(endpoints.getSkillByIdUrl(id)).cargoquery.first().title
+    override suspend fun getSkillsById(id: String) =
+        httpClient.get<SkillCargoJSON>(endpoints.getSkillByNameUrl(id)).cargoquery.first().title
 
-    override suspend fun searchAbilityLimitedGroupsById(id: String) =
+    override suspend fun getAbilityLimitedGroupsById(id: String) =
         httpClient.get<AbilityLimitedGroupCargoJSON>(endpoints.getAbilityLimitedGroupByIdUrl(id)).cargoquery.first().title
 
 }

@@ -256,7 +256,7 @@ object Utils {
         AdventurerJSON::class, DragonJSON::class, WyrmprintJSON::class,
         AbilityJSON::class, CoAbilityJSON::class, WeaponJSON::class,
         AbilityLimitedGroupJSON::class -> "Id"
-        SkillCargoJSON::class -> "SkillId"
+        SkillJSON::class -> "name"
         else -> throw IllegalArgumentException("${T::class.simpleName} Id has not been declared")
     }
 }

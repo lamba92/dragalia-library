@@ -1,4 +1,6 @@
 package com.github.lamba92.dragalialost.core.utils
 
-fun buildCargoWhereClause(builder: com.github.lamba92.dragalialost.core.datasource.CargoQueryWhereClauseBuilder.() -> Unit) =
-    com.github.lamba92.dragalialost.core.datasource.CargoQueryWhereClauseBuilder().apply(builder).toString()
+import com.github.lamba92.dragalialost.core.datasource.CargoQueryWhereClauseBuilder
+
+fun buildCargoWhereClause(builder: CargoQueryWhereClauseBuilder.() -> Unit) =
+    CargoQueryWhereClauseBuilder().apply(builder).toString()

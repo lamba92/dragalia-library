@@ -3,6 +3,7 @@ package com.github.lamba92.dragalialost.domain.entities
 import com.github.lamba92.dragalialost.domain.entities.enums.Availability
 import com.github.lamba92.dragalialost.domain.entities.enums.Rarity
 import com.github.lamba92.dragalialost.domain.entities.enums.Source
+import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
 
 interface DragaliaEntity {
@@ -17,4 +18,8 @@ interface DragaliaEntity {
     val releaseDate: DateTime
     val availability: Availability
     val artwork: String
+
+    companion object {
+        const val DATE_TIME_FORMAT = DateFormat(TODO())
+    }
 }
