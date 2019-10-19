@@ -1,5 +1,6 @@
 package com.github.lamba92.dragalialost.data.rawresponses
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -18,7 +19,7 @@ data class SkillJSON(
     val IframeDuration: String,
     val IsAffectedByTension: String,
     val Name: String,
-    val SkillId: String,
+    @SerialName("SkillId") val Id: String,
     val SkillLv1IconName: String,
     val SkillLv2IconName: String,
     val SkillLv3IconName: String,

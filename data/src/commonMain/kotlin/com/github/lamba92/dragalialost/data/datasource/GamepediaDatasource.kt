@@ -7,53 +7,32 @@ import io.ktor.http.Url
 
 interface GamepediaDatasource {
 
-    suspend fun searchAdventurers(
-        query: AdventurersCargoQuery,
-        limit: Int = 500
-    ): AdventurerCargoJSON
+    suspend fun searchAdventurerIds(query: AdventurersCargoQuery, limit: Int = 500): List<String>
+    suspend fun searchDragonIds(query: DragonsCargoQuery, limit: Int = 500): List<String>
+    suspend fun searchWyrmprintIds(query: WyrmprintsCargoQuery, limit: Int = 500): List<String>
+    suspend fun searchWeaponIds(query: WeaponsCargoQuery, limit: Int = 500): List<String>
+    suspend fun searchAbilityIds(query: AbilitiesCargoQuery, limit: Int = 500): List<String>
+    suspend fun searchCoAbilityIds(query: CoAbilitiesCargoQuery, limit: Int = 500): List<String>
+    suspend fun searchSkillIds(query: SkillsCargoQuery, limit: Int = 500): List<String>
+    suspend fun searchAbilityLimitedGroupIds(query: AbilityLimitedGroupsCargoQuery, limit: Int = 500): List<String>
 
-    suspend fun searchDragons(
-        query: DragonsCargoQuery,
-        limit: Int = 500
-    ): DragonCargoJSON
-
-    suspend fun searchWyrmprints(
-        query: WyrmprintsCargoQuery,
-        limit: Int = 500
-    ): WyrmprintCargoJSON
-
-    suspend fun searchWeapons(
-        query: WeaponsCargoQuery,
-        limit: Int = 500
-    ): WeaponCargoJSON
-
-    suspend fun searchAbilities(
-        query: AbilitiesCargoQuery,
-        limit: Int = 500
-    ): AbilityCargoJSON
-
-    suspend fun searchCoAbilities(
-        query: CoAbilitiesCargoQuery,
-        limit: Int = 500
-    ): CoAbilityCargoJSON
-
-    suspend fun searchSkills(
-        query: SkillsCargoQuery,
-        limit: Int = 500
-    ): SkillCargoJSON
-
-    suspend fun searchAbilityLimitedGroups(
-        query: AbilityLimitedGroupsCargoQuery,
-        limit: Int = 500
-    ): AbilityLimitedGroupCargoJSON
+    suspend fun searchAdventurersById(id: String): AdventurerJSON
+    suspend fun searchDragonsById(id: String): DragonJSON
+    suspend fun searchWyrmprintsById(id: String): WyrmprintJSON
+    suspend fun searchWeaponsById(id: String): WeaponJSON
+    suspend fun searchAbilitiesById(id: String): AbilityJSON
+    suspend fun searchCoAbilitiesById(id: String): CoAbilityJSON
+    suspend fun searchSkillsById(id: String): SkillJSON
+    suspend fun searchAbilityLimitedGroupsById(id: String): AbilityLimitedGroupJSON
 
     interface Endpoints {
 
         val protocol: URLProtocol
         val host: String
         val port: Int
+        val path: String
 
-        fun searchAdventurersUrl(
+        fun searchAdventurerIdsUrl(
             name: String? = null,
             weaponType: String? = null,
             element: String? = null,
@@ -62,49 +41,65 @@ interface GamepediaDatasource {
             limit: Int = 500
         ): Url
 
-        fun searchDragonsUrl(
+        fun searchDragonIdsUrl(
             name: String? = null,
             element: String? = null,
             rarity: Int? = null,
             limit: Int = 500
         ): Url
 
-        fun searchWyrmprintsUrl(
+        fun searchWyrmprintIdsUrl(
             name: String? = null,
             element: String? = null,
             rarity: Int? = null,
             limit: Int = 500
         ): Url
 
-        fun searchWeaponsUrl(
+        fun searchWeaponIdsUrl(
             name: String? = null,
             element: String? = null,
             rarity: Int? = null,
             limit: Int = 500
         ): Url
 
-        fun searchAbilitiesUrl(
+        fun searchAbilityIdsUrl(
             name: String? = null,
             limit: Int = 500
         ): Url
 
-        fun searchCoAbilitiesUrl(
+        fun searchCoAbilityIdsUrl(
             name: String? = null,
             limit: Int = 500
         ): Url
 
-        fun searchSkillsUrl(
+        fun searchSkillIdsUrl(
             name: String? = null,
             limit: Int = 500
         ): Url
 
-        fun searchAbilityLimitedGroupsUrl(
+        fun searchAbilityLimitedGroupIdsUrl(
             name: String? = null,
             isEffectMIx: Boolean? = null,
             maxLimitedValue: Int? = null,
             abilityLimitedText: String? = null,
             limit: Int = 500
         ): Url
+
+        fun getAdventurerByIdUrl(id: String): Url
+
+        fun getDragonByIdUrl(id: String): Url
+
+        fun getWyrmprintByIdUrl(id: String): Url
+
+        fun getWeaponByIdUrl(id: String): Url
+
+        fun getAbilityByIdUrl(id: String): Url
+
+        fun getCoAbilityByIdUrl(id: String): Url
+
+        fun getSkillByIdUrl(id: String): Url
+
+        fun getAbilityLimitedGroupByIdUrl(id: String): Url
 
     }
 

@@ -7,10 +7,10 @@ import kotlinx.serialization.Serializable
 data class WeaponCargoJSON(val cargoquery: List<WeaponsNestedTitleJson>)
 
 @Serializable
-data class WeaponsNestedTitleJson(val title: WeaponsJSON)
+data class WeaponsNestedTitleJson(val title: WeaponJSON)
 
 @Serializable
-data class WeaponsJSON(
+data class WeaponJSON(
     val Abilities11: String,
     val Abilities21: String,
     val AssembleCoin: String,

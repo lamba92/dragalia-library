@@ -172,7 +172,7 @@ object Utils {
             "Category",
             "PartyPowerWeight"
         )
-        WeaponsJSON::class -> listOf(
+        WeaponJSON::class -> listOf(
             "Id",
             "BaseId",
             "FormId",
@@ -250,5 +250,13 @@ object Utils {
             "AbilityLimitedText"
         )
         else -> throw IllegalArgumentException("${T::class.simpleName} properties have not been listed")
+    }
+
+    inline fun <reified T : CargoQueryable> cargoIdPropertyOf() = when (T::class) {
+        AdventurerJSON::class, DragonJSON::class, WyrmprintJSON::class,
+        AbilityJSON::class, CoAbilityJSON::class, WeaponJSON::class,
+        AbilityLimitedGroupJSON::class -> "Id"
+        SkillCargoJSON::class -> "SkillId"
+        else -> throw IllegalArgumentException("${T::class.simpleName} Id has not been declared")
     }
 }

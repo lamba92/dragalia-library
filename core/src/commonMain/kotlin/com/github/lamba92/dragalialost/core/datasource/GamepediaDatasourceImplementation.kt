@@ -11,43 +11,73 @@ class GamepediaDatasourceImplementation(
     private val endpoints: GamepediaDatasource.Endpoints
 ) : GamepediaDatasource {
 
-    override suspend fun searchAdventurers(
+    override suspend fun searchAdventurerIds(
         query: AdventurersCargoQuery,
         limit: Int
     ) = with(query) {
-        httpClient.get<AdventurerCargoJSON>(
-            endpoints.searchAdventurersUrl(name, weaponType, element, heroClass, rarity, limit)
-        )
+        httpClient.get<IdCargoJSON>(
+            endpoints.searchAdventurerIdsUrl(name, weaponType, element, heroClass, rarity, limit)
+        ).cargoquery.map { it.title.Id }
     }
 
-    override suspend fun searchDragons(query: DragonsCargoQuery, limit: Int) = with(query) {
-        httpClient.get<DragonCargoJSON>(endpoints.searchDragonsUrl(name, element, rarity, limit))
+    override suspend fun searchDragonIds(query: DragonsCargoQuery, limit: Int) = with(query) {
+        httpClient.get<IdCargoJSON>(endpoints.searchDragonIdsUrl(name, element, rarity, limit))
+            .cargoquery.map { it.title.Id }
     }
 
-    override suspend fun searchWyrmprints(query: WyrmprintsCargoQuery, limit: Int) = with(query) {
-        httpClient.get<WyrmprintCargoJSON>(endpoints.searchWyrmprintsUrl(name, element, rarity, limit))
+    override suspend fun searchWyrmprintIds(query: WyrmprintsCargoQuery, limit: Int) = with(query) {
+        httpClient.get<IdCargoJSON>(endpoints.searchWyrmprintIdsUrl(name, element, rarity, limit))
+            .cargoquery.map { it.title.Id }
     }
 
-    override suspend fun searchWeapons(query: WeaponsCargoQuery, limit: Int) = with(query) {
-        httpClient.get<WeaponCargoJSON>(endpoints.searchWeaponsUrl(name, element, rarity, limit))
+    override suspend fun searchWeaponIds(query: WeaponsCargoQuery, limit: Int) = with(query) {
+        httpClient.get<IdCargoJSON>(endpoints.searchWeaponIdsUrl(name, element, rarity, limit))
+            .cargoquery.map { it.title.Id }
     }
 
-    override suspend fun searchAbilities(query: AbilitiesCargoQuery, limit: Int) = with(query) {
-        httpClient.get<AbilityCargoJSON>(endpoints.searchAbilitiesUrl(name, limit))
+    override suspend fun searchAbilityIds(query: AbilitiesCargoQuery, limit: Int) = with(query) {
+        httpClient.get<IdCargoJSON>(endpoints.searchAbilityIdsUrl(name, limit))
+            .cargoquery.map { it.title.Id }
     }
 
-    override suspend fun searchCoAbilities(query: CoAbilitiesCargoQuery, limit: Int) = with(query) {
-        httpClient.get<CoAbilityCargoJSON>(endpoints.searchCoAbilitiesUrl(name, limit))
+    override suspend fun searchCoAbilityIds(query: CoAbilitiesCargoQuery, limit: Int) = with(query) {
+        httpClient.get<IdCargoJSON>(endpoints.searchCoAbilityIdsUrl(name, limit))
+            .cargoquery.map { it.title.Id }
     }
 
-    override suspend fun searchSkills(query: SkillsCargoQuery, limit: Int) = with(query) {
-        httpClient.get<SkillCargoJSON>(endpoints.searchSkillsUrl(name, limit))
+    override suspend fun searchSkillIds(query: SkillsCargoQuery, limit: Int) = with(query) {
+        httpClient.get<SkillIdCargoJSON>(endpoints.searchSkillIdsUrl(name, limit))
+            .cargoquery.map { it.title.SkillId }
     }
 
-    override suspend fun searchAbilityLimitedGroups(query: AbilityLimitedGroupsCargoQuery, limit: Int) = with(query) {
-        httpClient.get<AbilityLimitedGroupCargoJSON>(
-            endpoints.searchAbilityLimitedGroupsUrl(name, isEffectMIx, maxLimitedValue, abilityLimitedText, limit)
-        )
+    override suspend fun searchAbilityLimitedGroupIds(query: AbilityLimitedGroupsCargoQuery, limit: Int) = with(query) {
+        httpClient.get<IdCargoJSON>(
+            endpoints.searchAbilityLimitedGroupIdsUrl(name, isEffectMIx, maxLimitedValue, abilityLimitedText, limit)
+        ).cargoquery.map { it.title.Id }
     }
+
+    override suspend fun searchAdventurersById(id: String) =
+        httpClient.get<AdventurerCargoJSON>(endpoints.getAdventurerByIdUrl(id)).cargoquery.first().title
+
+    override suspend fun searchDragonsById(id: String) =
+        httpClient.get<DragonCargoJSON>(endpoints.getDragonByIdUrl(id)).cargoquery.first().title
+
+    override suspend fun searchWyrmprintsById(id: String) =
+        httpClient.get<WyrmprintCargoJSON>(endpoints.getWyrmprintByIdUrl(id)).cargoquery.first().title
+
+    override suspend fun searchWeaponsById(id: String) =
+        httpClient.get<WeaponCargoJSON>(endpoints.getWeaponByIdUrl(id)).cargoquery.first().title
+
+    override suspend fun searchAbilitiesById(id: String) =
+        httpClient.get<AbilityCargoJSON>(endpoints.getAbilityByIdUrl(id)).cargoquery.first().title
+
+    override suspend fun searchCoAbilitiesById(id: String) =
+        httpClient.get<CoAbilityCargoJSON>(endpoints.getCoAbilityByIdUrl(id)).cargoquery.first().title
+
+    override suspend fun searchSkillsById(id: String) =
+        httpClient.get<SkillCargoJSON>(endpoints.getSkillByIdUrl(id)).cargoquery.first().title
+
+    override suspend fun searchAbilityLimitedGroupsById(id: String) =
+        httpClient.get<AbilityLimitedGroupCargoJSON>(endpoints.getAbilityLimitedGroupByIdUrl(id)).cargoquery.first().title
 
 }
