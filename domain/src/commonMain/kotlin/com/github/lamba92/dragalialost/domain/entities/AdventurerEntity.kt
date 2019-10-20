@@ -23,19 +23,14 @@ data class AdventurerEntity(
     val voiceActorJP: VoiceActor,
     override val obtainedFrom: Source,
     override val releaseDate: DateTime,
-    override val availability: Availability,
+    override val availability: List<Availability>,
     override val artwork: String,
     val element: Element,
     val weaponType: WeaponType,
     val skill1: Skill,
     val skill2: Skill,
-    val ability: Ability,
-    val ability2: Ability?,
-    val ability3: Ability?,
+    val ability: AdventurerAbility,
+    val ability2: AdventurerAbility?,
+    val ability3: AdventurerAbility?,
     val coAbility: CoAbility
-) : DragaliaEntity {
-    companion object {
-        const val FORCE_STRIKE_LVL2_MIGHT = 120
-        const val MAX_LVL = 80
-    }
-}
+) : DragaliaEntity

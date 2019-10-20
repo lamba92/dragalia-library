@@ -12,7 +12,7 @@ import com.github.lamba92.dragalialost.domain.entities.support.ManaCircleBonusSt
 import com.github.lamba92.dragalialost.domain.entities.support.VoiceActor
 import com.soywiz.klock.parseUtc
 
-class AdventurersMapper(
+class AdventurerMapper(
     private val abilityMapper: AbilityMapper,
     private val coAbilityMapper: CoAbilityMapper,
     private val skillMapper: SkillMapper,
@@ -22,8 +22,9 @@ class AdventurersMapper(
     private val genderMapper: GenderMapper,
     private val raceMapper: RaceMapper,
     private val rarityMapper: RarityMapper,
-    private val sourceMapper: SourceMapper
-) : SingleFromRemoteMapper<AdventurersMapper.Params, AdventurerEntity> {
+    private val sourceMapper: SourceMapper,
+    private val availabilityMapper: AvailabilityMapper
+) : SingleFromRemoteMapper<AdventurerMapper.Params, AdventurerEntity> {
 
     override fun fromRemoteSingle(remote: Params) = with(remote) {
         val coability = coAbilityMapper(
@@ -41,7 +42,7 @@ class AdventurersMapper(
                 Description,
                 MaxHp.toInt(),
                 MaxAtk.toInt(),
-                AdventurerEntity.MAX_LVL,
+                DragaliaEntity.MAX_LVL,
                 ManaCircleBonusStats(
                     PlusHp0.toInt(),
                     PlusHp1.toInt(),
@@ -65,7 +66,7 @@ class AdventurersMapper(
                         (ability1.level3?.might ?: ability1.level2.might) +
                         (ability2.level3?.might ?: ability1.level2.might) +
                         (ability3.level3?.might ?: ability3.level2.might) +
-                        AdventurerEntity.FORCE_STRIKE_LVL2_MIGHT,
+                        DragaliaEntity.FORCE_STRIKE_LVL2_MIGHT,
                 weaponType.defenseProvided,
                 heroClassMapper(CharaType),
                 genderMapper(Gender),
@@ -75,8 +76,17 @@ class AdventurersMapper(
                 VoiceActor(JapaneseCV),
                 sourceMapper(Obtain),
                 DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate),
-
-                )
+                availabilityMapper(Availability),
+                "",
+                elementMapper(ElementalType),
+                weaponType,
+                skill1,
+                skill2,
+                ability1,
+                ability2,
+                ability3,
+                coability
+            )
         }
     }
 

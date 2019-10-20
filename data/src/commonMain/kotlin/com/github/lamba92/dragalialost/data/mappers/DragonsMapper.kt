@@ -1,17 +1,28 @@
 package com.github.lamba92.dragalialost.data.mappers
 
-import com.github.lamba92.dragalialost.data.rawresponses.DragonCargoJSON
+import com.github.lamba92.dragalialost.data.rawresponses.AbilityJSON
 import com.github.lamba92.dragalialost.data.rawresponses.DragonJSON
+import com.github.lamba92.dragalialost.data.rawresponses.SkillJSON
 import com.github.lamba92.dragalialost.domain.entities.DragonEntity
 
 
-class DragonsMapper : MultipleFromRemoteMapper<DragonCargoJSON, DragonJSON, DragonEntity> {
+class DragonsMapper(
+    private val dragonAbilityMapper: DragonAbilityMapper
+) : SingleFromRemoteMapper<DragonsMapper.Params, DragonEntity> {
 
-    override fun fromRemoteSingle(remote: DragonJSON): DragonEntity {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun fromRemoteSingle(remote: Params) = with(remote) {
+        TODO()
     }
 
-    override fun fromRemoteMultiple(remote: DragonCargoJSON) =
-        remote.cargoquery.map { fromRemoteSingle(it.title) }
+    data class Params(
+        val dragon: DragonJSON,
+        val ability1lvl2: AbilityJSON?,
+        val ability1lvl1: AbilityJSON?,
+        val ability1lvl3: AbilityJSON?,
+        val ability2lvl1: AbilityJSON?,
+        val ability2lvl2: AbilityJSON?,
+        val ability2lvl3: AbilityJSON?,
+        val skill1: SkillJSON
+    )
 
 }

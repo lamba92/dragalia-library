@@ -37,28 +37,28 @@ interface GamepediaDatasource {
             weaponType: String? = null,
             element: String? = null,
             heroClass: String? = null,
-            rarity: Int? = null,
+            rarity: String? = null,
             limit: Int = 500
         ): Url
 
         fun searchDragonIdsUrl(
             name: String? = null,
             element: String? = null,
-            rarity: Int? = null,
+            rarity: String? = null,
             limit: Int = 500
         ): Url
 
         fun searchWyrmprintIdsUrl(
             name: String? = null,
             element: String? = null,
-            rarity: Int? = null,
+            rarity: String? = null,
             limit: Int = 500
         ): Url
 
         fun searchWeaponIdsUrl(
             name: String? = null,
             element: String? = null,
-            rarity: Int? = null,
+            rarity: String? = null,
             limit: Int = 500
         ): Url
 

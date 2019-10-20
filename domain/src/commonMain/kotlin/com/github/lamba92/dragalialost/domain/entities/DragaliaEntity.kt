@@ -16,10 +16,12 @@ interface DragaliaEntity {
     val rarity: Rarity
     val obtainedFrom: Source
     val releaseDate: DateTime
-    val availability: Availability
+    val availability: List<Availability>
     val artwork: String
 
     companion object {
-        const val DATE_TIME_FORMAT = DateFormat(TODO())
+        val DATE_TIME_FORMAT = DateFormat.FORMAT_DATE
+        const val FORCE_STRIKE_LVL2_MIGHT = 120
+        const val MAX_LVL = 80
     }
 }

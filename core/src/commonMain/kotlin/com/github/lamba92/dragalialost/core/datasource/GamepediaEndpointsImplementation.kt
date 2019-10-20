@@ -4,8 +4,7 @@ import com.github.lamba92.dragalialost.core.datasource.DatasourceTables.*
 import com.github.lamba92.dragalialost.core.utils.buildCargoWhereClause
 import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasource
 import com.github.lamba92.dragalialost.data.rawresponses.*
-import com.github.lamba92.dragalialost.data.utils.Utils.cargoIdPropertyOf
-import com.github.lamba92.dragalialost.data.utils.Utils.cargoPropertiesOf
+import com.github.lamba92.dragalialost.data.utils.CargoProperties
 import io.ktor.http.URLProtocol
 import io.ktor.http.Url
 import kotlin.js.JsName
@@ -49,8 +48,8 @@ class GamepediaEndpointsImplementation(
     private inline fun <reified T : CargoQueryable> buildAllFieldsByIdUrl(
         table: DatasourceTables,
         id: String
-    ) = buildUrlBase(table, 1, cargoPropertiesOf<T>()) {
-        appendEquality(cargoIdPropertyOf<T>(), id)
+    ) = buildUrlBase(table, 1, CargoProperties.of<T>()) {
+        appendEquality(CargoProperties.idOf<T>(), id)
     }
 
     @JsName("buildIdUrl1")
@@ -58,7 +57,7 @@ class GamepediaEndpointsImplementation(
         table: DatasourceTables,
         limit: Int,
         noinline builder: CargoQueryWhereClauseBuilder.() -> Unit
-    ) = buildUrlBase(table, limit, cargoIdPropertyOf<T>(), builder)
+    ) = buildUrlBase(table, limit, CargoProperties.idOf<T>(), builder)
 
     @JsName("buildIdUrl2")
     private inline fun <reified T : CargoQueryable> buildIdUrl(
@@ -76,7 +75,7 @@ class GamepediaEndpointsImplementation(
         table: DatasourceTables,
         name: String?,
         element: String?,
-        rarity: Int?,
+        rarity: String?,
         limit: Int,
         noinline builder: CargoQueryWhereClauseBuilder.() -> Unit = {}
     ) = buildIdUrl<T>(table, name, limit) {
@@ -90,20 +89,20 @@ class GamepediaEndpointsImplementation(
         weaponType: String?,
         element: String?,
         heroClass: String?,
-        rarity: Int?,
+        rarity: String?,
         limit: Int
     ) = buildIdUrl<AdventurerJSON>(ADVENTURERS_TABLE, name, element, rarity, limit) {
         weaponType?.let { appendEquality("weaponType", it) }
         heroClass?.let { appendEquality("heroClass", it) }
     }
 
-    override fun searchDragonIdsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
+    override fun searchDragonIdsUrl(name: String?, element: String?, rarity: String?, limit: Int) =
         buildIdUrl<DragonJSON>(DRAGONS_TABLE, name, element, rarity, limit)
 
-    override fun searchWyrmprintIdsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
+    override fun searchWyrmprintIdsUrl(name: String?, element: String?, rarity: String?, limit: Int) =
         buildIdUrl<WyrmprintJSON>(WYRMPRINTS_TABLE, name, element, rarity, limit)
 
-    override fun searchWeaponIdsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
+    override fun searchWeaponIdsUrl(name: String?, element: String?, rarity: String?, limit: Int) =
         buildIdUrl<WeaponJSON>(WEAPONS_TABLE, name, element, rarity, limit)
 
     override fun searchAbilityIdsUrl(name: String?, limit: Int) =

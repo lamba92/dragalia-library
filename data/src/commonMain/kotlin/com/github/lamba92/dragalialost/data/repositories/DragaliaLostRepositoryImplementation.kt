@@ -14,7 +14,7 @@ class DragaliaLostRepositoryImplementation(
     private val wyrmprintsQueryMapper: WyrmprintsQueryMapper,
     private val dragonsQueryMapper: DragonsQueryMapper,
     private val dragonsMapper: DragonsMapper,
-    private val adventurersMapper: AdventurersMapper,
+    private val adventurerMapper: AdventurerMapper,
     private val wyrmprintsMapper: WyrmprintsMapper
 ) : DragaliaLostRepository {
 

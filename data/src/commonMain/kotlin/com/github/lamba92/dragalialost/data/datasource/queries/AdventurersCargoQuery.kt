@@ -4,6 +4,6 @@ class AdventurersCargoQuery(
     val weaponType: String? = null,
     val heroClass: String? = null,
     element: String? = null,
-    rarity: Int? = null,
+    rarity: String? = null,
     name: String? = null
 ) : WithElementAndRarityCargoQuery(element, rarity, name)

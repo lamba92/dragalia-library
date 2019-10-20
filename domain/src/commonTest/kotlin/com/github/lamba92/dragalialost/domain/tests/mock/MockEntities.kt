@@ -21,8 +21,8 @@ object MockEntities {
             430,
             288,
             100,
-            ManaCircleBonusStats(263, 24),
-            ManaCircleBonusStats(176, 16),
+            ManaCircleBonusStats(51, 59, 69, 59, 29, 25),
+            ManaCircleBonusStats(35, 41, 48, 41, 20, 19),
             310,
             2396,
             10,
@@ -78,7 +78,7 @@ object MockEntities {
                             " 10 seconds with 90% base chance."
                 )
             ),
-            Ability(
+            AdventurerAbility(
                 "Dragon's Claws",
                 "https://gamepedia.cursecdn.com/dragalialost_gamepedia_en/thumb/4/4b/Icon_Ability_1020002.png/" +
                         "45px-Icon_Ability_1020002.png?version=486df5fa5658fe46ab1e57cb034b3dd1",
@@ -98,9 +98,16 @@ object MockEntities {
                     AbilityLevel.TWO,
                     80
                 ),
-                AbilityLevelData(lvl2.Details, AbilityLevel.ONE, lvl2.PartyPowerWeight.toInt())
+                AbilityLevelData(
+                    "Each shapeshift increases strength for the remainder of the quest (up to three times per " +
+                            "quest). On first shapeshift strength is increased by 5% in total. On second shapeshift " +
+                            "strength is increased by 13% in total. On third shapeshift strength is increased by 25% " +
+                            "in total.",
+                    AbilityLevel.THREE,
+                    120
+                )
             ),
-            Ability(
+            AdventurerAbility(
                 "Stun Res",
                 "https://gamepedia.cursecdn.com/dragalialost_gamepedia_en/thumb/f/f1/Icon_Ability_1030006.png/" +
                         "45px-Icon_Ability_1030006.png?version=41ef9016c9d335f7a4aaddf7fc1853d5",
@@ -114,9 +121,9 @@ object MockEntities {
                     AbilityLevel.TWO,
                     80
                 ),
-                AbilityLevelData(lvl2.Details, AbilityLevel.ONE, lvl2.PartyPowerWeight.toInt())
+                null
             ),
-            Ability(
+            AdventurerAbility(
                 "Player EXP",
                 "https://gamepedia.cursecdn.com/dragalialost_gamepedia_en/thumb/a/af/Icon_Ability_1010003.png/" +
                         "45px-Icon_Ability_1010003.png?version=29249bc46590c354879a487c65a88fc2",
@@ -132,7 +139,7 @@ object MockEntities {
                     AbilityLevel.TWO,
                     80
                 ),
-                AbilityLevelData(lvl2.Details, AbilityLevel.ONE, lvl2.PartyPowerWeight.toInt())
+                null
             ),
             CoAbility(
                 "Dragon Hast",
@@ -212,7 +219,7 @@ object MockEntities {
                             "chance, and reduces defense by 5% for 10 seconds with 100% base chance."
                 )
             ),
-            Ability(
+            DragonAbility(
                 "(Flame) Strength",
                 "https://gamepedia.cursecdn.com/dragalialost_gamepedia_en/thumb/4/4b/Icon_Ability_1020002.png/" +
                         "45px-Icon_Ability_1020002.png?version=486df5fa5658fe46ab1e57cb034b3dd1",
@@ -222,13 +229,12 @@ object MockEntities {
                     65
                 ),
                 AbilityLevelData(
-                    "If the user is attuned to Flame: increases strength by 50%.",
-                    AbilityLevel.TWO,
-                    85
-                ),
-                AbilityLevelData(lvl2.Details, AbilityLevel.ONE, lvl2.PartyPowerWeight.toInt())
+                    "If the user is attuned to Flame: increases strength by 40%.",
+                    AbilityLevel.ONE,
+                    80
+                )
             ),
-            Ability(
+            DragonAbility(
                 "(Flame) Burning Punisher",
                 "https://gamepedia.cursecdn.com/dragalialost_gamepedia_en/thumb/f/f7/Icon_Ability_1070002.png/" +
                         "45px-Icon_Ability_1070002.png?version=d4d51f2f569ae2cca71cf2cd23b7f25c",
@@ -241,8 +247,7 @@ object MockEntities {
                     "If the user is attuned to Flame: increases damage to burning enemies by 20%.",
                     AbilityLevel.TWO,
                     15
-                ),
-                AbilityLevelData(lvl2.Details, AbilityLevel.ONE, lvl2.PartyPowerWeight.toInt())
+                )
             ),
             AttackModifier(
                 AttackComboData(AttackComboNumber.ONE, 190, 1),

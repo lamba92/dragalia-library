@@ -21,11 +21,11 @@ data class DragonEntity(
     val gender: Gender,
     override val obtainedFrom: Source,
     override val releaseDate: DateTime,
-    override val availability: Availability,
+    override val availability: List<Availability>,
     override val artwork: String,
     val skill: Skill,
-    val ability1: Ability,
-    val ability2: Ability?,
+    val ability1: DragonAbility?,
+    val ability2: DragonAbility?,
     val basicAttackModifier: AttackModifier,
     val element: Element
 ) : DragaliaEntity

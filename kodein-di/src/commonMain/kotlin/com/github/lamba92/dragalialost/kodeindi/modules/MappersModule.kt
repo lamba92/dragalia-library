@@ -9,7 +9,14 @@ import org.kodein.di.erased.singleton
 
 object MappersModule : KodeinModuleProvider {
     override fun provideModule(): Kodein.Builder.() -> Unit = {
-        bind<AdventurersMapper>() with singleton { AdventurersMapper() }
+
+        bind<AdventurerMapper>() with singleton {
+            AdventurerMapper(
+                instance(), instance(), instance(), instance(),
+                instance(), instance(), instance(), instance(),
+                instance(), instance(), instance()
+            )
+        }
         bind<DragonsMapper>() with singleton { DragonsMapper() }
         bind<WyrmprintsMapper>() with singleton { WyrmprintsMapper() }
 

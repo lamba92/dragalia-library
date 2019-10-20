@@ -2,14 +2,14 @@ package com.github.lamba92.dragalialost.data.mappers
 
 import com.github.lamba92.dragalialost.data.rawresponses.AbilityJSON
 import com.github.lamba92.dragalialost.domain.entities.enums.AbilityLevel
-import com.github.lamba92.dragalialost.domain.entities.support.Ability
 import com.github.lamba92.dragalialost.domain.entities.support.AbilityLevelData
+import com.github.lamba92.dragalialost.domain.entities.support.AdventurerAbility
 
-class AbilityMapper : SingleFromRemoteMapper<AbilityMapper.Params, Ability> {
+class AbilityMapper : SingleFromRemoteMapper<AbilityMapper.Params, AdventurerAbility> {
 
     override fun fromRemoteSingle(remote: Params) = with(remote) {
         // TODO ability icon
-        Ability(
+        AdventurerAbility(
             lvl1.Name,
             "",
             AbilityLevelData(lvl1.Details, AbilityLevel.ONE, lvl1.PartyPowerWeight.toInt()),
