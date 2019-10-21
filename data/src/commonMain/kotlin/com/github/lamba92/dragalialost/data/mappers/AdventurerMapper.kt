@@ -15,7 +15,7 @@ import com.soywiz.klock.parseUtc
 class AdventurerMapper(
     private val abilityMapper: AbilityMapper,
     private val coAbilityMapper: CoAbilityMapper,
-    private val skillMapper: SkillMapper,
+    private val adventurerSkillMapper: AdventurerSkillMapper,
     private val elementMapper: ElementMapper,
     private val weaponTypeMapper: WeaponTypeMapper,
     private val heroClassMapper: HeroClassMapper,
@@ -30,8 +30,8 @@ class AdventurerMapper(
         val coability = coAbilityMapper(
             CoAbilityMapper.Params(coabilityLvl1, coabilityLvl2, coabilityLvl3, coabilityLvl4, coabilityLvl5)
         )
-        val skill1 = skillMapper(skill1)
-        val skill2 = skillMapper(skill2)
+        val skill1 = adventurerSkillMapper(skill1)
+        val skill2 = adventurerSkillMapper(skill2)
         val ability1 = abilityMapper(AbilityMapper.Params(ability1lvl1, ability1lvl2, ability1lvl3))
         val ability2 = abilityMapper(AbilityMapper.Params(ability2lvl1, ability2lvl2, ability2lvl3))
         val ability3 = abilityMapper(AbilityMapper.Params(ability3lvl1, ability3lvl2, ability3lvl3))
@@ -42,7 +42,7 @@ class AdventurerMapper(
                 Description,
                 MaxHp.toInt(),
                 MaxAtk.toInt(),
-                DragaliaEntity.MAX_LVL,
+                DragaliaEntity.ADVENTURERS_MAX_LVL,
                 ManaCircleBonusStats(
                     PlusHp0.toInt(),
                     PlusHp1.toInt(),

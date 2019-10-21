@@ -17,8 +17,18 @@ object MappersModule : KodeinModuleProvider {
                 instance(), instance(), instance()
             )
         }
-        bind<DragonsMapper>() with singleton { DragonsMapper() }
-        bind<WyrmprintsMapper>() with singleton { WyrmprintsMapper() }
+        bind<DragonsMapper>() with singleton {
+            DragonsMapper(
+                instance(), instance(), instance(),
+                instance(), instance()
+            )
+        }
+        bind<WyrmprintsMapper>() with singleton {
+            WyrmprintsMapper(
+                instance(), instance(), instance(),
+                instance(), instance()
+            )
+        }
 
         bind<AdventurersQueryMapper>() with singleton {
             AdventurersQueryMapper(instance(), instance(), instance(), instance())

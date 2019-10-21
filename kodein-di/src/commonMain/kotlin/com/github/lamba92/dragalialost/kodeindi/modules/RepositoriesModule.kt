@@ -13,7 +13,7 @@ object RepositoriesModule : KodeinModuleProvider {
     override fun provideModule(): Kodein.Builder.() -> Unit = {
         bind<DragaliaLostRepository>() with singleton {
             DragaliaLostRepositoryImplementation(
-                instance(), instance(), instance(),
+                instance(), instance(), instance(), instance(),
                 instance(), instance(), instance(), instance()
             )
         }

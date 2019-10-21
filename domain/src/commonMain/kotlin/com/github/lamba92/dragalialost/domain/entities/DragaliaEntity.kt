@@ -20,8 +20,14 @@ interface DragaliaEntity {
     val artwork: String
 
     companion object {
+        const val WYRMPRINTS_MAX_LVL = 100
+        const val DRAGON_BOND_MIGHT_PER_LEVEL = 10
+        const val DRAGONS_MAX_LVL = 100
         val DATE_TIME_FORMAT = DateFormat.FORMAT_DATE
         const val FORCE_STRIKE_LVL2_MIGHT = 120
-        const val MAX_LVL = 80
+        const val ADVENTURERS_MAX_LVL = 80
+        const val SKILL_LVL1_MIGHT = 100
+        const val SKILL_LVL2_MIGHT = 200
+        const val SKILL_LVL3_MIGHT = 300
     }
 }

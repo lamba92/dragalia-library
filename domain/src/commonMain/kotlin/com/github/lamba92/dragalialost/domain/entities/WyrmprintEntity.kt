@@ -22,8 +22,9 @@ data class WyrmprintEntity(
     override val maxLevel: Int,
     val sellValue: SellValue,
     val featuredCharacter: List<String>,
-    val afflictionResistances: AfflictionResistances?,
-    val elementalResistances: ElementalResistances?,
+    val afflictionResistances: List<AfflictionResistances>,
+    val elementalResistances: List<ElementalResistances>,
     val ability1: WyrmprintAbility,
-    val ability2: WyrmprintAbility?
+    val ability2: WyrmprintAbility?,
+    val ability3: WyrmprintAbility?
 ) : DragaliaEntity

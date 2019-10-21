@@ -1,4 +1,7 @@
 package com.github.lamba92.dragalialost.data.utils
 
-operator fun Regex.contains(text: CharSequence) =
-    matches(text)
+internal fun String.isNotBlankOrZero() =
+    isNotBlank() && this != "0"
+
+internal inline fun <T> String.ifIsNotBlankOrZero(action: (value: String) -> T) =
+    if (isNotBlankOrZero()) action(this) else null

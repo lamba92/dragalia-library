@@ -16,13 +16,13 @@ interface GamepediaDatasource {
     suspend fun searchSkillIds(query: SkillsCargoQuery, limit: Int = 500): List<String>
     suspend fun searchAbilityLimitedGroupIds(query: AbilityLimitedGroupsCargoQuery, limit: Int = 500): List<String>
 
-    suspend fun getAdventurersById(id: String): AdventurerJSON
-    suspend fun getDragonsById(id: String): DragonJSON
-    suspend fun getWyrmprintsById(id: String): WyrmprintJSON
+    suspend fun getAdventurerById(id: String): AdventurerJSON
+    suspend fun getDragonById(id: String): DragonJSON
+    suspend fun getWyrmprintById(id: String): WyrmprintJSON
     suspend fun getWeaponsById(id: String): WeaponJSON
-    suspend fun getAbilitiesById(id: String): AbilityJSON
-    suspend fun getCoAbilitiesById(id: String): CoAbilityJSON
-    suspend fun getSkillsById(id: String): SkillJSON
+    suspend fun getAbilityById(id: String): AbilityJSON
+    suspend fun getCoAbilityById(id: String): CoAbilityJSON
+    suspend fun getSkillByName(id: String): SkillJSON
     suspend fun getAbilityLimitedGroupsById(id: String): AbilityLimitedGroupJSON
 
     interface Endpoints {

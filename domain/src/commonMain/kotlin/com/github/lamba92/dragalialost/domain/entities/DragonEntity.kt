@@ -11,9 +11,9 @@ data class DragonEntity(
     override val strength: Int,
     override val maxLevel: Int,
     override val baseMinMight: Int,
-    val baseMinMightBonded: Int,
+//    val baseMinMightBonded: Int,
     override val baseMaxMight: Int,
-    val baseMaxMightBonded: Int,
+//    val baseMaxMightBonded: Int,
     override val rarity: Rarity,
     val sellValue: SellValue,
     val voiceActorEN: VoiceActor,
@@ -23,9 +23,9 @@ data class DragonEntity(
     override val releaseDate: DateTime,
     override val availability: List<Availability>,
     override val artwork: String,
-    val skill: Skill,
+    val skill: DragonSkill,
     val ability1: DragonAbility?,
     val ability2: DragonAbility?,
-    val basicAttackModifier: AttackModifier,
+    val basicAttackModifier: List<AttackComboData>,
     val element: Element
 ) : DragaliaEntity

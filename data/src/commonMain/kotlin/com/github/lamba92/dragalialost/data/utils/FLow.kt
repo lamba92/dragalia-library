@@ -19,3 +19,7 @@ inline fun <T, R> Flow<T>.deferredMap(crossinline transform: suspend (value: T) 
 @FlowPreview
 inline fun <T, R> Flow<T>.flatMapIterableConcat(crossinline transform: suspend (value: T) -> Iterable<R>) =
     flatMapConcat { transform(it).asFlow() }
+
+@FlowPreview
+fun <T> Flow<Iterable<T>>.flattenConcat() =
+    flatMapConcat { it.asFlow() }
