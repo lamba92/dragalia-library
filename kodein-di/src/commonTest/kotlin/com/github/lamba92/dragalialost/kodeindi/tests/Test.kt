@@ -32,7 +32,7 @@ class Test : KodeinAware {
 
         println(
             "__________________________\n" +
-                    "| TestAdventurers results: " +
+                    "| TestAdventurers results: \n" +
                     "| Total results first call:     ${res.size}\n" +
                     "| Total results second call:    ${res2.size}\n" +
                     "| Elapsed time for first call:  ${time.inSeconds}\n" +

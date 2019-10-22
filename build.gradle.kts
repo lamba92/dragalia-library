@@ -4,7 +4,7 @@ plugins {
 
 allprojects {
     group = "com.github.lamba92"
-    version = "0.0.2-alpha"
+    version = "0.0.3-alpha"
 }
 
 fun property_(propertyName: String): String? =
