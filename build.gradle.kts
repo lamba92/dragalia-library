@@ -5,6 +5,11 @@ plugins {
 allprojects {
     group = "com.github.lamba92"
     version = "0.0.3-alpha"
+
+    extensions.findByName("buildScan")?.withGroovyBuilder {
+        setProperty("termsOfServiceUrl", "https://gradle.com/terms-of-service")
+        setProperty("termsOfServiceAgree", "yes")
+    }
 }
 
 fun property_(propertyName: String): String? =
