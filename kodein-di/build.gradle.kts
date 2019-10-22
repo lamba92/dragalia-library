@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 
 plugins {
@@ -16,13 +18,8 @@ kotlin {
 
     js {
         compilations.all {
-            kotlinOptions {
-                moduleKind = "umd"
-            }
+            nodejs()
         }
-        browser()
-        nodejs()
-        useCommonJs()
     }
 
     sourceSets {
@@ -31,8 +28,11 @@ kotlin {
         val ktorVersion: String by project
         val coroutineRunTestVersion: String by project
         val logbackVersion: String by project
+        val utf8ValidateVersion: String by project
+        val bufferutilVersion: String by project
+        val nodeFetchVersion: String by project
 
-        @Suppress("UNUSED_VARIABLE") val commonMain by getting {
+        val commonMain by getting {
             dependencies {
                 api(project(":core"))
                 api(kodein("core", kodeinVersion))
@@ -42,7 +42,7 @@ kotlin {
             }
         }
 
-        @Suppress("UNUSED_VARIABLE") val commonTest by getting {
+        val commonTest by getting {
             dependencies {
                 api(lamba("kotlin-multiplatform-coroutines-runtest", coroutineRunTestVersion))
                 api(kotlin("test-annotations-common"))
@@ -50,7 +50,7 @@ kotlin {
             }
         }
 
-        @Suppress("UNUSED_VARIABLE") val jvmMain by getting {
+        val jvmMain by getting {
             dependencies {
                 api(ktor("client-okhttp", ktorVersion))
                 api(ktor("client-serialization-jvm", ktorVersion))
@@ -65,11 +65,14 @@ kotlin {
             }
         }
 
-        @Suppress("UNUSED_VARIABLE") val jsMain by getting {
+        val jsMain by getting {
             dependencies {
                 api(ktor("client-js", ktorVersion))
                 api(ktor("client-serialization-js", ktorVersion))
                 api(ktor("client-logging-js", ktorVersion))
+                api(npm("utf-8-validate", utf8ValidateVersion))
+                api(npm("bufferutil", bufferutilVersion))
+                api(npm("node-fetch", nodeFetchVersion))
             }
         }
 

@@ -39,7 +39,7 @@ class WyrmprintsMapper(
                 MaxAtk.toInt() + MaxHp.toInt() + ability1.level3.might +
                         (ability2?.level3?.might ?: 0) + (ability3?.level3?.might ?: 0),
                 sourceMapper(Obtain),
-                DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate),
+                DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
                 availabilityMapper(Availability),
                 "", // TODO image
                 "",

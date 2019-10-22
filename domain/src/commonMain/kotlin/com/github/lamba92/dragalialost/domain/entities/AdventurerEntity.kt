@@ -21,7 +21,7 @@ data class AdventurerEntity(
     override val rarity: Rarity,
     val voiceActorEN: VoiceActor,
     val voiceActorJP: VoiceActor,
-    override val obtainedFrom: Source,
+    override val obtainedFrom: List<Source>,
     override val releaseDate: DateTime,
     override val availability: List<Availability>,
     override val artwork: String,

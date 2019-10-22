@@ -19,7 +19,7 @@ data class DragonEntity(
     val voiceActorEN: VoiceActor,
     val voiceActorJP: VoiceActor,
     val gender: Gender,
-    override val obtainedFrom: Source,
+    override val obtainedFrom: List<Source>,
     override val releaseDate: DateTime,
     override val availability: List<Availability>,
     override val artwork: String,

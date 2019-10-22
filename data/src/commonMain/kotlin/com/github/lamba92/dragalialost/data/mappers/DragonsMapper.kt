@@ -6,7 +6,6 @@ import com.github.lamba92.dragalialost.data.rawresponses.SkillJSON
 import com.github.lamba92.dragalialost.domain.entities.DragaliaEntity
 import com.github.lamba92.dragalialost.domain.entities.DragonEntity
 import com.github.lamba92.dragalialost.domain.entities.enums.Gender
-import com.github.lamba92.dragalialost.domain.entities.enums.Source
 import com.github.lamba92.dragalialost.domain.entities.support.SellValue
 import com.github.lamba92.dragalialost.domain.entities.support.VoiceActor
 import com.soywiz.klock.parseUtc
@@ -43,8 +42,8 @@ class DragonsMapper(
                 VoiceActor(EnglishCV),
                 VoiceActor(JapaneseCV),
                 Gender.MALE, //TODO gender!
-                Source.Summoning(), // TODO source!
-                DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate),
+                emptyList(), // TODO source!
+                DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
                 availabilityMapper(Availability),
                 "", // TODO artwork!
                 skill,

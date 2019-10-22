@@ -10,12 +10,10 @@ import com.github.lamba92.dragalialost.domain.repositories.DragaliaLostRepositor
 import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQueryBuilder
 import com.github.lamba92.dragalialost.domain.repositories.queries.DragonsQueryBuilder
 import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQueryBuilder
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.flow.toSet
+import kotlinx.coroutines.flow.*
 
 class DragaliaLostRepositoryImplementation(
     private val datasource: GamepediaDatasource,
@@ -28,6 +26,7 @@ class DragaliaLostRepositoryImplementation(
     private val wyrmprintsMapper: WyrmprintsMapper
 ) : DragaliaLostRepository {
 
+    @ExperimentalCoroutinesApi
     @FlowPreview
     override suspend fun searchAdventurers(query: AdventurersQueryBuilder, limit: Int) =
         adventurersQueryMapper.toRemote(query)
@@ -75,8 +74,12 @@ class DragaliaLostRepositoryImplementation(
                 }
             }
             .map { adventurerMapper(it) }
+            .catch {
+                println("An adventurer errored: $it")
+            }
             .toList()
 
+    @ExperimentalCoroutinesApi
     @FlowPreview
     override suspend fun searchDragons(query: DragonsQueryBuilder, limit: Int) =
         dragonsQueryMapper.toRemote(query)
@@ -106,9 +109,13 @@ class DragaliaLostRepositoryImplementation(
                     DragonsMapper.Params(json, a11.await(), a12.await(), a21?.await(), a22?.await(), s1.await())
                 }
             }
+            .catch {
+                println("A dragon errored: $it")
+            }
             .map { dragonsMapper(it) }
             .toList()
 
+    @ExperimentalCoroutinesApi
     @FlowPreview
     override suspend fun searchWyrmprints(query: WyrmprintsQueryBuilder, limit: Int) =
         wyrmprintsQueryMapper.toRemote(query)
@@ -144,6 +151,9 @@ class DragaliaLostRepositoryImplementation(
                         a22?.await(), a23?.await(), a31?.await(), a32?.await(), a33?.await()
                     )
                 }
+            }
+            .catch {
+                println("A wyrmprint errored: $it")
             }
             .map { wyrmprintsMapper(it) }
             .toList()

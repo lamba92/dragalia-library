@@ -18,14 +18,7 @@ kotlin {
     }
 
     js {
-        compilations.all {
-            kotlinOptions {
-                moduleKind = "umd"
-            }
-        }
-        browser()
         nodejs()
-        useCommonJs()
     }
 
     sourceSets {

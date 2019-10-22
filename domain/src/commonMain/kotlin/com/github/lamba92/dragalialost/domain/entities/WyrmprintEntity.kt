@@ -13,7 +13,7 @@ data class WyrmprintEntity(
     override val hp: Int,
     override val baseMinMight: Int,
     override val baseMaxMight: Int,
-    override val obtainedFrom: Source,
+    override val obtainedFrom: List<Source>,
     override val releaseDate: DateTime,
     override val availability: List<Availability>,
     override val artwork: String,

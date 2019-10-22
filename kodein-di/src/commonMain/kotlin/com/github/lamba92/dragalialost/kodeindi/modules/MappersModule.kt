@@ -52,7 +52,8 @@ object MappersModule : KodeinModuleProvider {
         bind<FeaturedCharacterMapper>() with singleton { FeaturedCharacterMapper() }
         bind<GenderMapper>() with singleton { GenderMapper() }
         bind<RaceMapper>() with singleton { RaceMapper() }
-        bind<SourceMapper>() with singleton { SourceMapper() }
+        bind<SourceMapper>() with singleton { SourceMapper(instance()) }
+        bind<DifficultyMapper>() with singleton { DifficultyMapper() }
         bind<WyrmprintAbilityMapper>() with singleton { WyrmprintAbilityMapper() }
     }
 }
