@@ -1,7 +1,7 @@
 package com.github.lamba92.dragalialost.data.datasource.queries
 
-open class WithElementAndRarityCargoQuery(
+data class NamedWithElementAndRarityCargoQuery(
     val element: String? = null,
     val rarity: String? = null,
-    name: String? = null
-) : NamedCargoQuery(name)
+    val name: String? = null
+)

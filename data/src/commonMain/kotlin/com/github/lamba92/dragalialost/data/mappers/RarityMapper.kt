@@ -12,10 +12,10 @@ class RarityMapper : SingleToRemoteMapper<String, Rarity>, SingleFromRemoteMappe
     }
 
     override fun fromRemoteSingle(remote: String) = when (remote) {
-        "1" -> TWO
         "2" -> TWO
-        "3" -> TWO
-        "4" -> TWO
+        "3" -> THREE
+        "4" -> FOUR
+        "5" -> FIVE
         else -> throw IllegalArgumentException("Rarity $remote has not been managed yet")
     }
 

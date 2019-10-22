@@ -15,6 +15,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.toSet
 
 class DragaliaLostRepositoryImplementation(
     private val datasource: GamepediaDatasource,
@@ -28,11 +29,17 @@ class DragaliaLostRepositoryImplementation(
 ) : DragaliaLostRepository {
 
     @FlowPreview
-    override suspend fun searchAdventurers(query: AdventurersQueryBuilder) =
+    override suspend fun searchAdventurers(query: AdventurersQueryBuilder, limit: Int) =
         adventurersQueryMapper.toRemote(query)
             .asFlow()
-            .map { datasource.searchAdventurerIds(it) }
+            .map { dsQuery ->
+                cache.searchAdventurerIds(dsQuery, limit) ?: datasource.searchAdventurerIds(dsQuery, limit).also {
+                    cache.cacheAdventurerCargoQuery(dsQuery, limit, it)
+                }
+            }
             .flattenConcat()
+            .toSet()
+            .asFlow()
             .map { adventurerId ->
                 cache.getAdventurerById(adventurerId) ?: datasource.getAdventurerById(adventurerId)
                     .also { cache.cacheAdventurerById(adventurerId, it) }
@@ -48,7 +55,7 @@ class DragaliaLostRepositoryImplementation(
                     val a23 = Abilities23.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
 
                     val a31 = async { getAndCacheAbilityById(Abilities31) }
-                    val a32 = async { getAndCacheAbilityById(Abilities32) }
+                    val a32 = Abilities32.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
                     val a33 = Abilities33.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
 
                     val s1 = async { getAndCacheSkillByName(Skill1Name) }
@@ -62,7 +69,7 @@ class DragaliaLostRepositoryImplementation(
 
                     AdventurerMapper.Params(
                         json, a11.await(), a12.await(), a13?.await(), a21.await(), a22.await(), a23?.await(),
-                        a31.await(), a32.await(), a33?.await(), coa1.await(), coa2.await(), coa3.await(),
+                        a31.await(), a32?.await(), a33?.await(), coa1.await(), coa2.await(), coa3.await(),
                         coa4.await(), coa5.await(), s1.await(), s2.await()
                     )
                 }
@@ -71,11 +78,17 @@ class DragaliaLostRepositoryImplementation(
             .toList()
 
     @FlowPreview
-    override suspend fun searchDragons(query: DragonsQueryBuilder) =
+    override suspend fun searchDragons(query: DragonsQueryBuilder, limit: Int) =
         dragonsQueryMapper.toRemote(query)
             .asFlow()
-            .map { datasource.searchDragonIds(it) }
+            .map { dsQuery ->
+                cache.searchDragonIds(dsQuery, limit) ?: datasource.searchDragonIds(dsQuery, limit).also {
+                    cache.cacheDragonCargoQuery(dsQuery, limit, it)
+                }
+            }
             .flattenConcat()
+            .toSet()
+            .asFlow()
             .map { dragonId ->
                 cache.getDragonById(dragonId) ?: datasource.getDragonById(dragonId)
                     .also { cache.cacheDragonById(dragonId, it) }
@@ -97,11 +110,17 @@ class DragaliaLostRepositoryImplementation(
             .toList()
 
     @FlowPreview
-    override suspend fun searchWyrmprints(query: WyrmprintsQueryBuilder) =
+    override suspend fun searchWyrmprints(query: WyrmprintsQueryBuilder, limit: Int) =
         wyrmprintsQueryMapper.toRemote(query)
             .asFlow()
-            .map { datasource.searchWyrmprintIds(it) }
+            .map { dsQuery ->
+                cache.searchWyrmprintIds(dsQuery, limit) ?: datasource.searchWyrmprintIds(dsQuery, limit).also {
+                    cache.cacheWyrmprintCargoQuery(dsQuery, limit, it)
+                }
+            }
             .flattenConcat()
+            .toSet()
+            .asFlow()
             .map { wyrmprintId ->
                 cache.getWyrmprintById(wyrmprintId) ?: datasource.getWyrmprintById(wyrmprintId)
                     .also { cache.cacheWyrmprintById(wyrmprintId, it) }

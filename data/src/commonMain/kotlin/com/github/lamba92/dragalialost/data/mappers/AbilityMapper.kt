@@ -12,12 +12,18 @@ class AbilityMapper : SingleFromRemoteMapper<AbilityMapper.Params, AdventurerAbi
         AdventurerAbility(
             lvl1.Name,
             "",
-            AbilityLevelData(lvl1.Details, AbilityLevel.ONE, lvl1.PartyPowerWeight.toInt()),
-            AbilityLevelData(lvl2.Details, AbilityLevel.TWO, lvl2.PartyPowerWeight.toInt()),
-            lvl3?.let { AbilityLevelData(it.Details, AbilityLevel.ONE, it.PartyPowerWeight.toInt()) }
+            AbilityLevelData(lvl1.Details.replace("'''", ""), AbilityLevel.ONE, lvl1.PartyPowerWeight.toInt()),
+            lvl2?.let {
+                AbilityLevelData(
+                    it.Details.replace("'''", ""),
+                    AbilityLevel.TWO,
+                    it.PartyPowerWeight.toInt()
+                )
+            },
+            lvl3?.let { AbilityLevelData(it.Details.replace("'''", ""), AbilityLevel.ONE, it.PartyPowerWeight.toInt()) }
         )
     }
 
-    data class Params(val lvl1: AbilityJSON, val lvl2: AbilityJSON, val lvl3: AbilityJSON?)
+    data class Params(val lvl1: AbilityJSON, val lvl2: AbilityJSON?, val lvl3: AbilityJSON?)
 
 }

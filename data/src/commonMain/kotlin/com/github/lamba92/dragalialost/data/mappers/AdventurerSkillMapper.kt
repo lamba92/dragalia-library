@@ -16,9 +16,13 @@ class AdventurerSkillMapper : SingleFromRemoteMapper<SkillJSON, AdventurerSkill>
             Name,
             Sp.toLong(),
             "",
-            SkillLevelData(SkillLevel.ONE, SKILL_LVL1_MIGHT, Description1),
-            SkillLevelData(SkillLevel.TWO, SKILL_LVL2_MIGHT, Description2),
-            if (HideLevel3 == "Yes") null else SkillLevelData(SkillLevel.THREE, SKILL_LVL3_MIGHT, Description3)
+            SkillLevelData(SkillLevel.ONE, SKILL_LVL1_MIGHT, Description1.replace("'''", "")),
+            SkillLevelData(SkillLevel.TWO, SKILL_LVL2_MIGHT, Description2.replace("'''", "")),
+            if (HideLevel3 == "Yes") null else SkillLevelData(
+                SkillLevel.THREE,
+                SKILL_LVL3_MIGHT,
+                Description3.replace("'''", "")
+            )
         )
     }
 

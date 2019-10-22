@@ -42,5 +42,17 @@ object MappersModule : KodeinModuleProvider {
         bind<WeaponTypeMapper>() with singleton { WeaponTypeMapper() }
         bind<WyrmprintAbilityTypeMapper>() with singleton { WyrmprintAbilityTypeMapper() }
 
+        bind<AbilityMapper>() with singleton { AbilityMapper() }
+        bind<AdventurerSkillMapper>() with singleton { AdventurerSkillMapper() }
+        bind<AvailabilityMapper>() with singleton { AvailabilityMapper() }
+        bind<CharacterTypeMapper>() with singleton { CharacterTypeMapper() }
+        bind<CoAbilityMapper>() with singleton { CoAbilityMapper() }
+        bind<DragonAbilityMapper>() with singleton { DragonAbilityMapper() }
+        bind<DragonSkillMapper>() with singleton { DragonSkillMapper() }
+        bind<FeaturedCharacterMapper>() with singleton { FeaturedCharacterMapper() }
+        bind<GenderMapper>() with singleton { GenderMapper() }
+        bind<RaceMapper>() with singleton { RaceMapper() }
+        bind<SourceMapper>() with singleton { SourceMapper() }
+        bind<WyrmprintAbilityMapper>() with singleton { WyrmprintAbilityMapper() }
     }
 }

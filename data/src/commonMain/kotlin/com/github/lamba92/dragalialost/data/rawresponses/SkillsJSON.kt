@@ -18,7 +18,7 @@ data class SkillJSON(
     val IframeDuration: String,
     val IsAffectedByTension: String,
     val Name: String,
-    val Id: String,
+    val SkillId: String,
     val SkillLv1IconName: String,
     val SkillLv2IconName: String,
     val SkillLv3IconName: String,

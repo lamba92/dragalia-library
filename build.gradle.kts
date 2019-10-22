@@ -7,11 +7,21 @@ allprojects {
     version = "0.0.2-alpha"
 }
 
+fun property_(propertyName: String): String? =
+    project.findProperty(propertyName) as String? ?: System.getenv(propertyName)
+
 subprojects {
     repositories {
         jcenter()
         mavenCentral()
         maven("https://dl.bintray.com/kotlin/kotlin-eap")
+        maven("https://maven.pkg.github.com/${property("githubAccount")}/${rootProject.name}") {
+            name = "GitHubPackages"
+            credentials {
+                username = property_("githubAccount")
+                password = property_("githubToken")
+            }
+        }
     }
 }
 

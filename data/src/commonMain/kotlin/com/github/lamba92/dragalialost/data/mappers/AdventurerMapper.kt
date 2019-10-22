@@ -39,7 +39,7 @@ class AdventurerMapper(
         with(adventurer) {
             AdventurerEntity(
                 FullName,
-                Description,
+                Description.replace("'''", ""),
                 MaxHp.toInt(),
                 MaxAtk.toInt(),
                 DragaliaEntity.ADVENTURERS_MAX_LVL,
@@ -63,9 +63,9 @@ class AdventurerMapper(
                 MaxHp.toInt() + MaxAtk.toInt() + coability.level5.might +
                         (skill1.level3?.might ?: skill1.level2.might) +
                         (skill2.level3?.might ?: skill2.level2.might) +
-                        (ability1.level3?.might ?: ability1.level2.might) +
-                        (ability2.level3?.might ?: ability1.level2.might) +
-                        (ability3.level3?.might ?: ability3.level2.might) +
+                        (ability1.level3?.might ?: ability1.level2?.might ?: ability1.level1.might) +
+                        (ability2.level3?.might ?: ability1.level2?.might ?: ability2.level1.might) +
+                        (ability3.level3?.might ?: ability3.level2?.might ?: ability3.level1.might) +
                         DragaliaEntity.FORCE_STRIKE_LVL2_MIGHT,
                 weaponType.defenseProvided,
                 heroClassMapper(CharaType),
@@ -75,7 +75,7 @@ class AdventurerMapper(
                 VoiceActor(EnglishCV),
                 VoiceActor(JapaneseCV),
                 sourceMapper(Obtain),
-                DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate),
+                DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
                 availabilityMapper(Availability),
                 "",
                 elementMapper(ElementalType),
@@ -99,7 +99,7 @@ class AdventurerMapper(
         val ability2lvl2: AbilityJSON,
         val ability2lvl3: AbilityJSON?,
         val ability3lvl1: AbilityJSON,
-        val ability3lvl2: AbilityJSON,
+        val ability3lvl2: AbilityJSON?,
         val ability3lvl3: AbilityJSON?,
         val coabilityLvl1: CoAbilityJSON,
         val coabilityLvl2: CoAbilityJSON,

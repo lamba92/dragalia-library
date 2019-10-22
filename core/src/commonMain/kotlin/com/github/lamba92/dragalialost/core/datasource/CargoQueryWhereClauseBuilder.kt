@@ -8,7 +8,7 @@ class CargoQueryWhereClauseBuilder : Appendable, CharSequence {
         clauses.add("$field LIKE \"$query\"").let { this }
 
     fun appendEquality(field: String, query: Any) =
-        clauses.add("$field=\"$query\"").let { this }
+        clauses.add("$field = \"$query\"").let { this }
 
     override fun append(c: Char) =
         clauses.add(c.toString()).let { this }

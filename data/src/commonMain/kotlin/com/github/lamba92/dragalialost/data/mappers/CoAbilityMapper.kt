@@ -11,11 +11,11 @@ class CoAbilityMapper : SingleFromRemoteMapper<CoAbilityMapper.Params, CoAbility
         CoAbility(
             lvl1.Name,
             "",
-            CoAbilityLevelData(CoAbilityLevel.ONE, lvl1.Details, lvl1.PartyPowerWeight.toInt()),
-            CoAbilityLevelData(CoAbilityLevel.ONE, lvl2.Details, lvl2.PartyPowerWeight.toInt()),
-            CoAbilityLevelData(CoAbilityLevel.ONE, lvl3.Details, lvl3.PartyPowerWeight.toInt()),
-            CoAbilityLevelData(CoAbilityLevel.ONE, lvl4.Details, lvl4.PartyPowerWeight.toInt()),
-            CoAbilityLevelData(CoAbilityLevel.ONE, lvl5.Details, lvl5.PartyPowerWeight.toInt())
+            CoAbilityLevelData(CoAbilityLevel.ONE, lvl1.Details.replace("'''", ""), lvl1.PartyPowerWeight.toInt()),
+            CoAbilityLevelData(CoAbilityLevel.ONE, lvl2.Details.replace("'''", ""), lvl2.PartyPowerWeight.toInt()),
+            CoAbilityLevelData(CoAbilityLevel.ONE, lvl3.Details.replace("'''", ""), lvl3.PartyPowerWeight.toInt()),
+            CoAbilityLevelData(CoAbilityLevel.ONE, lvl4.Details.replace("'''", ""), lvl4.PartyPowerWeight.toInt()),
+            CoAbilityLevelData(CoAbilityLevel.ONE, lvl5.Details.replace("'''", ""), lvl5.PartyPowerWeight.toInt())
         )
     }
 

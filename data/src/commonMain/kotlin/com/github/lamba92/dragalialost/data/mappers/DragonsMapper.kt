@@ -11,7 +11,6 @@ import com.github.lamba92.dragalialost.domain.entities.support.SellValue
 import com.github.lamba92.dragalialost.domain.entities.support.VoiceActor
 import com.soywiz.klock.parseUtc
 
-
 class DragonsMapper(
     private val dragonAbilityMapper: DragonAbilityMapper,
     private val dragonSkillMapper: DragonSkillMapper,

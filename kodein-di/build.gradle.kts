@@ -29,7 +29,8 @@ kotlin {
 
         val kodeinVersion: String by project
         val ktorVersion: String by project
-
+        val coroutineRunTestVersion: String by project
+        val logbackVersion: String by project
 
         @Suppress("UNUSED_VARIABLE") val commonMain by getting {
             dependencies {
@@ -37,6 +38,15 @@ kotlin {
                 api(kodein("core", kodeinVersion))
                 api(kodein("erased", kodeinVersion))
                 api(ktor("client-serialization", ktorVersion))
+                api(ktor("client-logging", ktorVersion))
+            }
+        }
+
+        @Suppress("UNUSED_VARIABLE") val commonTest by getting {
+            dependencies {
+                api(lamba("kotlin-multiplatform-coroutines-runtest", coroutineRunTestVersion))
+                api(kotlin("test-annotations-common"))
+                api(kotlin("test-common"))
             }
         }
 
@@ -44,6 +54,14 @@ kotlin {
             dependencies {
                 api(ktor("client-okhttp", ktorVersion))
                 api(ktor("client-serialization-jvm", ktorVersion))
+                api(ktor("client-logging-jvm", ktorVersion))
+                api("ch.qos.logback:logback-classic:$logbackVersion")
+            }
+        }
+
+        val jvmTest by getting {
+            dependencies {
+                api(kotlin("test-junit"))
             }
         }
 
@@ -51,6 +69,13 @@ kotlin {
             dependencies {
                 api(ktor("client-js", ktorVersion))
                 api(ktor("client-serialization-js", ktorVersion))
+                api(ktor("client-logging-js", ktorVersion))
+            }
+        }
+
+        val jsTest by getting {
+            dependencies {
+                api(kotlin("test-js"))
             }
         }
 
@@ -83,3 +108,7 @@ fun KotlinDependencyHandler.kodein(module: String, version: String? = null): Any
 @Suppress("unused")
 fun KotlinDependencyHandler.ktor(module: String, version: String? = null): Any =
     "io.ktor:ktor-$module${version?.let { ":$version" } ?: ""}"
+
+@Suppress("unused")
+fun KotlinDependencyHandler.lamba(module: String, version: String? = null): Any =
+    "com.github.lamba92:$module${version?.let { ":$version" } ?: ""}"

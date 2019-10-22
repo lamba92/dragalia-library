@@ -11,7 +11,7 @@ data class ElementalResistances(
     val shadow: Int
 ) {
     operator fun get(element: Element) = when (element) {
-        FIRE -> fire
+        FLAME -> fire
         WATER -> water
         WIND -> wind
         LIGHT -> light

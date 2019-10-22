@@ -8,5 +8,5 @@ class ElementMapper : SingleToRemoteMapper<String, Element>, SingleFromRemoteMap
         entity.name.capitalize()
 
     override fun fromRemoteSingle(remote: String) =
-        Element.values().first { it.name.capitalize() == remote }
+        Element.values().first { it.name.toLowerCase() == remote.toLowerCase() }
 }

@@ -1,8 +1,18 @@
 package com.github.lamba92.dragalialost.data.datasource
 
+import com.github.lamba92.dragalialost.data.datasource.queries.*
 import com.github.lamba92.dragalialost.data.rawresponses.*
 
 interface GamepediaDatasourceCache : Cache {
+
+    suspend fun searchAdventurerIds(query: AdventurersCargoQuery, limit: Int = 500): List<String>?
+    suspend fun searchDragonIds(query: DragonsCargoQuery, limit: Int = 500): List<String>?
+    suspend fun searchWyrmprintIds(query: WyrmprintsCargoQuery, limit: Int = 500): List<String>?
+    suspend fun searchWeaponIds(query: WeaponsCargoQuery, limit: Int = 500): List<String>?
+    suspend fun searchAbilityIds(query: AbilitiesCargoQuery, limit: Int = 500): List<String>?
+    suspend fun searchCoAbilityIds(query: CoAbilitiesCargoQuery, limit: Int = 500): List<String>?
+    suspend fun searchSkillIds(query: SkillsCargoQuery, limit: Int = 500): List<String>?
+    suspend fun searchAbilityLimitedGroupIds(query: AbilityLimitedGroupsCargoQuery, limit: Int = 500): List<String>?
 
     suspend fun getAdventurerById(id: String): AdventurerJSON?
     suspend fun getDragonById(id: String): DragonJSON?
@@ -12,6 +22,19 @@ interface GamepediaDatasourceCache : Cache {
     suspend fun getCoAbilityById(id: String): CoAbilityJSON?
     suspend fun getSkillByName(id: String): SkillJSON?
     suspend fun getAbilityLimitedGroupById(id: String): AbilityLimitedGroupJSON?
+
+    suspend fun cacheAdventurerCargoQuery(query: AdventurersCargoQuery, limit: Int, data: List<String>): Boolean
+    suspend fun cacheDragonCargoQuery(query: DragonsCargoQuery, limit: Int, data: List<String>): Boolean
+    suspend fun cacheWyrmprintCargoQuery(query: WyrmprintsCargoQuery, limit: Int, data: List<String>): Boolean
+    suspend fun cacheWeaponCargoQuery(query: WeaponsCargoQuery, limit: Int, data: List<String>): Boolean
+    suspend fun cacheAbilityCargoQuery(query: AbilitiesCargoQuery, limit: Int, data: List<String>): Boolean
+    suspend fun cacheCoAbilityCargoQuery(query: CoAbilitiesCargoQuery, limit: Int, data: List<String>): Boolean
+    suspend fun cacheSkillCargoQuery(query: SkillsCargoQuery, limit: Int, data: List<String>): Boolean
+    suspend fun cacheAbilityLimitedGroupCargoQuery(
+        query: AbilityLimitedGroupsCargoQuery,
+        limit: Int,
+        data: List<String>
+    ): Boolean
 
     suspend fun cacheAdventurerById(id: String, data: AdventurerJSON): Boolean
     suspend fun cacheDragonById(id: String, data: DragonJSON): Boolean

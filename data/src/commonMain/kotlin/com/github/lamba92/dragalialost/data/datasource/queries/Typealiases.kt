@@ -1,8 +1,8 @@
 package com.github.lamba92.dragalialost.data.datasource.queries
 
-typealias DragonsCargoQuery = WithElementAndRarityCargoQuery
+typealias DragonsCargoQuery = NamedWithElementAndRarityCargoQuery
 
-typealias WeaponsCargoQuery = WithElementAndRarityCargoQuery
+typealias WeaponsCargoQuery = NamedWithElementAndRarityCargoQuery
 
 typealias AbilitiesCargoQuery = NamedCargoQuery
 typealias CoAbilitiesCargoQuery = NamedCargoQuery

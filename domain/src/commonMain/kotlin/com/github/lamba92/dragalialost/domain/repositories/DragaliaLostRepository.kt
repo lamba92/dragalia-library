@@ -10,15 +10,18 @@ import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQue
 interface DragaliaLostRepository {
 
     suspend fun searchAdventurers(
-        query: AdventurersQueryBuilder
+        query: AdventurersQueryBuilder,
+        limit: Int = 500
     ): List<AdventurerEntity>
 
     suspend fun searchDragons(
-        query: DragonsQueryBuilder
+        query: DragonsQueryBuilder,
+        limit: Int = 500
     ): List<DragonEntity>
 
     suspend fun searchWyrmprints(
-        query: WyrmprintsQueryBuilder
+        query: WyrmprintsQueryBuilder,
+        limit: Int = 500
     ): List<WyrmprintEntity>
 
 }

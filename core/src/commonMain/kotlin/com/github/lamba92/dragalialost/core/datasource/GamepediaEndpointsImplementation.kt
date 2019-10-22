@@ -79,8 +79,8 @@ class GamepediaEndpointsImplementation(
         limit: Int,
         noinline builder: CargoQueryWhereClauseBuilder.() -> Unit = {}
     ) = buildIdUrl<T>(table, name, limit) {
-        element?.let { appendEquality("element", it) }
-        rarity?.let { appendEquality("rarity", it) }
+        element?.let { appendEquality("ElementalType", it) }
+        rarity?.let { appendEquality("Rarity ", it) }
         builder()
     }
 
@@ -93,7 +93,7 @@ class GamepediaEndpointsImplementation(
         limit: Int
     ) = buildIdUrl<AdventurerJSON>(ADVENTURERS_TABLE, name, element, rarity, limit) {
         weaponType?.let { appendEquality("weaponType", it) }
-        heroClass?.let { appendEquality("heroClass", it) }
+        heroClass?.let { appendEquality("CharaType", it) }
     }
 
     override fun searchDragonIdsUrl(name: String?, element: String?, rarity: String?, limit: Int) =
