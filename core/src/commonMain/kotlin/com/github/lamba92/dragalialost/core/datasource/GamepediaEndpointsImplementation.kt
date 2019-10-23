@@ -5,6 +5,7 @@ import com.github.lamba92.dragalialost.core.utils.buildCargoWhereClause
 import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasource
 import com.github.lamba92.dragalialost.data.rawresponses.*
 import com.github.lamba92.dragalialost.data.utils.CargoProperties
+import com.github.lamba92.dragalialost.data.utils.addIfNotWith
 import io.ktor.http.URLProtocol
 import io.ktor.http.Url
 import kotlin.js.JsName
@@ -16,48 +17,55 @@ class GamepediaEndpointsImplementation(
     override val port: Int = protocol.defaultPort
 ) : GamepediaDatasource.Endpoints {
 
-    private fun parametersOf(vararg headers: Pair<String, Any>) =
-        io.ktor.http.parametersOf(*headers.map { it.first to listOf(it.second.toString()) }.toTypedArray())
+    private fun parametersOf(vararg parameters: Pair<String, Any>) =
+        io.ktor.http.parametersOf(*parameters.map { it.first to listOf(it.second.toString()) }.toTypedArray())
 
-    @JsName("buildUrlBase1")
-    private fun buildUrlBase(
+    private fun buildBaseUrl(
+        action: String,
+        vararg parameters: Pair<String, Any>,
+        format: String = "json"
+    ) = Url(
+        protocol, host, port, path, parametersOf(
+            "action" to action,
+            "format" to format,
+            *parameters
+        ), "", null, null, false
+    )
+
+    private fun buildFileUrl(fileName: String) =
+        buildBaseUrl(
+            "query",
+            "prop" to "imageinfo",
+            "titles" to fileName.addIfNotWith("File:", ".png"),
+            "iiprop" to "url"
+        )
+
+    @JsName("buildBaseCargoQueryUrl1")
+    private fun buildBaseCargoQueryUrl(
         table: DatasourceTables,
         limit: Int,
         fields: List<String>,
         builder: CargoQueryWhereClauseBuilder.() -> Unit
-    ) = Url(
-        protocol, host, port, path, parametersOf(
-            "action" to "cargoquery",
-            "format" to "json",
-            "limit" to limit,
-            "tables" to table,
-            "fields" to fields.joinToString(","),
-            "where" to buildCargoWhereClause(builder)
-        ),
-        "", null, null, false
+    ) = buildBaseUrl(
+        "cargoquery",
+        "limit" to limit,
+        "tables" to table,
+        "fields" to fields.joinToString(","),
+        "where" to buildCargoWhereClause(builder)
     )
 
-    @JsName("buildUrlBase2")
-    private fun buildUrlBase(
+    private inline fun <reified T : CargoQueryable> buildAllFieldsUrl(
         table: DatasourceTables,
-        limit: Int,
-        field: String,
-        builder: CargoQueryWhereClauseBuilder.() -> Unit
-    ) = buildUrlBase(table, limit, listOf(field), builder)
-
-    private inline fun <reified T : CargoQueryable> buildAllFieldsByIdUrl(
-        table: DatasourceTables,
-        id: String
-    ) = buildUrlBase(table, 1, CargoProperties.of<T>()) {
-        appendEquality(CargoProperties.idOf<T>(), id)
-    }
+        limit: Int = 1,
+        noinline builder: CargoQueryWhereClauseBuilder.() -> Unit
+    ) = buildBaseCargoQueryUrl(table, limit, CargoProperties.of<T>(), builder)
 
     @JsName("buildIdUrl1")
     private inline fun <reified T : CargoQueryable> buildIdUrl(
         table: DatasourceTables,
         limit: Int,
         noinline builder: CargoQueryWhereClauseBuilder.() -> Unit
-    ) = buildUrlBase(table, limit, CargoProperties.idOf<T>(), builder)
+    ) = buildBaseCargoQueryUrl(table, limit, CargoProperties.idOf<T>(), builder)
 
     @JsName("buildIdUrl2")
     private inline fun <reified T : CargoQueryable> buildIdUrl(
@@ -75,7 +83,7 @@ class GamepediaEndpointsImplementation(
         table: DatasourceTables,
         name: String?,
         element: String?,
-        rarity: String?,
+        rarity: Int?,
         limit: Int,
         noinline builder: CargoQueryWhereClauseBuilder.() -> Unit = {}
     ) = buildIdUrl<T>(table, name, limit) {
@@ -89,20 +97,20 @@ class GamepediaEndpointsImplementation(
         weaponType: String?,
         element: String?,
         heroClass: String?,
-        rarity: String?,
+        rarity: Int?,
         limit: Int
     ) = buildIdUrl<AdventurerJSON>(ADVENTURERS_TABLE, name, element, rarity, limit) {
         weaponType?.let { appendEquality("weaponType", it) }
         heroClass?.let { appendEquality("CharaType", it) }
     }
 
-    override fun searchDragonIdsUrl(name: String?, element: String?, rarity: String?, limit: Int) =
+    override fun searchDragonIdsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
         buildIdUrl<DragonJSON>(DRAGONS_TABLE, name, element, rarity, limit)
 
-    override fun searchWyrmprintIdsUrl(name: String?, element: String?, rarity: String?, limit: Int) =
+    override fun searchWyrmprintIdsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
         buildIdUrl<WyrmprintJSON>(WYRMPRINTS_TABLE, name, element, rarity, limit)
 
-    override fun searchWeaponIdsUrl(name: String?, element: String?, rarity: String?, limit: Int) =
+    override fun searchWeaponIdsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
         buildIdUrl<WeaponJSON>(WEAPONS_TABLE, name, element, rarity, limit)
 
     override fun searchAbilityIdsUrl(name: String?, limit: Int) =
@@ -126,28 +134,69 @@ class GamepediaEndpointsImplementation(
         abilityLimitedText?.let { appendEquality("abilityLimitedText", it) }
     }
 
-    override fun getAdventurerByIdUrl(id: String) =
-        buildAllFieldsByIdUrl<AdventurerJSON>(ADVENTURERS_TABLE, id)
+    override fun getAdventurerByIdsUrl(id: String, variationId: String) =
+        buildAllFieldsUrl<AdventurerJSON>(ADVENTURERS_TABLE) {
+            appendEquality("Id", id)
+            appendEquality("VariationId", variationId)
+        }
 
     override fun getDragonByIdUrl(id: String) =
-        buildAllFieldsByIdUrl<DragonJSON>(DRAGONS_TABLE, id)
+        buildAllFieldsUrl<DragonJSON>(DRAGONS_TABLE) {
+            appendEquality("Id", id)
+        }
 
     override fun getWyrmprintByIdUrl(id: String) =
-        buildAllFieldsByIdUrl<WyrmprintJSON>(WYRMPRINTS_TABLE, id)
+        buildAllFieldsUrl<WyrmprintJSON>(WYRMPRINTS_TABLE) {
+            appendEquality("Id", id)
+        }
 
     override fun getWeaponByIdUrl(id: String) =
-        buildAllFieldsByIdUrl<WeaponJSON>(WEAPONS_TABLE, id)
+        buildAllFieldsUrl<WeaponJSON>(WEAPONS_TABLE) {
+            appendEquality("Id", id)
+        }
 
     override fun getAbilityByIdUrl(id: String) =
-        buildAllFieldsByIdUrl<AbilityJSON>(ABILITIES_TABLE, id)
+        buildAllFieldsUrl<AbilityJSON>(ABILITIES_TABLE) {
+            appendEquality("Id", id)
+        }
 
     override fun getCoAbilityByIdUrl(id: String) =
-        buildAllFieldsByIdUrl<CoAbilityJSON>(CO_ABILITIES_TABLE, id)
+        buildAllFieldsUrl<CoAbilityJSON>(CO_ABILITIES_TABLE) {
+            appendEquality("Id", id)
+        }
 
     override fun getSkillByNameUrl(name: String) =
-        buildAllFieldsByIdUrl<SkillJSON>(SKILLS_TABLE, name)
+        buildAllFieldsUrl<SkillJSON>(SKILLS_TABLE) {
+            appendEquality("Name", name)
+        }
 
     override fun getAbilityLimitedGroupByIdUrl(id: String) =
-        buildAllFieldsByIdUrl<AbilityLimitedGroupJSON>(ABILITY_LIMITED_GROUPS_TABLE, id)
+        buildAllFieldsUrl<AbilityLimitedGroupJSON>(ABILITY_LIMITED_GROUPS_TABLE) {
+            appendEquality("Id", id)
+        }
+
+    override fun getAdventurerIconByIdUrl(id: String, variationId: String, rarity: Int) =
+        buildFileUrl("${id}_0${variationId}_r0$rarity")
+
+    override fun getAdventurerPortraitByIdUrl(id: String, variationId: String, rarity: Int) =
+        buildFileUrl("${id}_0${variationId}_r0${rarity}_portrait")
+
+    override fun getAbilityIconByFileNameUrl(fileName: String) =
+        buildFileUrl(fileName)
+
+    override fun getDragonIconByIdUrl(id: String) =
+        buildFileUrl("${id}_01")
+
+    override fun getDragonPortraitByIdUrl(id: String) =
+        buildFileUrl("${id}_01_portrait")
+
+    override fun getWyrmprintIconByIdsUrl(id: String, vestige: Int) =
+        buildFileUrl("${id}_0$vestige")
+
+    override fun getWyrmprintPortraitByIdsUrl(id: String, vestige: Int) =
+        buildFileUrl("${id}_0${vestige}_portrait")
+
+    override fun getSkillIconByIconNameUrl(fileName: String) =
+        buildFileUrl(fileName)
 
 }

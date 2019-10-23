@@ -23,3 +23,9 @@ inline fun <T, R> Flow<T>.flatMapIterableConcat(crossinline transform: suspend (
 @FlowPreview
 fun <T> Flow<Iterable<T>>.flattenConcat() =
     flatMapConcat { it.asFlow() }
+
+inline fun <T, R> Flow<T>.pairMap(crossinline function: suspend (T) -> R) =
+    map { it to function(it) }
+
+inline fun <T, R, L> Flow<T>.tripleMap(crossinline function: suspend (T) -> Pair<R, L>) =
+    map { function(it).let { (f, s) -> Triple(f, s, it) } }

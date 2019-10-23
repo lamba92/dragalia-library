@@ -11,7 +11,7 @@ import com.github.lamba92.dragalialost.data.rawresponses.*
 class InMemoryGamepediaCache : GamepediaDatasourceCache {
 
     private val adventurersQueryCache =
-        mutableMapOf<Pair<AdventurersCargoQuery, Int>, List<String>>().toAtomicReference()
+        mutableMapOf<Pair<AdventurersCargoQuery, Int>, List<AdventurerIdJSON>>().toAtomicReference()
     private val dragonsQueryCache =
         mutableMapOf<Pair<DragonsCargoQuery, Int>, List<String>>().toAtomicReference()
     private val wyrmprintsQueryCache =
@@ -28,7 +28,7 @@ class InMemoryGamepediaCache : GamepediaDatasourceCache {
         mutableMapOf<Pair<AbilityLimitedGroupsCargoQuery, Int>, List<String>>().toAtomicReference()
 
     private val adventurersCache =
-        mutableMapOf<String, AdventurerJSON>().toAtomicReference()
+        mutableMapOf<Pair<String, String>, AdventurerJSON>().toAtomicReference()
     private val dragonsCache =
         mutableMapOf<String, DragonJSON>().toAtomicReference()
     private val wyrmprintsCache =
@@ -68,8 +68,8 @@ class InMemoryGamepediaCache : GamepediaDatasourceCache {
     override suspend fun searchAbilityLimitedGroupIds(query: AbilityLimitedGroupsCargoQuery, limit: Int) =
         abilityLimitedGroupsQueryCache[query, limit]
 
-    override suspend fun getAdventurerById(id: String) =
-        adventurersCache[id]
+    override suspend fun getAdventurerByIds(id: String, variationId: String) =
+        adventurersCache[id, variationId]
 
     override suspend fun getDragonById(id: String) =
         dragonsCache[id]
@@ -92,8 +92,8 @@ class InMemoryGamepediaCache : GamepediaDatasourceCache {
     override suspend fun getAbilityLimitedGroupById(id: String) =
         abilityLimitedGroupsCache[id]
 
-    override suspend fun cacheAdventurerById(id: String, data: AdventurerJSON): Boolean {
-        adventurersCache[id] = data
+    override suspend fun cacheAdventurerByIds(id: String, variationId: String, data: AdventurerJSON): Boolean {
+        adventurersCache[id, variationId] = data
         return true
     }
 
@@ -135,7 +135,7 @@ class InMemoryGamepediaCache : GamepediaDatasourceCache {
     override suspend fun cacheAdventurerCargoQuery(
         query: AdventurersCargoQuery,
         limit: Int,
-        data: List<String>
+        data: List<AdventurerIdJSON>
     ): Boolean {
         adventurersQueryCache[query, limit] = data
         return true

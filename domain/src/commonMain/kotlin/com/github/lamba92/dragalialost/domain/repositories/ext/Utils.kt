@@ -16,3 +16,12 @@ suspend fun DragaliaLostRepository.searchDragons(limit: Int = 500, queryBuilder:
 
 suspend fun DragaliaLostRepository.searchWyrmprints(limit: Int = 500, queryBuilder: WyrmprintsQueryBuilder.() -> Unit) =
     searchWyrmprints(WyrmprintsQueryBuilder().apply(queryBuilder), limit)
+
+suspend fun DragaliaLostRepository.searchAllAdventurers() =
+    searchAdventurers {}
+
+suspend fun DragaliaLostRepository.searchAllDragons() =
+    searchDragons {}
+
+suspend fun DragaliaLostRepository.searchAllWyrmprints() =
+    searchWyrmprints {}

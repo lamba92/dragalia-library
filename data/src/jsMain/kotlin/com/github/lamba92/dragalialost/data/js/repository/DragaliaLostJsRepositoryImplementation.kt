@@ -6,6 +6,7 @@ import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQu
 import com.github.lamba92.dragalialost.domain.repositories.queries.DragonsQueryBuilder
 import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQueryBuilder
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.promise
 
 class DragaliaLostJsRepositoryImplementation(
@@ -13,12 +14,12 @@ class DragaliaLostJsRepositoryImplementation(
 ) : DragaliaLostJsRepository {
 
     override fun searchAdventurers(query: AdventurersQueryBuilder) =
-        GlobalScope.promise { dragaliaLostRepository.searchAdventurers(query) }
+        GlobalScope.promise { dragaliaLostRepository.searchAdventurers(query).toList() }
 
     override fun searchDragons(query: DragonsQueryBuilder) =
-        GlobalScope.promise { dragaliaLostRepository.searchDragons(query) }
+        GlobalScope.promise { dragaliaLostRepository.searchDragons(query).toList() }
 
     override fun searchWyrmprints(query: WyrmprintsQueryBuilder) =
-        GlobalScope.promise { dragaliaLostRepository.searchWyrmprints(query) }
+        GlobalScope.promise { dragaliaLostRepository.searchWyrmprints(query).toList() }
 
 }

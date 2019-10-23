@@ -13,11 +13,10 @@ interface DragaliaEntity {
     val strength: Int
     val baseMinMight: Int
     val baseMaxMight: Int
-    val rarity: Rarity
+    val baseRarity: Rarity
     val obtainedFrom: List<Source>
     val releaseDate: DateTime
     val availability: List<Availability>
-    val artwork: String
 
     companion object {
         const val WYRMPRINTS_MAX_LVL = 100

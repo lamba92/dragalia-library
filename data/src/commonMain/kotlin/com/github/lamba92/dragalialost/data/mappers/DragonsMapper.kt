@@ -2,6 +2,7 @@ package com.github.lamba92.dragalialost.data.mappers
 
 import com.github.lamba92.dragalialost.data.rawresponses.AbilityJSON
 import com.github.lamba92.dragalialost.data.rawresponses.DragonJSON
+import com.github.lamba92.dragalialost.data.rawresponses.ImageInfoJSON
 import com.github.lamba92.dragalialost.data.rawresponses.SkillJSON
 import com.github.lamba92.dragalialost.domain.entities.DragaliaEntity
 import com.github.lamba92.dragalialost.domain.entities.DragonEntity
@@ -45,7 +46,8 @@ class DragonsMapper(
                 emptyList(), // TODO source!
                 DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
                 availabilityMapper(Availability),
-                "", // TODO artwork!
+                portrait.url,
+                icon.url,
                 skill,
                 ability1,
                 ability2,
@@ -61,7 +63,9 @@ class DragonsMapper(
         val ability1lvl1: AbilityJSON,
         val ability2lvl1: AbilityJSON?,
         val ability2lvl2: AbilityJSON?,
-        val skill1: SkillJSON
+        val skill1: SkillJSON,
+        val icon: ImageInfoJSON,
+        val portrait: ImageInfoJSON
     )
 
 }

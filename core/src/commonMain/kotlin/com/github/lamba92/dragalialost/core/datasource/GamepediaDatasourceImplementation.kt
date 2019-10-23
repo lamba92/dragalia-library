@@ -11,13 +11,14 @@ class GamepediaDatasourceImplementation(
     private val endpoints: GamepediaDatasource.Endpoints
 ) : GamepediaDatasource {
 
+    // SEARCHES
     override suspend fun searchAdventurerIds(
         query: AdventurersCargoQuery,
         limit: Int
     ) = with(query) {
-        httpClient.get<IdCargoJSON>(
+        httpClient.get<AdventurerIdCargoJSON>(
             endpoints.searchAdventurerIdsUrl(name, weaponType, element, heroClass, rarity, limit)
-        ).cargoquery.map { it.title.Id }
+        ).cargoquery.map { it.title }
     }
 
     override suspend fun searchDragonIds(query: DragonsCargoQuery, limit: Int) = with(query) {
@@ -26,7 +27,7 @@ class GamepediaDatasourceImplementation(
     }
 
     override suspend fun searchWyrmprintIds(query: WyrmprintsCargoQuery, limit: Int) = with(query) {
-        httpClient.get<IdCargoJSON>(endpoints.searchWyrmprintIdsUrl(name, element, rarity, limit))
+        httpClient.get<WyrmprintIdCargoJSON>(endpoints.searchWyrmprintIdsUrl(name, element, rarity, limit))
             .cargoquery.map { it.title.Id }
     }
 
@@ -56,14 +57,17 @@ class GamepediaDatasourceImplementation(
         ).cargoquery.map { it.title.Id }
     }
 
-    override suspend fun getAdventurerById(id: String) =
-        httpClient.get<AdventurerCargoJSON>(endpoints.getAdventurerByIdUrl(id)).cargoquery.first().title
+    // SINGLE ITEMS BY ID
+    override suspend fun getAdventurerByIds(id: String, variationId: String) =
+        httpClient.get<AdventurerCargoJSON>(endpoints.getAdventurerByIdsUrl(id, variationId))
+            .cargoquery.first().title
 
     override suspend fun getDragonById(id: String) =
         httpClient.get<DragonCargoJSON>(endpoints.getDragonByIdUrl(id)).cargoquery.first().title
 
     override suspend fun getWyrmprintById(id: String) =
-        httpClient.get<WyrmprintCargoJSON>(endpoints.getWyrmprintByIdUrl(id)).cargoquery.first().title
+        httpClient.get<WyrmprintCargoJSON>(endpoints.getWyrmprintByIdUrl(id))
+            .cargoquery.first().title
 
     override suspend fun getWeaponsById(id: String) =
         httpClient.get<WeaponCargoJSON>(endpoints.getWeaponByIdUrl(id)).cargoquery.first().title
@@ -79,5 +83,38 @@ class GamepediaDatasourceImplementation(
 
     override suspend fun getAbilityLimitedGroupsById(id: String) =
         httpClient.get<AbilityLimitedGroupCargoJSON>(endpoints.getAbilityLimitedGroupByIdUrl(id)).cargoquery.first().title
+
+    // IMAGES
+    override suspend fun getAdventurerIconById(id: String, variationId: String, rarity: Int) =
+        httpClient.get<FileQueryJSON>(endpoints.getAdventurerIconByIdUrl(id, variationId, rarity))
+            .query.pages.values.single().imageinfo.single()
+
+    override suspend fun getAdventurerPortraitById(id: String, variationId: String, rarity: Int) =
+        httpClient.get<FileQueryJSON>(endpoints.getAdventurerPortraitByIdUrl(id, variationId, rarity))
+            .query.pages.values.single().imageinfo.single()
+
+    override suspend fun getDragonIconByIdUrl(id: String) =
+        httpClient.get<FileQueryJSON>(endpoints.getDragonIconByIdUrl(id))
+            .query.pages.values.single().imageinfo.single()
+
+    override suspend fun getDragonPortraitById(id: String) =
+        httpClient.get<FileQueryJSON>(endpoints.getDragonPortraitByIdUrl(id))
+            .query.pages.values.single().imageinfo.single()
+
+    override suspend fun getWyrmprintIconByIds(id: String, vestige: Int) =
+        httpClient.get<FileQueryJSON>(endpoints.getWyrmprintIconByIdsUrl(id, vestige))
+            .query.pages.values.single().imageinfo.single()
+
+    override suspend fun getWyrmprintPortraitByIds(id: String, vestige: Int) =
+        httpClient.get<FileQueryJSON>(endpoints.getWyrmprintPortraitByIdsUrl(id, vestige))
+            .query.pages.values.single().imageinfo.single()
+
+    override suspend fun getAbilityIconByFileName(fileName: String) =
+        httpClient.get<FileQueryJSON>(endpoints.getAbilityIconByFileNameUrl(fileName))
+            .query.pages.values.single().imageinfo.single()
+
+    override suspend fun getSkillIconByIconName(fileName: String) =
+        httpClient.get<FileQueryJSON>(endpoints.getSkillIconByIconNameUrl(fileName))
+            .query.pages.values.single().imageinfo.single()
 
 }

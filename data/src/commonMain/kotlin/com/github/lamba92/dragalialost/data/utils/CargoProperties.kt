@@ -253,10 +253,11 @@ object CargoProperties {
     }
 
     inline fun <reified T : CargoQueryable> idOf() = when (T::class) {
-        AdventurerJSON::class, DragonJSON::class, WyrmprintJSON::class,
-        AbilityJSON::class, CoAbilityJSON::class, WeaponJSON::class,
-        AbilityLimitedGroupJSON::class -> "Id"
-        SkillJSON::class -> "name"
+        AdventurerJSON::class -> listOf("Id", "VariationId")
+        WyrmprintJSON::class, DragonJSON::class, AbilityJSON::class,
+        CoAbilityJSON::class, AbilityLimitedGroupJSON::class -> listOf("Id")
+        WeaponJSON::class -> listOf("Id", "FormId")
+        SkillJSON::class -> listOf("name")
         else -> throw IllegalArgumentException("${T::class.simpleName} Id has not been declared")
     }
 }

@@ -6,22 +6,23 @@ import com.github.lamba92.dragalialost.domain.entities.WyrmprintEntity
 import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQueryBuilder
 import com.github.lamba92.dragalialost.domain.repositories.queries.DragonsQueryBuilder
 import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQueryBuilder
+import kotlinx.coroutines.flow.Flow
 
 interface DragaliaLostRepository {
 
     suspend fun searchAdventurers(
         query: AdventurersQueryBuilder,
         limit: Int = 500
-    ): List<AdventurerEntity>
+    ): Flow<AdventurerEntity>
 
     suspend fun searchDragons(
         query: DragonsQueryBuilder,
         limit: Int = 500
-    ): List<DragonEntity>
+    ): Flow<DragonEntity>
 
     suspend fun searchWyrmprints(
         query: WyrmprintsQueryBuilder,
         limit: Int = 500
-    ): List<WyrmprintEntity>
+    ): Flow<WyrmprintEntity>
 
 }

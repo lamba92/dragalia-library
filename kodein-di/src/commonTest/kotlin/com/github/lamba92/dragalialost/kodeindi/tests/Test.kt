@@ -1,11 +1,12 @@
 package com.github.lamba92.dragalialost.kodeindi.tests
 
+import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasource
 import com.github.lamba92.dragalialost.domain.repositories.DragaliaLostRepository
-import com.github.lamba92.dragalialost.domain.repositories.ext.searchAdventurers
-import com.github.lamba92.dragalialost.domain.repositories.ext.searchDragons
-import com.github.lamba92.dragalialost.domain.repositories.ext.searchWyrmprints
+import com.github.lamba92.dragalialost.domain.repositories.ext.*
 import com.github.lamba92.dragalialost.kodeindi.dragaliaLostModule
 import com.github.lamba92.utils.runTest
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.toList
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.erased.instance
@@ -21,14 +22,15 @@ class Test : KodeinAware {
     }
 
     private val repository by instance<DragaliaLostRepository>()
+    private val endpoints by instance<GamepediaDatasource.Endpoints>()
+    private val datasource by instance<GamepediaDatasource>()
 
     @ExperimentalTime
     @Test
     fun adventurersTest() = runTest {
 
-        val (res, time) = measureTimedValue { repository.searchAdventurers { } }
-        assertEquals(120, res.size)
-        val (res2, time2) = measureTimedValue { repository.searchAdventurers { } }
+        val (res, time) = measureTimedValue { repository.searchAllAdventurers().toList() }
+        val (res2, time2) = measureTimedValue { repository.searchAllAdventurers().toList() }
         assertEquals(res, res2)
         assertEquals(true, time > time2)
 
@@ -39,8 +41,10 @@ class Test : KodeinAware {
                     "| Total results second call:    ${res2.size}\n" +
                     "| Elapsed time for first call:  ${time.inSeconds}\n" +
                     "| Elapsed time for second call: ${time2.inSeconds}\n" +
-                    "|_________________________"
+                    "|_________________________\n"
         )
+
+        res.sortedBy { it.name }.forEach { println(it) }
     }
 
     @ExperimentalTime
@@ -49,24 +53,24 @@ class Test : KodeinAware {
         val (res, time) = measureTimedValue {
             repository.searchAdventurers {
                 name = "Euden"
-            }
+            }.toList()
         }
 
-        assertEquals(1, res.size)
-        assertEquals("Euden", res.first().name)
+        assertEquals(2, res.size)
         println(
             "__________________________\n" +
                     "| TestSingleAdventurers results: \n" +
                     "| Elapsed time for first call:  ${time.inSeconds}\n" +
                     "|_________________________"
         )
+        println(res)
     }
 
     @ExperimentalTime
     @Test
     fun dragonsTest() = runTest {
-        val (res, time) = measureTimedValue { repository.searchDragons { } }
-        val (res2, time2) = measureTimedValue { repository.searchDragons { } }
+        val (res, time) = measureTimedValue { repository.searchAllDragons().toList() }
+        val (res2, time2) = measureTimedValue { repository.searchAllDragons().toList() }
         assertEquals(res, res2)
         assertEquals(true, time > time2)
         println(
@@ -76,8 +80,10 @@ class Test : KodeinAware {
                     "| Total results second call:    ${res2.size}\n" +
                     "| Elapsed time for first call:  ${time.inSeconds}\n" +
                     "| Elapsed time for second call: ${time2.inSeconds}\n" +
-                    "|_________________________"
+                    "|_________________________\n"
         )
+
+        res.sortedBy { it.name }.forEach { println(it) }
     }
 
     @ExperimentalTime
@@ -86,7 +92,7 @@ class Test : KodeinAware {
         val (res, time) = measureTimedValue {
             repository.searchDragons {
                 name = "Agni"
-            }
+            }.toList()
         }
 
         assertEquals(1, res.size)
@@ -98,15 +104,17 @@ class Test : KodeinAware {
                     "| Elapsed time for first call:  ${time.inSeconds}\n" +
                     "|_________________________"
         )
+        println(res)
     }
 
     @ExperimentalTime
     @Test
     fun wyrmprintsTest() = runTest {
-        val (res, time) = measureTimedValue { repository.searchWyrmprints { } }
-        val (res2, time2) = measureTimedValue { repository.searchWyrmprints { } }
+        val (res, time) = measureTimedValue { repository.searchAllWyrmprints().toList() }
+        val (res2, time2) = measureTimedValue { repository.searchAllWyrmprints().toList() }
         assertEquals(res, res2)
         assertEquals(true, time > time2)
+
         println(
             "__________________________\n" +
                     "| TestWyrmprints results: \n" +
@@ -116,6 +124,7 @@ class Test : KodeinAware {
                     "| Elapsed time for second call: ${time2.inSeconds}\n" +
                     "|_________________________"
         )
+
     }
 
     @ExperimentalTime
@@ -124,7 +133,7 @@ class Test : KodeinAware {
         val (res, time) = measureTimedValue {
             repository.searchWyrmprints {
                 name = "Resounding Rendition"
-            }
+            }.toList()
         }
 
         assertEquals(1, res.size)
@@ -136,6 +145,19 @@ class Test : KodeinAware {
                     "| Elapsed time for first call:  ${time.inSeconds}\n" +
                     "|_________________________"
         )
+    }
+
+    @Test
+    fun test() = runTest {
+
+        repository.searchAdventurers {
+            name = "zardin"
+        }
+            .collect { println(it) }
+
+        repository.searchDragons { name = "agni" }
+            .collect { println(it) }
+
     }
 
 }

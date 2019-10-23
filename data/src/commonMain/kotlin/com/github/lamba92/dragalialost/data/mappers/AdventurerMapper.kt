@@ -1,9 +1,6 @@
 package com.github.lamba92.dragalialost.data.mappers
 
-import com.github.lamba92.dragalialost.data.rawresponses.AbilityJSON
-import com.github.lamba92.dragalialost.data.rawresponses.AdventurerJSON
-import com.github.lamba92.dragalialost.data.rawresponses.CoAbilityJSON
-import com.github.lamba92.dragalialost.data.rawresponses.SkillJSON
+import com.github.lamba92.dragalialost.data.rawresponses.*
 import com.github.lamba92.dragalialost.domain.entities.AdventurerEntity
 import com.github.lamba92.dragalialost.domain.entities.DragaliaEntity
 import com.github.lamba92.dragalialost.domain.entities.enums.WeaponType
@@ -23,7 +20,8 @@ class AdventurerMapper(
     private val raceMapper: RaceMapper,
     private val rarityMapper: RarityMapper,
     private val sourceMapper: SourceMapper,
-    private val availabilityMapper: AvailabilityMapper
+    private val availabilityMapper: AvailabilityMapper,
+    private val imageMapper: ImageMapper
 ) : SingleFromRemoteMapper<AdventurerMapper.Params, AdventurerEntity> {
 
     override fun fromRemoteSingle(remote: Params) = with(remote) {
@@ -38,7 +36,7 @@ class AdventurerMapper(
         val weaponType = weaponTypeMapper(adventurer.WeaponType)
         with(adventurer) {
             AdventurerEntity(
-                FullName,
+                if (Name !in FullName) "$FullName $Name" else FullName,
                 Description.replace("'''", ""),
                 MaxHp.toInt(),
                 MaxAtk.toInt(),
@@ -77,7 +75,8 @@ class AdventurerMapper(
                 sourceMapper(Obtain),
                 DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
                 availabilityMapper(Availability),
-                "",
+                imageMapper(artworks),
+                imageMapper(icons),
                 elementMapper(ElementalType),
                 weaponType,
                 skill1,
@@ -107,7 +106,9 @@ class AdventurerMapper(
         val coabilityLvl4: CoAbilityJSON,
         val coabilityLvl5: CoAbilityJSON,
         val skill1: SkillJSON,
-        val skill2: SkillJSON
+        val skill2: SkillJSON,
+        val artworks: List<ImageInfoJSON>,
+        val icons: List<ImageInfoJSON>
     )
 
     @Suppress("PrivatePropertyName")

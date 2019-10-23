@@ -14,7 +14,7 @@ object MappersModule : KodeinModuleProvider {
             AdventurerMapper(
                 instance(), instance(), instance(), instance(),
                 instance(), instance(), instance(), instance(),
-                instance(), instance(), instance()
+                instance(), instance(), instance(), instance()
             )
         }
         bind<DragonsMapper>() with singleton {
@@ -55,5 +55,6 @@ object MappersModule : KodeinModuleProvider {
         bind<SourceMapper>() with singleton { SourceMapper(instance()) }
         bind<DifficultyMapper>() with singleton { DifficultyMapper() }
         bind<WyrmprintAbilityMapper>() with singleton { WyrmprintAbilityMapper() }
+        bind<ImageMapper>() with singleton { ImageMapper() }
     }
 }

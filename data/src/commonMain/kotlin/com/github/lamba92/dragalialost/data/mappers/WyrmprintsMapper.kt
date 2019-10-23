@@ -1,6 +1,7 @@
 package com.github.lamba92.dragalialost.data.mappers
 
 import com.github.lamba92.dragalialost.data.rawresponses.AbilityJSON
+import com.github.lamba92.dragalialost.data.rawresponses.ImageInfoJSON
 import com.github.lamba92.dragalialost.data.rawresponses.WyrmprintJSON
 import com.github.lamba92.dragalialost.domain.entities.DragaliaEntity
 import com.github.lamba92.dragalialost.domain.entities.WyrmprintEntity
@@ -66,7 +67,11 @@ class WyrmprintsMapper(
         val ability2lvl3: AbilityJSON?,
         val ability3lvl1: AbilityJSON?,
         val ability3lvl2: AbilityJSON?,
-        val ability3lvl3: AbilityJSON?
+        val ability3lvl3: AbilityJSON?,
+        val icon1: ImageInfoJSON,
+        val icon2: ImageInfoJSON,
+        val portrait1: ImageInfoJSON,
+        val portrait2: ImageInfoJSON
     )
 
 }

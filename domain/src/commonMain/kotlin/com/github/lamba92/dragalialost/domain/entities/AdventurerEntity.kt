@@ -2,6 +2,7 @@ package com.github.lamba92.dragalialost.domain.entities
 
 import com.github.lamba92.dragalialost.domain.entities.enums.*
 import com.github.lamba92.dragalialost.domain.entities.support.*
+import com.github.lamba92.dragalialost.domain.utils.appendln
 import com.soywiz.klock.DateTime
 
 data class AdventurerEntity(
@@ -18,13 +19,14 @@ data class AdventurerEntity(
     val heroClass: HeroCLass,
     val gender: Gender,
     val race: Race,
-    override val rarity: Rarity,
+    override val baseRarity: Rarity,
     val voiceActorEN: VoiceActor,
     val voiceActorJP: VoiceActor,
     override val obtainedFrom: List<Source>,
     override val releaseDate: DateTime,
     override val availability: List<Availability>,
-    override val artwork: String,
+    val artworks: List<String>,
+    val icons: List<String>,
     val element: Element,
     val weaponType: WeaponType,
     val skill1: AdventurerSkill,
@@ -33,4 +35,25 @@ data class AdventurerEntity(
     val ability2: AdventurerAbility?,
     val ability3: AdventurerAbility?,
     val coAbility: CoAbility
-) : DragaliaEntity
+) : DragaliaEntity {
+
+    override fun toString() = buildString {
+        appendln("Adventurer $name:")
+        appendln(" - ${race.name.toLowerCase()} ${gender.name.toLowerCase()}")
+        appendln(" - element: ${element.name}")
+        appendln(" - weapon: ${weaponType.name}")
+        appendln(" - class: ${heroClass.name}")
+        appendln(" - base rarity: ${baseRarity.name}")
+        if (artworks.isNotEmpty())
+            appendln(" - Artwork urls: ")
+        artworks.forEach {
+            appendln("   • $it")
+        }
+        if (icons.isNotEmpty())
+            appendln(" - Icon urls: ")
+        icons.forEach {
+            appendln("   • $it")
+        }
+    }
+
+}

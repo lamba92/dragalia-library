@@ -13,7 +13,11 @@ import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toSet
 
 class DragaliaLostRepositoryImplementation(
     private val datasource: GamepediaDatasource,
@@ -39,9 +43,9 @@ class DragaliaLostRepositoryImplementation(
             .flattenConcat()
             .toSet()
             .asFlow()
-            .map { adventurerId ->
-                cache.getAdventurerById(adventurerId) ?: datasource.getAdventurerById(adventurerId)
-                    .also { cache.cacheAdventurerById(adventurerId, it) }
+            .map { (id, variationId) ->
+                cache.getAdventurerByIds(id, variationId) ?: datasource.getAdventurerByIds(id, variationId)
+                    .also { cache.cacheAdventurerByIds(id, variationId, it) }
             }
             .scopedMap { json ->
                 with(json) {
@@ -66,10 +70,18 @@ class DragaliaLostRepositoryImplementation(
                     val coa4 = async { getAndCacheCoAbilityById(ExAbilityData4) }
                     val coa5 = async { getAndCacheCoAbilityById(ExAbilityData5) }
 
+                    val images = (Rarity.toInt()..5).map {
+                        async { datasource.getAdventurerPortraitById(Id, VariationId, it) }
+                    }
+                    val icons = (Rarity.toInt()..5).map {
+                        async { datasource.getAdventurerIconById(Id, VariationId, it) }
+                    }
+
                     AdventurerMapper.Params(
                         json, a11.await(), a12.await(), a13?.await(), a21.await(), a22.await(), a23?.await(),
                         a31.await(), a32?.await(), a33?.await(), coa1.await(), coa2.await(), coa3.await(),
-                        coa4.await(), coa5.await(), s1.await(), s2.await()
+                        coa4.await(), coa5.await(), s1.await(), s2.await(), images.awaitAll(),
+                        icons.awaitAll()
                     )
                 }
             }
@@ -77,7 +89,6 @@ class DragaliaLostRepositoryImplementation(
             .catch {
                 println("An adventurer errored: $it")
             }
-            .toList()
 
     @ExperimentalCoroutinesApi
     @FlowPreview
@@ -106,14 +117,19 @@ class DragaliaLostRepositoryImplementation(
 
                     val s1 = async { getAndCacheSkillByName(SkillName) }
 
-                    DragonsMapper.Params(json, a11.await(), a12.await(), a21?.await(), a22?.await(), s1.await())
+                    val icon = async { datasource.getDragonIconByIdUrl(BaseId) }
+                    val portrait = async { datasource.getDragonPortraitById(BaseId) }
+
+                    DragonsMapper.Params(
+                        json, a11.await(), a12.await(), a21?.await(), a22?.await(),
+                        s1.await(), icon.await(), portrait.await()
+                    )
                 }
             }
             .catch {
                 println("A dragon errored: $it")
             }
             .map { dragonsMapper(it) }
-            .toList()
 
     @ExperimentalCoroutinesApi
     @FlowPreview
@@ -128,9 +144,9 @@ class DragaliaLostRepositoryImplementation(
             .flattenConcat()
             .toSet()
             .asFlow()
-            .map { wyrmprintId ->
-                cache.getWyrmprintById(wyrmprintId) ?: datasource.getWyrmprintById(wyrmprintId)
-                    .also { cache.cacheWyrmprintById(wyrmprintId, it) }
+            .map { id ->
+                cache.getWyrmprintById(id) ?: datasource.getWyrmprintById(id)
+                    .also { cache.cacheWyrmprintById(id, it) }
             }
             .scopedMap { json ->
                 with(json) {
@@ -146,9 +162,15 @@ class DragaliaLostRepositoryImplementation(
                     val a32 = Abilities32.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
                     val a33 = Abilities33.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
 
+                    val icon1 = async { datasource.getWyrmprintIconByIds(Id, 1) }
+                    val icon2 = async { datasource.getWyrmprintIconByIds(Id, 2) }
+                    val artwork1 = async { datasource.getWyrmprintPortraitByIds(Id, 1) }
+                    val artwork2 = async { datasource.getWyrmprintPortraitByIds(Id, 2) }
+
                     WyrmprintsMapper.Params(
-                        json, a11.await(), a12.await(), a13.await(), a21?.await(),
-                        a22?.await(), a23?.await(), a31?.await(), a32?.await(), a33?.await()
+                        json, a11.await(), a12.await(), a13.await(), a21?.await(), a22?.await(),
+                        a23?.await(), a31?.await(), a32?.await(), a33?.await(), icon1.await(),
+                        icon2.await(), artwork1.await(), artwork2.await()
                     )
                 }
             }
@@ -156,7 +178,6 @@ class DragaliaLostRepositoryImplementation(
                 println("A wyrmprint errored: $it")
             }
             .map { wyrmprintsMapper(it) }
-            .toList()
 
     private suspend fun getAndCacheAbilityById(abilityId: String) = cache.getAbilityById(abilityId)
         ?: datasource.getAbilityById(abilityId).also { cache.cacheAbilityById(abilityId, it) }

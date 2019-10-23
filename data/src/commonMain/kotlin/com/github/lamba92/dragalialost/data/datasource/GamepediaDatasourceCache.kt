@@ -5,7 +5,7 @@ import com.github.lamba92.dragalialost.data.rawresponses.*
 
 interface GamepediaDatasourceCache : Cache {
 
-    suspend fun searchAdventurerIds(query: AdventurersCargoQuery, limit: Int = 500): List<String>?
+    suspend fun searchAdventurerIds(query: AdventurersCargoQuery, limit: Int = 500): List<AdventurerIdJSON>?
     suspend fun searchDragonIds(query: DragonsCargoQuery, limit: Int = 500): List<String>?
     suspend fun searchWyrmprintIds(query: WyrmprintsCargoQuery, limit: Int = 500): List<String>?
     suspend fun searchWeaponIds(query: WeaponsCargoQuery, limit: Int = 500): List<String>?
@@ -14,7 +14,7 @@ interface GamepediaDatasourceCache : Cache {
     suspend fun searchSkillIds(query: SkillsCargoQuery, limit: Int = 500): List<String>?
     suspend fun searchAbilityLimitedGroupIds(query: AbilityLimitedGroupsCargoQuery, limit: Int = 500): List<String>?
 
-    suspend fun getAdventurerById(id: String): AdventurerJSON?
+    suspend fun getAdventurerByIds(id: String, variationId: String): AdventurerJSON?
     suspend fun getDragonById(id: String): DragonJSON?
     suspend fun getWyrmprintById(id: String): WyrmprintJSON?
     suspend fun getWeaponById(id: String): WeaponJSON?
@@ -23,7 +23,11 @@ interface GamepediaDatasourceCache : Cache {
     suspend fun getSkillByName(id: String): SkillJSON?
     suspend fun getAbilityLimitedGroupById(id: String): AbilityLimitedGroupJSON?
 
-    suspend fun cacheAdventurerCargoQuery(query: AdventurersCargoQuery, limit: Int, data: List<String>): Boolean
+    suspend fun cacheAdventurerCargoQuery(
+        query: AdventurersCargoQuery,
+        limit: Int,
+        data: List<AdventurerIdJSON>
+    ): Boolean
     suspend fun cacheDragonCargoQuery(query: DragonsCargoQuery, limit: Int, data: List<String>): Boolean
     suspend fun cacheWyrmprintCargoQuery(query: WyrmprintsCargoQuery, limit: Int, data: List<String>): Boolean
     suspend fun cacheWeaponCargoQuery(query: WeaponsCargoQuery, limit: Int, data: List<String>): Boolean
@@ -36,7 +40,7 @@ interface GamepediaDatasourceCache : Cache {
         data: List<String>
     ): Boolean
 
-    suspend fun cacheAdventurerById(id: String, data: AdventurerJSON): Boolean
+    suspend fun cacheAdventurerByIds(id: String, variationId: String, data: AdventurerJSON): Boolean
     suspend fun cacheDragonById(id: String, data: DragonJSON): Boolean
     suspend fun cacheWyrmprintById(id: String, data: WyrmprintJSON): Boolean
     suspend fun cacheWeaponById(id: String, data: WeaponJSON): Boolean

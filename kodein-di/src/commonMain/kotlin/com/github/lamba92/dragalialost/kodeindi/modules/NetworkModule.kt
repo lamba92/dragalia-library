@@ -15,6 +15,9 @@ object NetworkModule : KodeinModuleProvider {
                 install(JsonFeature) {
                     serializer = KotlinxSerializer()
                 }
+//                install(Logging){
+//                    level = LogLevel.ALL
+//                }
             }
         }
     }
