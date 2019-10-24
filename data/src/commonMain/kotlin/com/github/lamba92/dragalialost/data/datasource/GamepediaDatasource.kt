@@ -24,6 +24,7 @@ interface GamepediaDatasource {
     suspend fun getCoAbilityById(id: String): CoAbilityJSON
     suspend fun getSkillByName(id: String): SkillJSON
     suspend fun getAbilityLimitedGroupsById(id: String): AbilityLimitedGroupJSON
+    suspend fun getAbilityGroupsByGroupId(groupId: String): AbilityGroupJSON
 
     suspend fun getAdventurerIconById(id: String, variationId: String, rarity: Int): ImageInfoJSON
     suspend fun getAdventurerPortraitById(id: String, variationId: String, rarity: Int): ImageInfoJSON
@@ -92,6 +93,7 @@ interface GamepediaDatasource {
         fun getCoAbilityByIdUrl(id: String): Url
         fun getSkillByNameUrl(name: String): Url
         fun getAbilityLimitedGroupByIdUrl(id: String): Url
+        fun getAbilityGroupByGroupIdUrl(groupId: String): Url
 
         fun getAdventurerIconByIdUrl(id: String, variationId: String, rarity: Int): Url
         fun getAdventurerPortraitByIdUrl(id: String, variationId: String, rarity: Int): Url

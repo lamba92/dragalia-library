@@ -25,8 +25,10 @@ interface DragaliaEntity {
         val DATE_TIME_FORMAT = DateFormat.FORMAT_DATE
         const val FORCE_STRIKE_LVL2_MIGHT = 120
         const val ADVENTURERS_MAX_LVL = 80
-        const val SKILL_LVL1_MIGHT = 100
-        const val SKILL_LVL2_MIGHT = 200
-        const val SKILL_LVL3_MIGHT = 300
+        const val ADVENTURER_SKILL_LIL1_MIGHT = 100
+        const val ADVENTURER_SKILL_LVL2_MIGHT = 200
+        const val ADVENTURER_SKILL_LVL3_MIGHT = 300
+        const val DRAGON_SKILL_LIL1_MIGHT = 50
+        const val DRAGON_SKILL_LVL2_MIGHT = 100
     }
 }

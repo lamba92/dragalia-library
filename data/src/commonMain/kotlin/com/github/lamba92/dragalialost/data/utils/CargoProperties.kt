@@ -249,6 +249,10 @@ object CargoProperties {
             "MaxLimitedValue",
             "AbilityLimitedText"
         )
+        AbilityGroupJSON::class -> listOf(
+            "Id",
+            "GroupName"
+        )
         else -> throw IllegalArgumentException("${T::class.simpleName} properties have not been listed")
     }
 

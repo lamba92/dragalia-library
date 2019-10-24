@@ -33,13 +33,17 @@ data class DragonEntity(
 ) : DragaliaEntity {
 
     override fun toString() = buildString {
-        appendln("Adventurer $name:")
+        appendln("Dragon $name:")
         appendln(" - element: ${element.name}")
         appendln(" - base rarity: ${baseRarity.name}")
+        appendln(" - base max might: $baseMaxMight")
         appendln(" - Artwork url: ")
         appendln("   • $artwork")
         appendln(" - Icon urls: ")
         appendln("   • $icon")
+        ability1?.let { append(" - ability 1:\n$it") }
+        ability2?.let { append(" - ability 2:\n$it") }
+        append(" - skill 1:\n$skill")
     }
 
 }

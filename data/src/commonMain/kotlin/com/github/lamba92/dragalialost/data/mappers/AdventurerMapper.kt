@@ -4,8 +4,11 @@ import com.github.lamba92.dragalialost.data.rawresponses.*
 import com.github.lamba92.dragalialost.data.utils.sanitize
 import com.github.lamba92.dragalialost.domain.entities.AdventurerEntity
 import com.github.lamba92.dragalialost.domain.entities.DragaliaEntity
+import com.github.lamba92.dragalialost.domain.entities.enums.Afflictions
+import com.github.lamba92.dragalialost.domain.entities.enums.Element
 import com.github.lamba92.dragalialost.domain.entities.enums.WeaponType
 import com.github.lamba92.dragalialost.domain.entities.enums.WeaponType.*
+import com.github.lamba92.dragalialost.domain.entities.support.AdventurerAbility
 import com.github.lamba92.dragalialost.domain.entities.support.ManaCircleBonusStats
 import com.github.lamba92.dragalialost.domain.entities.support.VoiceActor
 import com.soywiz.klock.parseUtc
@@ -36,28 +39,30 @@ class AdventurerMapper(
         val ability3 = adventurerAbilityMapper(AdventurerAbilityMapper.Params(ability3lvl1, ability3lvl2, ability3lvl3))
         val weaponType = weaponTypeMapper(adventurer.WeaponType)
         with(adventurer) {
+            val bonusHp = ManaCircleBonusStats(
+                PlusHp0.toInt(),
+                PlusHp1.toInt(),
+                PlusHp2.toInt(),
+                PlusHp3.toInt(),
+                PlusHp4.toInt(),
+                McFullBonusHp5.toInt()
+            )
+            val bonusStr = ManaCircleBonusStats(
+                PlusAtk0.toInt(),
+                PlusAtk1.toInt(),
+                PlusAtk2.toInt(),
+                PlusAtk3.toInt(),
+                PlusAtk4.toInt(),
+                McFullBonusAtk5.toInt()
+            )
             AdventurerEntity(
                 if (Name !in FullName) "$FullName $Name" else FullName,
                 Description.sanitize(),
                 MaxHp.toInt(),
                 MaxAtk.toInt(),
                 DragaliaEntity.ADVENTURERS_MAX_LVL,
-                ManaCircleBonusStats(
-                    PlusHp0.toInt(),
-                    PlusHp1.toInt(),
-                    PlusHp2.toInt(),
-                    PlusHp3.toInt(),
-                    PlusHp4.toInt(),
-                    McFullBonusHp5.toInt()
-                ),
-                ManaCircleBonusStats(
-                    PlusAtk0.toInt(),
-                    PlusAtk1.toInt(),
-                    PlusAtk2.toInt(),
-                    PlusAtk3.toInt(),
-                    PlusAtk4.toInt(),
-                    McFullBonusAtk5.toInt()
-                ),
+                bonusHp,
+                bonusStr,
                 MinHpAtk + coability.level1.might + skill1.level1.might,
                 MaxHp.toInt() + MaxAtk.toInt() + coability.level5.might +
                         (skill1.level3?.might ?: skill1.level2.might) +
@@ -65,7 +70,7 @@ class AdventurerMapper(
                         (ability1.level3?.might ?: ability1.level2?.might ?: ability1.level1.might) +
                         (ability2.level3?.might ?: ability1.level2?.might ?: ability2.level1.might) +
                         (ability3.level3?.might ?: ability3.level2?.might ?: ability3.level1.might) +
-                        DragaliaEntity.FORCE_STRIKE_LVL2_MIGHT,
+                        DragaliaEntity.FORCE_STRIKE_LVL2_MIGHT + bonusHp.total + bonusStr.total,
                 weaponType.defenseProvided,
                 heroClassMapper(CharaType),
                 genderMapper(Gender),
@@ -85,22 +90,24 @@ class AdventurerMapper(
                 ability1,
                 ability2,
                 ability3,
-                coability
+                coability,
+                searchAfflictionResistances(ability1, ability2, ability3),
+                searchElementalResistances(ability1, ability2, ability3)
             )
         }
     }
 
     data class Params(
         val adventurer: AdventurerJSON,
-        val ability1lvl1: Pair<AbilityJSON, ImageInfoJSON>,
-        val ability1lvl2: Pair<AbilityJSON, ImageInfoJSON>,
-        val ability1lvl3: Pair<AbilityJSON, ImageInfoJSON>?,
-        val ability2lvl1: Pair<AbilityJSON, ImageInfoJSON>,
-        val ability2lvl2: Pair<AbilityJSON, ImageInfoJSON>,
-        val ability2lvl3: Pair<AbilityJSON, ImageInfoJSON>?,
-        val ability3lvl1: Pair<AbilityJSON, ImageInfoJSON>,
-        val ability3lvl2: Pair<AbilityJSON, ImageInfoJSON>?,
-        val ability3lvl3: Pair<AbilityJSON, ImageInfoJSON>?,
+        val ability1lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
+        val ability1lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
+        val ability1lvl3: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
+        val ability2lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
+        val ability2lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
+        val ability2lvl3: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
+        val ability3lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
+        val ability3lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
+        val ability3lvl3: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
         val coabilityLvl1: Pair<CoAbilityJSON, ImageInfoJSON>,
         val coabilityLvl2: Pair<CoAbilityJSON, ImageInfoJSON>,
         val coabilityLvl3: Pair<CoAbilityJSON, ImageInfoJSON>,
@@ -125,4 +132,43 @@ class AdventurerMapper(
             SWORD, BLADE, DAGGER, AXE, LANCE -> 10
             BOW, WAND, STAFF -> 8
         }
+
+    private val ManaCircleBonusStats.total
+        get() = circle1 + circle2 + circle3 + circle4 + circle5 + finalBonus
+
+    private fun searchAfflictionResistances(
+        ability1: AdventurerAbility,
+        ability2: AdventurerAbility?,
+        ability3: AdventurerAbility?
+    ): MutableSet<Afflictions> {
+        val set = mutableSetOf<Afflictions>()
+        set.addAll(ability1.level1.afflictionResistances.keys)
+        ability1.level2?.afflictionResistances?.keys?.let { set.addAll(it) }
+        ability1.level3?.afflictionResistances?.keys?.let { set.addAll(it) }
+        ability2?.level1?.afflictionResistances?.keys?.let { set.addAll(it) }
+        ability2?.level2?.afflictionResistances?.keys?.let { set.addAll(it) }
+        ability2?.level3?.afflictionResistances?.keys?.let { set.addAll(it) }
+        ability3?.level1?.afflictionResistances?.keys?.let { set.addAll(it) }
+        ability3?.level2?.afflictionResistances?.keys?.let { set.addAll(it) }
+        ability3?.level3?.afflictionResistances?.keys?.let { set.addAll(it) }
+        return set
+    }
+
+    private fun searchElementalResistances(
+        ability1: AdventurerAbility,
+        ability2: AdventurerAbility?,
+        ability3: AdventurerAbility?
+    ): Set<Element> {
+        val set = mutableSetOf<Element>()
+        set.addAll(ability1.level1.elementalResistances.keys)
+        ability1.level2?.elementalResistances?.keys?.let { set.addAll(it) }
+        ability1.level3?.elementalResistances?.keys?.let { set.addAll(it) }
+        ability2?.level1?.elementalResistances?.keys?.let { set.addAll(it) }
+        ability2?.level2?.elementalResistances?.keys?.let { set.addAll(it) }
+        ability2?.level3?.elementalResistances?.keys?.let { set.addAll(it) }
+        ability3?.level1?.elementalResistances?.keys?.let { set.addAll(it) }
+        ability3?.level2?.elementalResistances?.keys?.let { set.addAll(it) }
+        ability3?.level3?.elementalResistances?.keys?.let { set.addAll(it) }
+        return set
+    }
 }

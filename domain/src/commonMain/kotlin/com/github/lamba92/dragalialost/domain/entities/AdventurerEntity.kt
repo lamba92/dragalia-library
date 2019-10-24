@@ -31,10 +31,12 @@ data class AdventurerEntity(
     val weaponType: WeaponType,
     val skill1: AdventurerSkill,
     val skill2: AdventurerSkill,
-    val ability: AdventurerAbility,
+    val ability1: AdventurerAbility,
     val ability2: AdventurerAbility?,
     val ability3: AdventurerAbility?,
-    val coAbility: CoAbility
+    val coAbility: CoAbility,
+    val afflictionResistances: Set<Afflictions>,
+    val elementalResistances: Set<Element>
 ) : DragaliaEntity {
 
     override fun toString() = buildString {
@@ -44,6 +46,7 @@ data class AdventurerEntity(
         appendln(" - weapon: ${weaponType.name}")
         appendln(" - class: ${heroClass.name}")
         appendln(" - base rarity: ${baseRarity.name}")
+        appendln(" - base max might: $baseMaxMight")
         if (artworks.isNotEmpty())
             appendln(" - artwork urls: ")
         artworks.forEach {
@@ -54,12 +57,22 @@ data class AdventurerEntity(
         icons.forEach {
             appendln("   • $it")
         }
-        append(" - ability 1:\n$ability")
+        append(" - ability 1:\n$ability1")
         ability2?.let { append(" - ability 2:\n$it") }
         ability3?.let { append(" - ability 3:\n$it") }
         append(" - skill 1:\n$skill1")
         append(" - skill 2:\n$skill2")
         append(" - coability:\n$coAbility")
+        if (elementalResistances.isNotEmpty())
+            appendln(" - elemental resistances:")
+        elementalResistances.forEach {
+            appendln("   • ${it.name}")
+        }
+        if (afflictionResistances.isNotEmpty())
+            appendln(" - affliction resistances:")
+        afflictionResistances.forEach {
+            appendln("   • ${it.name}")
+        }
     }
 
 }

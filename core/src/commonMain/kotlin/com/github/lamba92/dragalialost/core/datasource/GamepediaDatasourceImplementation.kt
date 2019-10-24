@@ -84,6 +84,9 @@ class GamepediaDatasourceImplementation(
     override suspend fun getAbilityLimitedGroupsById(id: String) =
         httpClient.get<AbilityLimitedGroupCargoJSON>(endpoints.getAbilityLimitedGroupByIdUrl(id)).cargoquery.first().title
 
+    override suspend fun getAbilityGroupsByGroupId(groupId: String) =
+        httpClient.get<AbilityGroupCargoJSON>(endpoints.getAbilityGroupByGroupIdUrl(groupId)).cargoquery.single().title
+
     // IMAGES
     override suspend fun getAdventurerIconById(id: String, variationId: String, rarity: Int) =
         httpClient.get<FileQueryJSON>(endpoints.getAdventurerIconByIdUrl(id, variationId, rarity))

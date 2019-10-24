@@ -175,6 +175,11 @@ class GamepediaEndpointsImplementation(
             appendEquality("Id", id)
         }
 
+    override fun getAbilityGroupByGroupIdUrl(groupId: String) =
+        buildAllFieldsUrl<AbilityGroupJSON>(ABILITY_GROUPS_TABLE) {
+            appendEquality("Id", groupId)
+        }
+
     override fun getAdventurerIconByIdUrl(id: String, variationId: String, rarity: Int) =
         buildFileUrl("${id}_0${variationId}_r0$rarity")
 

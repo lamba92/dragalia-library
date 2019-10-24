@@ -157,10 +157,10 @@ class DragaliaLostRepositoryImplementation(
                     val a32 = Abilities32.ifIsNotBlankOrZero { async { getAbilityData(it) } }
                     val a33 = Abilities33.ifIsNotBlankOrZero { async { getAbilityData(it) } }
 
-                    val icon1 = async { getAndCacheWyrmprintIconImageInfoById(Id, 1) }
-                    val icon2 = async { getAndCacheWyrmprintIconImageInfoById(Id, 2) }
-                    val artwork1 = async { getAndCacheWyrmprintIconPortraitInfoById(Id, 1) }
-                    val artwork2 = async { getAndCacheWyrmprintIconPortraitInfoById(Id, 2) }
+                    val icon1 = async { getAndCacheWyrmprintIconImageInfoById(BaseId, 1) }
+                    val icon2 = async { getAndCacheWyrmprintIconImageInfoById(BaseId, 2) }
+                    val artwork1 = async { getAndCacheWyrmprintIconPortraitInfoById(BaseId, 1) }
+                    val artwork2 = async { getAndCacheWyrmprintIconPortraitInfoById(BaseId, 2) }
 
                     WyrmprintsMapper.Params(
                         json, a11.await(), a12.await(), a13.await(), a21?.await(), a22?.await(),
@@ -175,7 +175,9 @@ class DragaliaLostRepositoryImplementation(
             .map { wyrmprintsMapper(it) }
 
     private suspend fun getAbilityData(id: String) =
-        getAndCacheAbilityById(id) with { getAndCacheAbilityIconImageInfoByFileName(AbilityIconName) }
+        getAndCacheAbilityById(id) withPair {
+            getAndCacheAbilityIconImageInfoByFileName(AbilityIconName) to getAndCacheAbilityGroupByGroupId(AbilityGroup)
+        }
 
     private suspend fun getCoAbilityData(id: String) =
         getAndCacheCoAbilityById(id).with { getAndCacheCoAbilityIconImageInfoByFileName(AbilityIconName) }
@@ -236,5 +238,9 @@ class DragaliaLostRepositoryImplementation(
     private suspend fun getAndCacheWyrmprintIconPortraitInfoById(id: String, vestige: Int) =
         cache.getWyrmprintPortraitByIds(id, vestige) ?: datasource.getWyrmprintPortraitByIds(id, vestige)
             .also { cache.cacheWyrmprintPortraitByIds(id, vestige, it) }
+
+    private suspend fun getAndCacheAbilityGroupByGroupId(groupId: String) =
+        cache.getAbilityGroupsByGroupId(groupId) ?: datasource.getAbilityGroupsByGroupId(groupId)
+            .also { cache.cacheAbilityGroupsByGroupId(groupId, it) }
 
 }

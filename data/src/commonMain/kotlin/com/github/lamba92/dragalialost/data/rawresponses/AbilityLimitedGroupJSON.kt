@@ -15,3 +15,4 @@ data class AbilityLimitedGroupJSON(
     val MaxLimitedValue: String,
     val AbilityLimitedText: String
 ) : CargoQueryable
+

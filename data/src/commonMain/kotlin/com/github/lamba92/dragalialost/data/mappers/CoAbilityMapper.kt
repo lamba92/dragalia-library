@@ -10,7 +10,7 @@ import com.github.lamba92.dragalialost.domain.entities.support.CoAbilityLevelDat
 class CoAbilityMapper : SingleFromRemoteMapper<CoAbilityMapper.Params, CoAbility> {
     override fun fromRemoteSingle(remote: Params) = with(remote) {
         CoAbility(
-            lvl1.first.Name,
+            lvl1.first.GenericName,
             lvl1.second.url,
             CoAbilityLevelData(
                 CoAbilityLevel.ONE,

@@ -1,9 +1,6 @@
 package com.github.lamba92.dragalialost.data.mappers
 
-import com.github.lamba92.dragalialost.data.rawresponses.AbilityJSON
-import com.github.lamba92.dragalialost.data.rawresponses.DragonJSON
-import com.github.lamba92.dragalialost.data.rawresponses.ImageInfoJSON
-import com.github.lamba92.dragalialost.data.rawresponses.SkillJSON
+import com.github.lamba92.dragalialost.data.rawresponses.*
 import com.github.lamba92.dragalialost.domain.entities.DragaliaEntity
 import com.github.lamba92.dragalialost.domain.entities.DragonEntity
 import com.github.lamba92.dragalialost.domain.entities.enums.Gender
@@ -59,10 +56,10 @@ class DragonsMapper(
 
     data class Params(
         val dragon: DragonJSON,
-        val ability1lvl2: Pair<AbilityJSON, ImageInfoJSON>,
-        val ability1lvl1: Pair<AbilityJSON, ImageInfoJSON>,
-        val ability2lvl1: Pair<AbilityJSON, ImageInfoJSON>?,
-        val ability2lvl2: Pair<AbilityJSON, ImageInfoJSON>?,
+        val ability1lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
+        val ability1lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
+        val ability2lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
+        val ability2lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
         val skill1: Pair<SkillJSON, Triple<ImageInfoJSON, ImageInfoJSON, ImageInfoJSON>>,
         val icon: ImageInfoJSON,
         val portrait: ImageInfoJSON

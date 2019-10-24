@@ -42,19 +42,23 @@ object MappersModule : KodeinModuleProvider {
         bind<WeaponTypeMapper>() with singleton { WeaponTypeMapper() }
         bind<WyrmprintAbilityTypeMapper>() with singleton { WyrmprintAbilityTypeMapper() }
 
-        bind<AdventurerAbilityMapper>() with singleton { AdventurerAbilityMapper() }
+        bind<AdventurerAbilityMapper>() with singleton { AdventurerAbilityMapper(instance(), instance()) }
         bind<AdventurerSkillMapper>() with singleton { AdventurerSkillMapper() }
         bind<AvailabilityMapper>() with singleton { AvailabilityMapper() }
         bind<CharacterTypeMapper>() with singleton { CharacterTypeMapper() }
         bind<CoAbilityMapper>() with singleton { CoAbilityMapper() }
-        bind<DragonAbilityMapper>() with singleton { DragonAbilityMapper() }
+        bind<DragonAbilityMapper>() with singleton { DragonAbilityMapper(instance(), instance()) }
         bind<DragonSkillMapper>() with singleton { DragonSkillMapper() }
         bind<FeaturedCharacterMapper>() with singleton { FeaturedCharacterMapper() }
         bind<GenderMapper>() with singleton { GenderMapper() }
         bind<RaceMapper>() with singleton { RaceMapper() }
         bind<SourceMapper>() with singleton { SourceMapper(instance()) }
         bind<DifficultyMapper>() with singleton { DifficultyMapper() }
-        bind<WyrmprintAbilityMapper>() with singleton { WyrmprintAbilityMapper() }
+        bind<WyrmprintAbilityMapper>() with singleton { WyrmprintAbilityMapper(instance(), instance()) }
         bind<ImageMapper>() with singleton { ImageMapper() }
+        bind<ElementalResistancesMapper>() with singleton { ElementalResistancesMapper() }
+        bind<AfflictionResistancesMapper>() with singleton { AfflictionResistancesMapper(instance()) }
+        bind<ResistancePercentageMapper>() with singleton { ResistancePercentageMapper() }
+
     }
 }

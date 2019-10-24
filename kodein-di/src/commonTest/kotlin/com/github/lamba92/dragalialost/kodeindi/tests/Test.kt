@@ -6,6 +6,7 @@ import com.github.lamba92.dragalialost.domain.repositories.ext.*
 import com.github.lamba92.dragalialost.kodeindi.dragaliaLostModule
 import com.github.lamba92.utils.runTest
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.toList
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -31,8 +32,13 @@ class Test : KodeinAware {
 
         val (res, time) = measureTimedValue { repository.searchAllAdventurers().toList() }
         val (res2, time2) = measureTimedValue { repository.searchAllAdventurers().toList() }
-        assertEquals(res, res2)
-        assertEquals(true, time > time2)
+
+        res.sortedBy { it.name }.zip(res2.sortedBy { it.name })
+            .forEach { (a1, a2) ->
+                assertEquals(a1, a2)
+            }
+
+        assertEquals(true, time > time2, "That's impossible")
 
         println(
             "__________________________\n" +
@@ -44,8 +50,10 @@ class Test : KodeinAware {
                     "|_________________________\n"
         )
 
-        res.sortedBy { it.name }.forEach { println(it) }
     }
+
+
+//    fun adventurersOneByOneComparison
 
     @ExperimentalTime
     @Test
@@ -56,7 +64,6 @@ class Test : KodeinAware {
             }.toList()
         }
 
-        assertEquals(2, res.size)
         println(
             "__________________________\n" +
                     "| TestSingleAdventurers results: \n" +
@@ -71,7 +78,6 @@ class Test : KodeinAware {
     fun dragonsTest() = runTest {
         val (res, time) = measureTimedValue { repository.searchAllDragons().toList() }
         val (res2, time2) = measureTimedValue { repository.searchAllDragons().toList() }
-        assertEquals(res, res2)
         assertEquals(true, time > time2)
         println(
             "__________________________\n" +
@@ -83,7 +89,6 @@ class Test : KodeinAware {
                     "|_________________________\n"
         )
 
-        res.sortedBy { it.name }.forEach { println(it) }
     }
 
     @ExperimentalTime
@@ -145,17 +150,17 @@ class Test : KodeinAware {
                     "| Elapsed time for first call:  ${time.inSeconds}\n" +
                     "|_________________________"
         )
+
+
+        println(res)
     }
 
     @Test
     fun test() = runTest {
 
-        repository.searchAdventurers {
-            name = "gala"
-        }
-            .collect {
-                println(it)
-            }
+        repository.searchAllAdventurers()
+            .filter { it.elementalResistances.isNotEmpty() }
+            .collect { println(it) }
 
     }
 

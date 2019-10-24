@@ -22,6 +22,7 @@ interface GamepediaDatasourceCache : Cache {
     suspend fun getCoAbilityById(id: String): CoAbilityJSON?
     suspend fun getSkillByName(id: String): SkillJSON?
     suspend fun getAbilityLimitedGroupById(id: String): AbilityLimitedGroupJSON?
+    suspend fun getAbilityGroupsByGroupId(groupId: String): AbilityGroupJSON?
 
     suspend fun getAdventurerIconById(id: String, variationId: String, rarity: Int): ImageInfoJSON?
     suspend fun getAdventurerPortraitById(id: String, variationId: String, rarity: Int): ImageInfoJSON?
@@ -49,6 +50,8 @@ interface GamepediaDatasourceCache : Cache {
         limit: Int,
         data: List<String>
     ): Boolean
+
+    suspend fun cacheAbilityGroupsByGroupId(groupId: String, data: AbilityGroupJSON): Boolean
 
     suspend fun cacheAdventurerByIds(id: String, variationId: String, data: AdventurerJSON): Boolean
     suspend fun cacheDragonById(id: String, data: DragonJSON): Boolean

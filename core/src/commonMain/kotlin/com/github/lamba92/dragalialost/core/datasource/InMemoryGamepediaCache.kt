@@ -46,6 +46,8 @@ class InMemoryGamepediaCache : GamepediaDatasourceCache {
         mutableMapOf<String, SkillJSON>().toAtomicReference()
     private val abilityLimitedGroupsCache =
         mutableMapOf<String, AbilityLimitedGroupJSON>().toAtomicReference()
+    private val abilityGroupsCache =
+        mutableMapOf<String, AbilityGroupJSON>().toAtomicReference()
 
 
     // images cache declarations
@@ -118,6 +120,8 @@ class InMemoryGamepediaCache : GamepediaDatasourceCache {
     override suspend fun getAbilityLimitedGroupById(id: String) =
         abilityLimitedGroupsCache[id]
 
+    override suspend fun getAbilityGroupsByGroupId(groupId: String) =
+        abilityGroupsCache[groupId]
 
     // images cache retrieval implementations
     override suspend fun getAdventurerIconById(id: String, variationId: String, rarity: Int) =
@@ -189,6 +193,10 @@ class InMemoryGamepediaCache : GamepediaDatasourceCache {
         return true
     }
 
+    override suspend fun cacheAbilityGroupsByGroupId(groupId: String, data: AbilityGroupJSON): Boolean {
+        abilityGroupsCache[groupId] = data
+        return true
+    }
 
     // queries cache save implementations
     override suspend fun cacheAdventurerCargoQuery(

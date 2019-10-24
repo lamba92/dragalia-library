@@ -13,8 +13,8 @@ data class DragonSkill(
         appendln("   • $name")
         appendln("   • SP cost: $skillPointCost")
         appendln("   • $icon")
-        appendln("     ■ LVL1: $level1")
-        appendln("     ■ LVL2: $level2")
+        appendln("     • LVL1: $level1")
+        appendln("     • LVL2: $level2")
     }
 
 }
