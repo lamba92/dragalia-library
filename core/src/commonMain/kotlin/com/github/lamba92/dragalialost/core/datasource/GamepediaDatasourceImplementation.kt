@@ -93,7 +93,7 @@ class GamepediaDatasourceImplementation(
         httpClient.get<FileQueryJSON>(endpoints.getAdventurerPortraitByIdUrl(id, variationId, rarity))
             .query.pages.values.single().imageinfo.single()
 
-    override suspend fun getDragonIconByIdUrl(id: String) =
+    override suspend fun getDragonIconById(id: String) =
         httpClient.get<FileQueryJSON>(endpoints.getDragonIconByIdUrl(id))
             .query.pages.values.single().imageinfo.single()
 
@@ -112,6 +112,9 @@ class GamepediaDatasourceImplementation(
     override suspend fun getAbilityIconByFileName(fileName: String) =
         httpClient.get<FileQueryJSON>(endpoints.getAbilityIconByFileNameUrl(fileName))
             .query.pages.values.single().imageinfo.single()
+
+    override suspend fun getCoAbilityIconByFileName(fileName: String) =
+        getAbilityIconByFileName(fileName)
 
     override suspend fun getSkillIconByIconName(fileName: String) =
         httpClient.get<FileQueryJSON>(endpoints.getSkillIconByIconNameUrl(fileName))

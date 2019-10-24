@@ -27,11 +27,12 @@ interface GamepediaDatasource {
 
     suspend fun getAdventurerIconById(id: String, variationId: String, rarity: Int): ImageInfoJSON
     suspend fun getAdventurerPortraitById(id: String, variationId: String, rarity: Int): ImageInfoJSON
-    suspend fun getDragonIconByIdUrl(id: String): ImageInfoJSON
+    suspend fun getDragonIconById(id: String): ImageInfoJSON
     suspend fun getDragonPortraitById(id: String): ImageInfoJSON
     suspend fun getWyrmprintIconByIds(id: String, vestige: Int): ImageInfoJSON
     suspend fun getWyrmprintPortraitByIds(id: String, vestige: Int): ImageInfoJSON
     suspend fun getAbilityIconByFileName(fileName: String): ImageInfoJSON
+    suspend fun getCoAbilityIconByFileName(fileName: String): ImageInfoJSON
     suspend fun getSkillIconByIconName(fileName: String): ImageInfoJSON
 
     interface Endpoints {
@@ -95,6 +96,7 @@ interface GamepediaDatasource {
         fun getAdventurerIconByIdUrl(id: String, variationId: String, rarity: Int): Url
         fun getAdventurerPortraitByIdUrl(id: String, variationId: String, rarity: Int): Url
         fun getAbilityIconByFileNameUrl(fileName: String): Url
+        fun getCoAbilityIconByFileNameUrl(fileName: String): Url
         fun getDragonIconByIdUrl(id: String): Url
         fun getDragonPortraitByIdUrl(id: String): Url
         fun getWyrmprintIconByIdsUrl(id: String, vestige: Int): Url

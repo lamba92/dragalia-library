@@ -260,4 +260,9 @@ object CargoProperties {
         SkillJSON::class -> listOf("name")
         else -> throw IllegalArgumentException("${T::class.simpleName} Id has not been declared")
     }
+
+    inline fun <reified T> nameOf() = when (T::class) {
+        AdventurerJSON::class -> "FullName"
+        else -> "Name"
+    }
 }

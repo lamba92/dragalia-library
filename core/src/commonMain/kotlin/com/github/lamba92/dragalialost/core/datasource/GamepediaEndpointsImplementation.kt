@@ -74,7 +74,7 @@ class GamepediaEndpointsImplementation(
         limit: Int,
         noinline builder: CargoQueryWhereClauseBuilder.() -> Unit = {}
     ) = buildIdUrl<T>(table, limit) {
-        name?.let { appendLike("name", it) }
+        name?.let { appendLike(CargoProperties.nameOf<T>(), it) }
         builder()
     }
 
@@ -183,6 +183,9 @@ class GamepediaEndpointsImplementation(
 
     override fun getAbilityIconByFileNameUrl(fileName: String) =
         buildFileUrl(fileName)
+
+    override fun getCoAbilityIconByFileNameUrl(fileName: String) =
+        getAbilityIconByFileNameUrl(fileName)
 
     override fun getDragonIconByIdUrl(id: String) =
         buildFileUrl("${id}_01")

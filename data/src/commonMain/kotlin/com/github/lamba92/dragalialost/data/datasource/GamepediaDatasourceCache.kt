@@ -23,6 +23,16 @@ interface GamepediaDatasourceCache : Cache {
     suspend fun getSkillByName(id: String): SkillJSON?
     suspend fun getAbilityLimitedGroupById(id: String): AbilityLimitedGroupJSON?
 
+    suspend fun getAdventurerIconById(id: String, variationId: String, rarity: Int): ImageInfoJSON?
+    suspend fun getAdventurerPortraitById(id: String, variationId: String, rarity: Int): ImageInfoJSON?
+    suspend fun getDragonIconById(id: String): ImageInfoJSON?
+    suspend fun getDragonPortraitById(id: String): ImageInfoJSON?
+    suspend fun getWyrmprintIconByIds(id: String, vestige: Int): ImageInfoJSON?
+    suspend fun getWyrmprintPortraitByIds(id: String, vestige: Int): ImageInfoJSON?
+    suspend fun getAbilityIconByFileName(fileName: String): ImageInfoJSON?
+    suspend fun getCoAbilityIconByFileName(fileName: String): ImageInfoJSON?
+    suspend fun getSkillIconByIconName(fileName: String): ImageInfoJSON?
+
     suspend fun cacheAdventurerCargoQuery(
         query: AdventurersCargoQuery,
         limit: Int,
@@ -48,5 +58,15 @@ interface GamepediaDatasourceCache : Cache {
     suspend fun cacheCoAbilityById(id: String, data: CoAbilityJSON): Boolean
     suspend fun cacheSkillByName(id: String, data: SkillJSON): Boolean
     suspend fun cacheAbilityLimitedGroupById(id: String, data: AbilityLimitedGroupJSON): Boolean
+
+    suspend fun cacheAdventurerIconById(id: String, variationId: String, rarity: Int, data: ImageInfoJSON): Boolean
+    suspend fun cacheAdventurerPortraitById(id: String, variationId: String, rarity: Int, data: ImageInfoJSON): Boolean
+    suspend fun cacheDragonIconById(id: String, data: ImageInfoJSON): Boolean
+    suspend fun cacheDragonPortraitById(id: String, data: ImageInfoJSON): Boolean
+    suspend fun cacheWyrmprintIconByIds(id: String, vestige: Int, data: ImageInfoJSON): Boolean
+    suspend fun cacheWyrmprintPortraitByIds(id: String, vestige: Int, data: ImageInfoJSON): Boolean
+    suspend fun cacheAbilityIconByFileName(fileName: String, data: ImageInfoJSON): Boolean
+    suspend fun cacheCoAbilityIconByFileName(fileName: String, data: ImageInfoJSON): Boolean
+    suspend fun cacheSkillIconByIconName(fileName: String, data: ImageInfoJSON): Boolean
 
 }

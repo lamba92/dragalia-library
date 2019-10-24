@@ -3,17 +3,12 @@ package com.github.lamba92.dragalialost.data.repositories
 import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasource
 import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasourceCache
 import com.github.lamba92.dragalialost.data.mappers.*
-import com.github.lamba92.dragalialost.data.utils.flattenConcat
-import com.github.lamba92.dragalialost.data.utils.ifIsNotBlankOrZero
-import com.github.lamba92.dragalialost.data.utils.scopedMap
+import com.github.lamba92.dragalialost.data.utils.*
 import com.github.lamba92.dragalialost.domain.repositories.DragaliaLostRepository
 import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQueryBuilder
 import com.github.lamba92.dragalialost.domain.repositories.queries.DragonsQueryBuilder
 import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQueryBuilder
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -49,32 +44,32 @@ class DragaliaLostRepositoryImplementation(
             }
             .scopedMap { json ->
                 with(json) {
-                    val a11 = async { getAndCacheAbilityById(Abilities11) }
-                    val a12 = async { getAndCacheAbilityById(Abilities12) }
-                    val a13 = Abilities13.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
+                    val a11 = async { getAbilityData(Abilities11) }
+                    val a12 = async { getAbilityData(Abilities12) }
+                    val a13 = Abilities13.ifIsNotBlankOrZero { async { getAbilityData(it) } }
 
-                    val a21 = async { getAndCacheAbilityById(Abilities21) }
-                    val a22 = async { getAndCacheAbilityById(Abilities22) }
-                    val a23 = Abilities23.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
+                    val a21 = async { getAbilityData(Abilities21) }
+                    val a22 = async { getAbilityData(Abilities22) }
+                    val a23 = Abilities23.ifIsNotBlankOrZero { async { getAbilityData(it) } }
 
-                    val a31 = async { getAndCacheAbilityById(Abilities31) }
-                    val a32 = Abilities32.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
-                    val a33 = Abilities33.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
+                    val a31 = async { getAbilityData(Abilities31) }
+                    val a32 = Abilities32.ifIsNotBlankOrZero { async { getAbilityData(it) } }
+                    val a33 = Abilities33.ifIsNotBlankOrZero { async { getAbilityData(it) } }
 
-                    val s1 = async { getAndCacheSkillByName(Skill1Name) }
-                    val s2 = async { getAndCacheSkillByName(Skill2Name) }
+                    val s1 = async { getSkillData(Skill1Name) }
+                    val s2 = async { getSkillData(Skill2Name) }
 
-                    val coa1 = async { getAndCacheCoAbilityById(ExAbilityData1) }
-                    val coa2 = async { getAndCacheCoAbilityById(ExAbilityData2) }
-                    val coa3 = async { getAndCacheCoAbilityById(ExAbilityData3) }
-                    val coa4 = async { getAndCacheCoAbilityById(ExAbilityData4) }
-                    val coa5 = async { getAndCacheCoAbilityById(ExAbilityData5) }
+                    val coa1 = async { getCoAbilityData(ExAbilityData1) }
+                    val coa2 = async { getCoAbilityData(ExAbilityData2) }
+                    val coa3 = async { getCoAbilityData(ExAbilityData3) }
+                    val coa4 = async { getCoAbilityData(ExAbilityData4) }
+                    val coa5 = async { getCoAbilityData(ExAbilityData5) }
 
                     val images = (Rarity.toInt()..5).map {
-                        async { datasource.getAdventurerPortraitById(Id, VariationId, it) }
+                        async { getAndCacheAdventurerPortraitImageInfoByIds(Id, VariationId, it) }
                     }
                     val icons = (Rarity.toInt()..5).map {
-                        async { datasource.getAdventurerIconById(Id, VariationId, it) }
+                        async { getAndCacheAdventurerIconImageInfoByIds(Id, VariationId, it) }
                     }
 
                     AdventurerMapper.Params(
@@ -109,16 +104,16 @@ class DragaliaLostRepositoryImplementation(
             }
             .scopedMap { json ->
                 with(json) {
-                    val a11 = async { getAndCacheAbilityById(Abilities11) }
-                    val a12 = async { getAndCacheAbilityById(Abilities12) }
+                    val a11 = async { getAbilityData(Abilities11) }
+                    val a12 = async { getAbilityData(Abilities12) }
 
-                    val a21 = Abilities21.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
-                    val a22 = Abilities22.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
+                    val a21 = Abilities21.ifIsNotBlankOrZero { async { getAbilityData(it) } }
+                    val a22 = Abilities22.ifIsNotBlankOrZero { async { getAbilityData(it) } }
 
-                    val s1 = async { getAndCacheSkillByName(SkillName) }
+                    val s1 = async { getSkillData(SkillName) }
 
-                    val icon = async { datasource.getDragonIconByIdUrl(BaseId) }
-                    val portrait = async { datasource.getDragonPortraitById(BaseId) }
+                    val icon = async { getAndCacheDragonIconImageInfoById(BaseId) }
+                    val portrait = async { getAndCacheDragonPortraitImageInfoById(BaseId) }
 
                     DragonsMapper.Params(
                         json, a11.await(), a12.await(), a21?.await(), a22?.await(),
@@ -150,22 +145,22 @@ class DragaliaLostRepositoryImplementation(
             }
             .scopedMap { json ->
                 with(json) {
-                    val a11 = async { getAndCacheAbilityById(Abilities11) }
-                    val a12 = async { getAndCacheAbilityById(Abilities12) }
-                    val a13 = async { getAndCacheAbilityById(Abilities13) }
+                    val a11 = async { getAbilityData(Abilities11) }
+                    val a12 = async { getAbilityData(Abilities12) }
+                    val a13 = async { getAbilityData(Abilities13) }
 
-                    val a21 = Abilities21.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
-                    val a22 = Abilities22.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
-                    val a23 = Abilities23.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
+                    val a21 = Abilities21.ifIsNotBlankOrZero { async { getAbilityData(it) } }
+                    val a22 = Abilities22.ifIsNotBlankOrZero { async { getAbilityData(it) } }
+                    val a23 = Abilities23.ifIsNotBlankOrZero { async { getAbilityData(it) } }
 
-                    val a31 = Abilities31.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
-                    val a32 = Abilities32.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
-                    val a33 = Abilities33.ifIsNotBlankOrZero { async { getAndCacheAbilityById(it) } }
+                    val a31 = Abilities31.ifIsNotBlankOrZero { async { getAbilityData(it) } }
+                    val a32 = Abilities32.ifIsNotBlankOrZero { async { getAbilityData(it) } }
+                    val a33 = Abilities33.ifIsNotBlankOrZero { async { getAbilityData(it) } }
 
-                    val icon1 = async { datasource.getWyrmprintIconByIds(Id, 1) }
-                    val icon2 = async { datasource.getWyrmprintIconByIds(Id, 2) }
-                    val artwork1 = async { datasource.getWyrmprintPortraitByIds(Id, 1) }
-                    val artwork2 = async { datasource.getWyrmprintPortraitByIds(Id, 2) }
+                    val icon1 = async { getAndCacheWyrmprintIconImageInfoById(Id, 1) }
+                    val icon2 = async { getAndCacheWyrmprintIconImageInfoById(Id, 2) }
+                    val artwork1 = async { getAndCacheWyrmprintIconPortraitInfoById(Id, 1) }
+                    val artwork2 = async { getAndCacheWyrmprintIconPortraitInfoById(Id, 2) }
 
                     WyrmprintsMapper.Params(
                         json, a11.await(), a12.await(), a13.await(), a21?.await(), a22?.await(),
@@ -179,6 +174,22 @@ class DragaliaLostRepositoryImplementation(
             }
             .map { wyrmprintsMapper(it) }
 
+    private suspend fun getAbilityData(id: String) =
+        getAndCacheAbilityById(id) with { getAndCacheAbilityIconImageInfoByFileName(AbilityIconName) }
+
+    private suspend fun getCoAbilityData(id: String) =
+        getAndCacheCoAbilityById(id).with { getAndCacheCoAbilityIconImageInfoByFileName(AbilityIconName) }
+
+    private suspend fun getSkillData(id: String) = coroutineScope {
+        getAndCacheSkillByName(id) with {
+            Triple(
+                async { getAndCacheSkillIconImageInfoByFileName(SkillLv1IconName) },
+                async { getAndCacheSkillIconImageInfoByFileName(SkillLv2IconName) },
+                async { getAndCacheSkillIconImageInfoByFileName(SkillLv3IconName) }
+            ).await()
+        }
+    }
+
     private suspend fun getAndCacheAbilityById(abilityId: String) = cache.getAbilityById(abilityId)
         ?: datasource.getAbilityById(abilityId).also { cache.cacheAbilityById(abilityId, it) }
 
@@ -187,5 +198,43 @@ class DragaliaLostRepositoryImplementation(
 
     private suspend fun getAndCacheCoAbilityById(coAbilityId: String) = cache.getCoAbilityById(coAbilityId)
         ?: datasource.getCoAbilityById(coAbilityId).also { cache.cacheCoAbilityById(coAbilityId, it) }
+
+    private suspend fun getAndCacheAbilityIconImageInfoByFileName(fileName: String) =
+        cache.getAbilityIconByFileName(fileName) ?: datasource.getAbilityIconByFileName(fileName)
+            .also { cache.cacheAbilityIconByFileName(fileName, it) }
+
+    private suspend fun getAndCacheCoAbilityIconImageInfoByFileName(fileName: String) =
+        cache.getCoAbilityIconByFileName(fileName) ?: datasource.getCoAbilityIconByFileName(fileName)
+            .also { cache.cacheCoAbilityIconByFileName(fileName, it) }
+
+    private suspend fun getAndCacheSkillIconImageInfoByFileName(fileName: String) =
+        cache.getSkillIconByIconName(fileName) ?: datasource.getSkillIconByIconName(fileName)
+            .also { cache.cacheSkillIconByIconName(fileName, it) }
+
+    private suspend fun getAndCacheAdventurerPortraitImageInfoByIds(id: String, variationId: String, rarity: Int) =
+        cache.getAdventurerPortraitById(id, variationId, rarity)
+            ?: datasource.getAdventurerPortraitById(id, variationId, rarity)
+                .also { cache.cacheAdventurerPortraitById(id, variationId, rarity, it) }
+
+    private suspend fun getAndCacheAdventurerIconImageInfoByIds(id: String, variationId: String, rarity: Int) =
+        cache.getAdventurerIconById(id, variationId, rarity)
+            ?: datasource.getAdventurerIconById(id, variationId, rarity)
+                .also { cache.cacheAdventurerIconById(id, variationId, rarity, it) }
+
+    private suspend fun getAndCacheDragonPortraitImageInfoById(id: String) =
+        cache.getDragonPortraitById(id) ?: datasource.getDragonPortraitById(id)
+            .also { cache.cacheDragonPortraitById(id, it) }
+
+    private suspend fun getAndCacheDragonIconImageInfoById(id: String) =
+        cache.getDragonIconById(id) ?: datasource.getDragonIconById(id)
+            .also { cache.cacheDragonIconById(id, it) }
+
+    private suspend fun getAndCacheWyrmprintIconImageInfoById(id: String, vestige: Int) =
+        cache.getWyrmprintIconByIds(id, vestige) ?: datasource.getWyrmprintIconByIds(id, vestige)
+            .also { cache.cacheWyrmprintIconByIds(id, vestige, it) }
+
+    private suspend fun getAndCacheWyrmprintIconPortraitInfoById(id: String, vestige: Int) =
+        cache.getWyrmprintPortraitByIds(id, vestige) ?: datasource.getWyrmprintPortraitByIds(id, vestige)
+            .also { cache.cacheWyrmprintPortraitByIds(id, vestige, it) }
 
 }

@@ -18,6 +18,8 @@ data class WyrmprintEntity(
     override val availability: List<Availability>,
     val artwork: String,
     val refinedArtwork: String,
+    val icon: String,
+    val refinedIcon: String,
     override val baseRarity: Rarity,
     override val maxLevel: Int,
     val sellValue: SellValue,

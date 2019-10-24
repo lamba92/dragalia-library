@@ -151,12 +151,11 @@ class Test : KodeinAware {
     fun test() = runTest {
 
         repository.searchAdventurers {
-            name = "zardin"
+            name = "gala"
         }
-            .collect { println(it) }
-
-        repository.searchDragons { name = "agni" }
-            .collect { println(it) }
+            .collect {
+                println(it)
+            }
 
     }
 

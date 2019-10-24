@@ -6,4 +6,7 @@ data class SkillLevelData(
     val level: SkillLevel,
     val might: Int,
     val description: String
-)
+) {
+    override fun toString() =
+        "Might $might | $description"
+}

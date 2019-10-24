@@ -20,9 +20,9 @@ class DragonsMapper(
 ) : SingleFromRemoteMapper<DragonsMapper.Params, DragonEntity> {
 
     override fun fromRemoteSingle(remote: Params) = with(remote) {
-        val ability1 = dragonAbilityMapper(ability1lvl1 to ability1lvl2)
+        val ability1 = dragonAbilityMapper(DragonAbilityMapper.Params(ability1lvl1, ability1lvl2))
         val ability2 = if (ability2lvl1 != null && ability2lvl2 != null)
-            dragonAbilityMapper(ability2lvl1 to ability2lvl2)
+            dragonAbilityMapper(DragonAbilityMapper.Params(ability2lvl1, ability2lvl2))
         else
             null
         val skill = dragonSkillMapper(skill1)
@@ -59,11 +59,11 @@ class DragonsMapper(
 
     data class Params(
         val dragon: DragonJSON,
-        val ability1lvl2: AbilityJSON,
-        val ability1lvl1: AbilityJSON,
-        val ability2lvl1: AbilityJSON?,
-        val ability2lvl2: AbilityJSON?,
-        val skill1: SkillJSON,
+        val ability1lvl2: Pair<AbilityJSON, ImageInfoJSON>,
+        val ability1lvl1: Pair<AbilityJSON, ImageInfoJSON>,
+        val ability2lvl1: Pair<AbilityJSON, ImageInfoJSON>?,
+        val ability2lvl2: Pair<AbilityJSON, ImageInfoJSON>?,
+        val skill1: Pair<SkillJSON, Triple<ImageInfoJSON, ImageInfoJSON, ImageInfoJSON>>,
         val icon: ImageInfoJSON,
         val portrait: ImageInfoJSON
     )

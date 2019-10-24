@@ -1,6 +1,6 @@
 package com.github.lamba92.dragalialost.domain.entities.support
 
-import com.github.lamba92.dragalialost.domain.entities.enums.CoAbilityLevel
+import com.github.lamba92.dragalialost.domain.utils.appendln
 
 data class CoAbility(
     val name: String,
@@ -10,10 +10,14 @@ data class CoAbility(
     val level3: CoAbilityLevelData,
     val level4: CoAbilityLevelData,
     val level5: CoAbilityLevelData
-)
-
-data class CoAbilityLevelData(
-    val level: CoAbilityLevel,
-    val description: String,
-    val might: Int
-)
+) {
+    override fun toString() = buildString {
+        appendln("   • $name")
+        appendln("   • $icon")
+        appendln("     • LVL1: $level1")
+        appendln("     • LVL2: $level2")
+        appendln("     • LVL3: $level3")
+        appendln("     • LVL4: $level4")
+        appendln("     • LVL5: $level5")
+    }
+}

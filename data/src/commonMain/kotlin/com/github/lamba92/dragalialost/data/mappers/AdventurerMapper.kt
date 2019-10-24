@@ -1,6 +1,7 @@
 package com.github.lamba92.dragalialost.data.mappers
 
 import com.github.lamba92.dragalialost.data.rawresponses.*
+import com.github.lamba92.dragalialost.data.utils.sanitize
 import com.github.lamba92.dragalialost.domain.entities.AdventurerEntity
 import com.github.lamba92.dragalialost.domain.entities.DragaliaEntity
 import com.github.lamba92.dragalialost.domain.entities.enums.WeaponType
@@ -10,7 +11,7 @@ import com.github.lamba92.dragalialost.domain.entities.support.VoiceActor
 import com.soywiz.klock.parseUtc
 
 class AdventurerMapper(
-    private val abilityMapper: AbilityMapper,
+    private val adventurerAbilityMapper: AdventurerAbilityMapper,
     private val coAbilityMapper: CoAbilityMapper,
     private val adventurerSkillMapper: AdventurerSkillMapper,
     private val elementMapper: ElementMapper,
@@ -30,14 +31,14 @@ class AdventurerMapper(
         )
         val skill1 = adventurerSkillMapper(skill1)
         val skill2 = adventurerSkillMapper(skill2)
-        val ability1 = abilityMapper(AbilityMapper.Params(ability1lvl1, ability1lvl2, ability1lvl3))
-        val ability2 = abilityMapper(AbilityMapper.Params(ability2lvl1, ability2lvl2, ability2lvl3))
-        val ability3 = abilityMapper(AbilityMapper.Params(ability3lvl1, ability3lvl2, ability3lvl3))
+        val ability1 = adventurerAbilityMapper(AdventurerAbilityMapper.Params(ability1lvl1, ability1lvl2, ability1lvl3))
+        val ability2 = adventurerAbilityMapper(AdventurerAbilityMapper.Params(ability2lvl1, ability2lvl2, ability2lvl3))
+        val ability3 = adventurerAbilityMapper(AdventurerAbilityMapper.Params(ability3lvl1, ability3lvl2, ability3lvl3))
         val weaponType = weaponTypeMapper(adventurer.WeaponType)
         with(adventurer) {
             AdventurerEntity(
                 if (Name !in FullName) "$FullName $Name" else FullName,
-                Description.replace("'''", ""),
+                Description.sanitize(),
                 MaxHp.toInt(),
                 MaxAtk.toInt(),
                 DragaliaEntity.ADVENTURERS_MAX_LVL,
@@ -91,22 +92,22 @@ class AdventurerMapper(
 
     data class Params(
         val adventurer: AdventurerJSON,
-        val ability1lvl2: AbilityJSON,
-        val ability1lvl1: AbilityJSON,
-        val ability1lvl3: AbilityJSON?,
-        val ability2lvl1: AbilityJSON,
-        val ability2lvl2: AbilityJSON,
-        val ability2lvl3: AbilityJSON?,
-        val ability3lvl1: AbilityJSON,
-        val ability3lvl2: AbilityJSON?,
-        val ability3lvl3: AbilityJSON?,
-        val coabilityLvl1: CoAbilityJSON,
-        val coabilityLvl2: CoAbilityJSON,
-        val coabilityLvl3: CoAbilityJSON,
-        val coabilityLvl4: CoAbilityJSON,
-        val coabilityLvl5: CoAbilityJSON,
-        val skill1: SkillJSON,
-        val skill2: SkillJSON,
+        val ability1lvl1: Pair<AbilityJSON, ImageInfoJSON>,
+        val ability1lvl2: Pair<AbilityJSON, ImageInfoJSON>,
+        val ability1lvl3: Pair<AbilityJSON, ImageInfoJSON>?,
+        val ability2lvl1: Pair<AbilityJSON, ImageInfoJSON>,
+        val ability2lvl2: Pair<AbilityJSON, ImageInfoJSON>,
+        val ability2lvl3: Pair<AbilityJSON, ImageInfoJSON>?,
+        val ability3lvl1: Pair<AbilityJSON, ImageInfoJSON>,
+        val ability3lvl2: Pair<AbilityJSON, ImageInfoJSON>?,
+        val ability3lvl3: Pair<AbilityJSON, ImageInfoJSON>?,
+        val coabilityLvl1: Pair<CoAbilityJSON, ImageInfoJSON>,
+        val coabilityLvl2: Pair<CoAbilityJSON, ImageInfoJSON>,
+        val coabilityLvl3: Pair<CoAbilityJSON, ImageInfoJSON>,
+        val coabilityLvl4: Pair<CoAbilityJSON, ImageInfoJSON>,
+        val coabilityLvl5: Pair<CoAbilityJSON, ImageInfoJSON>,
+        val skill1: Pair<SkillJSON, Triple<ImageInfoJSON, ImageInfoJSON, ImageInfoJSON>>,
+        val skill2: Pair<SkillJSON, Triple<ImageInfoJSON, ImageInfoJSON, ImageInfoJSON>>,
         val artworks: List<ImageInfoJSON>,
         val icons: List<ImageInfoJSON>
     )

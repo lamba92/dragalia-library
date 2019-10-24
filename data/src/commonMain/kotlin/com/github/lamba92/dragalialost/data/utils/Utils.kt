@@ -1,5 +1,6 @@
 package com.github.lamba92.dragalialost.data.utils
 
+import kotlinx.coroutines.Deferred
 import kotlin.jvm.JvmName
 
 internal fun String.isNotBlankOrZero() =
@@ -40,3 +41,13 @@ fun String.addIfNotStartsWith(prefix: String) =
 
 fun String.addIfNotWith(prefix: String, suffix: String) =
     addIfNotStartsWith(prefix).addIfNotEndsWith(suffix)
+
+suspend inline fun <A, B, C> Triple<Deferred<A>, Deferred<B>, Deferred<C>>.await() =
+    Triple(first.await(), second.await(), third.await())
+
+inline infix fun <T, R> T.with(function: T.() -> R) =
+    let { it to function(this) }
+
+fun String.sanitize() =
+    replace("'''", "")
+        .replace(Regex("(&lt;span )?style=.*&gt;(\\d*)%&lt.*;"), "$2")

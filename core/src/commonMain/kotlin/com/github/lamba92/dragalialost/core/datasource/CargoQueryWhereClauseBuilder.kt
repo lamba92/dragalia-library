@@ -5,7 +5,7 @@ class CargoQueryWhereClauseBuilder : Appendable, CharSequence {
     private val clauses = arrayListOf<String>()
 
     fun appendLike(field: String, query: Any) =
-        clauses.add("$field LIKE \"$query\"").let { this }
+        clauses.add("$field LIKE \"%$query%\"").let { this }
 
     fun appendEquality(field: String, query: Any) =
         clauses.add("$field = \"$query\"").let { this }

@@ -45,15 +45,21 @@ data class AdventurerEntity(
         appendln(" - class: ${heroClass.name}")
         appendln(" - base rarity: ${baseRarity.name}")
         if (artworks.isNotEmpty())
-            appendln(" - Artwork urls: ")
+            appendln(" - artwork urls: ")
         artworks.forEach {
             appendln("   • $it")
         }
         if (icons.isNotEmpty())
-            appendln(" - Icon urls: ")
+            appendln(" - icon urls: ")
         icons.forEach {
             appendln("   • $it")
         }
+        append(" - ability 1:\n$ability")
+        ability2?.let { append(" - ability 2:\n$it") }
+        ability3?.let { append(" - ability 3:\n$it") }
+        append(" - skill 1:\n$skill1")
+        append(" - skill 2:\n$skill2")
+        append(" - coability:\n$coAbility")
     }
 
 }

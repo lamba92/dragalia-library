@@ -1,30 +1,51 @@
 package com.github.lamba92.dragalialost.data.mappers
 
 import com.github.lamba92.dragalialost.data.rawresponses.CoAbilityJSON
+import com.github.lamba92.dragalialost.data.rawresponses.ImageInfoJSON
+import com.github.lamba92.dragalialost.data.utils.sanitize
 import com.github.lamba92.dragalialost.domain.entities.enums.CoAbilityLevel
 import com.github.lamba92.dragalialost.domain.entities.support.CoAbility
 import com.github.lamba92.dragalialost.domain.entities.support.CoAbilityLevelData
 
 class CoAbilityMapper : SingleFromRemoteMapper<CoAbilityMapper.Params, CoAbility> {
     override fun fromRemoteSingle(remote: Params) = with(remote) {
-        // TODO icon
         CoAbility(
-            lvl1.Name,
-            "",
-            CoAbilityLevelData(CoAbilityLevel.ONE, lvl1.Details.replace("'''", ""), lvl1.PartyPowerWeight.toInt()),
-            CoAbilityLevelData(CoAbilityLevel.ONE, lvl2.Details.replace("'''", ""), lvl2.PartyPowerWeight.toInt()),
-            CoAbilityLevelData(CoAbilityLevel.ONE, lvl3.Details.replace("'''", ""), lvl3.PartyPowerWeight.toInt()),
-            CoAbilityLevelData(CoAbilityLevel.ONE, lvl4.Details.replace("'''", ""), lvl4.PartyPowerWeight.toInt()),
-            CoAbilityLevelData(CoAbilityLevel.ONE, lvl5.Details.replace("'''", ""), lvl5.PartyPowerWeight.toInt())
+            lvl1.first.Name,
+            lvl1.second.url,
+            CoAbilityLevelData(
+                CoAbilityLevel.ONE,
+                lvl1.first.Details.sanitize(),
+                lvl1.first.PartyPowerWeight.toInt()
+            ),
+            CoAbilityLevelData(
+                CoAbilityLevel.ONE,
+                lvl2.first.Details.sanitize(),
+                lvl2.first.PartyPowerWeight.toInt()
+            ),
+            CoAbilityLevelData(
+                CoAbilityLevel.ONE,
+                lvl3.first.Details.sanitize(),
+                lvl3.first.PartyPowerWeight.toInt()
+            ),
+            CoAbilityLevelData(
+                CoAbilityLevel.ONE,
+                lvl4.first.Details.sanitize(),
+                lvl4.first.PartyPowerWeight.toInt()
+            ),
+            CoAbilityLevelData(
+                CoAbilityLevel.ONE,
+                lvl5.first.Details.sanitize(),
+                lvl5.first.PartyPowerWeight.toInt()
+            )
         )
     }
 
     data class Params(
-        val lvl1: CoAbilityJSON,
-        val lvl2: CoAbilityJSON,
-        val lvl3: CoAbilityJSON,
-        val lvl4: CoAbilityJSON,
-        val lvl5: CoAbilityJSON
+        val lvl1: Pair<CoAbilityJSON, ImageInfoJSON>,
+        val lvl2: Pair<CoAbilityJSON, ImageInfoJSON>,
+        val lvl3: Pair<CoAbilityJSON, ImageInfoJSON>,
+        val lvl4: Pair<CoAbilityJSON, ImageInfoJSON>,
+        val lvl5: Pair<CoAbilityJSON, ImageInfoJSON>
     )
 
 }
