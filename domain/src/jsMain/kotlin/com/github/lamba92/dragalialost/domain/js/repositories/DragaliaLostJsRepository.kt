@@ -3,24 +3,24 @@ package com.github.lamba92.dragalialost.domain.js.repositories
 import com.github.lamba92.dragalialost.domain.entities.AdventurerEntity
 import com.github.lamba92.dragalialost.domain.entities.DragonEntity
 import com.github.lamba92.dragalialost.domain.entities.WyrmprintEntity
-import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQueryBuilder
-import com.github.lamba92.dragalialost.domain.repositories.queries.DragonsQueryBuilder
-import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQueryBuilder
-import kotlin.js.Promise
+import com.github.lamba92.dragalialost.domain.js.externals.Observable
+import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQuery
+import com.github.lamba92.dragalialost.domain.repositories.queries.DragonsQuery
+import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQuery
 
 
 interface DragaliaLostJsRepository {
 
     fun searchAdventurers(
-        query: AdventurersQueryBuilder
-    ): Promise<List<AdventurerEntity>>
+        query: AdventurersQuery
+    ): Observable<AdventurerEntity>
 
     fun searchDragons(
-        query: DragonsQueryBuilder
-    ): Promise<List<DragonEntity>>
+        query: DragonsQuery
+    ): Observable<DragonEntity>
 
     fun searchWyrmprints(
-        query: WyrmprintsQueryBuilder
-    ): Promise<List<WyrmprintEntity>>
+        query: WyrmprintsQuery
+    ): Observable<WyrmprintEntity>
 
 }

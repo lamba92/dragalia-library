@@ -10,23 +10,17 @@ class AdventurersQueryBuilder {
     val heroClasses = mutableSetOf<HeroCLass>()
     val elements = mutableSetOf<Element>()
 
-    val afflictionResistances = mutableSetOf<Afflictions>()
-    val elementalResistances = mutableSetOf<Element>()
+    val afflictionResistances = mutableSetOf<Affliction>()
+    val abilityTypes = mutableSetOf<AbilityType>()
 
 
     fun addElement(element: Element) {
         elements.add(element)
     }
 
-    fun anyElement() =
-        Element.values().forEach { addElement(it) }
-
     fun addRarity(rarity: Rarity) {
         rarities.add(rarity)
     }
-
-    fun anyRarity() =
-        Rarity.values().forEach { addRarity(it) }
 
     fun addHeroClass(heroCLass: HeroCLass) {
         heroClasses.add(heroCLass)
@@ -36,25 +30,25 @@ class AdventurersQueryBuilder {
         weaponTypes.add(weaponType)
     }
 
-    fun addElementalResistance(element: Element) {
-        elementalResistances.add(element)
-    }
-
-    fun addAfflictionResistance(affliction: Afflictions) {
+    fun addAfflictionResistance(affliction: Affliction) {
         afflictionResistances.add(affliction)
     }
+
+    fun addAbilityType(abilityType: AbilityType) {
+        abilityTypes.add(abilityType)
+    }
+
+    fun anyElement() =
+        Element.values().forEach { addElement(it) }
+
+    fun anyRarity() =
+        Rarity.values().forEach { addRarity(it) }
 
     fun anyHeroClass() =
         HeroCLass.values().forEach { addHeroClass(it) }
 
     fun anyWeaponType() =
         WeaponType.values().forEach { addWeaponType(it) }
-
-    fun anyElementalResistance() =
-        Element.values().forEach { addElementalResistance(it) }
-
-    fun anyAfflictionResistance() =
-        Afflictions.values().forEach { addAfflictionResistance(it) }
 
     fun toQuery() = AdventurersQuery(
         name,
@@ -63,7 +57,7 @@ class AdventurersQueryBuilder {
         elements.toSet(),
         rarities.toSet(),
         afflictionResistances.toSet(),
-        elementalResistances.toSet()
+        abilityTypes.toSet()
     )
 
 }

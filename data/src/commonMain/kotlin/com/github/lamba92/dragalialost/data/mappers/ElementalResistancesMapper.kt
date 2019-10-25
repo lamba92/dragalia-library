@@ -1,17 +1,16 @@
 package com.github.lamba92.dragalialost.data.mappers
 
-import com.github.lamba92.dragalialost.data.rawresponses.AbilityGroupJSON
 import com.github.lamba92.dragalialost.data.rawresponses.AbilityJSON
 import com.github.lamba92.dragalialost.data.utils.sanitize
 import com.github.lamba92.dragalialost.domain.entities.enums.Element
 import com.github.lamba92.dragalialost.domain.entities.support.ElementalResistances
 
-class ElementalResistancesMapper : SingleFromRemoteMapper<ElementalResistancesMapper.Params, ElementalResistances> {
+class ElementalResistancesMapper : SingleFromRemoteMapper<AbilityJSON, ElementalResistances> {
 
     private val regex = Regex("Reduces (\\w*)( and )?(\\w*) damage taken by (\\d{1,3})%.?")
 
-    override fun fromRemoteSingle(remote: Params) = with(remote) {
-        val groups = regex.find(ability.Details.sanitize())?.groups
+    override fun fromRemoteSingle(remote: AbilityJSON) = with(remote) {
+        val groups = regex.find(Details.sanitize())?.groups
         val afflictions = ElementalResistances()
         if (groups != null) {
 
@@ -29,10 +28,5 @@ class ElementalResistancesMapper : SingleFromRemoteMapper<ElementalResistancesMa
         }
         afflictions
     }
-
-    data class Params(
-        val ability: AbilityJSON,
-        val group: AbilityGroupJSON
-    )
 
 }

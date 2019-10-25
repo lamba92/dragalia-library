@@ -17,7 +17,7 @@ before_install:
 
 deploy:
   provider: script
-  script: ./gradlew publish
+  script: ./gradlew publish --continue
   skip_cleanup: true
   on:
     branch: release

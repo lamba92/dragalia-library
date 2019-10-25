@@ -10,7 +10,8 @@ import com.github.lamba92.dragalialost.domain.entities.support.AdventurerAbility
 
 class AdventurerAbilityMapper(
     private val elementalResistancesMapper: ElementalResistancesMapper,
-    private val afflictionResistancesMapper: AfflictionResistancesMapper
+    private val afflictionResistancesMapper: AfflictionResistancesMapper,
+    private val abilityTypeMapper: AbilityTypeMapper
 ) : SingleFromRemoteMapper<AdventurerAbilityMapper.Params, AdventurerAbility> {
 
     override fun fromRemoteSingle(remote: Params) = with(remote) {
@@ -21,16 +22,18 @@ class AdventurerAbilityMapper(
                 lvl1.first.Details.sanitize(),
                 AbilityLevel.ONE,
                 lvl1.first.PartyPowerWeight.toInt(),
-                afflictionResistancesMapper(AfflictionResistancesMapper.Params(lvl1.first, lvl1.third)),
-                elementalResistancesMapper(ElementalResistancesMapper.Params(lvl1.first, lvl1.third))
+                afflictionResistancesMapper(lvl1.first),
+                elementalResistancesMapper(lvl1.first),
+                abilityTypeMapper(lvl1.third)
             ),
             lvl2?.let {
                 AbilityLevelData(
                     it.first.Details.sanitize(),
                     AbilityLevel.TWO,
                     it.first.PartyPowerWeight.toInt(),
-                    afflictionResistancesMapper(AfflictionResistancesMapper.Params(it.first, it.third)),
-                    elementalResistancesMapper(ElementalResistancesMapper.Params(it.first, it.third))
+                    afflictionResistancesMapper(it.first),
+                    elementalResistancesMapper(it.first),
+                    abilityTypeMapper(it.third)
                 )
             },
             lvl3?.let {
@@ -38,8 +41,9 @@ class AdventurerAbilityMapper(
                     it.first.Details.sanitize(),
                     AbilityLevel.THREE,
                     it.first.PartyPowerWeight.toInt(),
-                    afflictionResistancesMapper(AfflictionResistancesMapper.Params(it.first, it.third)),
-                    elementalResistancesMapper(ElementalResistancesMapper.Params(it.first, it.third))
+                    afflictionResistancesMapper(it.first),
+                    elementalResistancesMapper(it.first),
+                    abilityTypeMapper(it.third)
                 )
             }
         )

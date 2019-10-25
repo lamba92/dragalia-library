@@ -4,7 +4,8 @@ import com.github.lamba92.dragalialost.data.rawresponses.*
 import com.github.lamba92.dragalialost.data.utils.sanitize
 import com.github.lamba92.dragalialost.domain.entities.AdventurerEntity
 import com.github.lamba92.dragalialost.domain.entities.DragaliaEntity
-import com.github.lamba92.dragalialost.domain.entities.enums.Afflictions
+import com.github.lamba92.dragalialost.domain.entities.enums.AbilityType
+import com.github.lamba92.dragalialost.domain.entities.enums.Affliction
 import com.github.lamba92.dragalialost.domain.entities.enums.Element
 import com.github.lamba92.dragalialost.domain.entities.enums.WeaponType
 import com.github.lamba92.dragalialost.domain.entities.enums.WeaponType.*
@@ -92,7 +93,7 @@ class AdventurerMapper(
                 ability3,
                 coability,
                 searchAfflictionResistances(ability1, ability2, ability3),
-                searchElementalResistances(ability1, ability2, ability3)
+                searchAbilityTypes(ability1, ability2, ability3)
             )
         }
     }
@@ -140,35 +141,48 @@ class AdventurerMapper(
         ability1: AdventurerAbility,
         ability2: AdventurerAbility?,
         ability3: AdventurerAbility?
-    ): MutableSet<Afflictions> {
-        val set = mutableSetOf<Afflictions>()
-        set.addAll(ability1.level1.afflictionResistances.keys)
-        ability1.level2?.afflictionResistances?.keys?.let { set.addAll(it) }
-        ability1.level3?.afflictionResistances?.keys?.let { set.addAll(it) }
-        ability2?.level1?.afflictionResistances?.keys?.let { set.addAll(it) }
-        ability2?.level2?.afflictionResistances?.keys?.let { set.addAll(it) }
-        ability2?.level3?.afflictionResistances?.keys?.let { set.addAll(it) }
-        ability3?.level1?.afflictionResistances?.keys?.let { set.addAll(it) }
-        ability3?.level2?.afflictionResistances?.keys?.let { set.addAll(it) }
-        ability3?.level3?.afflictionResistances?.keys?.let { set.addAll(it) }
-        return set
+    ) = mutableSetOf<Affliction>().apply {
+        addAll(ability1.level1.afflictionResistances.keys)
+        ability1.level2?.afflictionResistances?.keys?.let { addAll(it) }
+        ability1.level3?.afflictionResistances?.keys?.let { addAll(it) }
+        ability2?.level1?.afflictionResistances?.keys?.let { addAll(it) }
+        ability2?.level2?.afflictionResistances?.keys?.let { addAll(it) }
+        ability2?.level3?.afflictionResistances?.keys?.let { addAll(it) }
+        ability3?.level1?.afflictionResistances?.keys?.let { addAll(it) }
+        ability3?.level2?.afflictionResistances?.keys?.let { addAll(it) }
+        ability3?.level3?.afflictionResistances?.keys?.let { addAll(it) }
     }
 
     private fun searchElementalResistances(
         ability1: AdventurerAbility,
         ability2: AdventurerAbility?,
         ability3: AdventurerAbility?
-    ): Set<Element> {
-        val set = mutableSetOf<Element>()
-        set.addAll(ability1.level1.elementalResistances.keys)
-        ability1.level2?.elementalResistances?.keys?.let { set.addAll(it) }
-        ability1.level3?.elementalResistances?.keys?.let { set.addAll(it) }
-        ability2?.level1?.elementalResistances?.keys?.let { set.addAll(it) }
-        ability2?.level2?.elementalResistances?.keys?.let { set.addAll(it) }
-        ability2?.level3?.elementalResistances?.keys?.let { set.addAll(it) }
-        ability3?.level1?.elementalResistances?.keys?.let { set.addAll(it) }
-        ability3?.level2?.elementalResistances?.keys?.let { set.addAll(it) }
-        ability3?.level3?.elementalResistances?.keys?.let { set.addAll(it) }
-        return set
+    ) = mutableSetOf<Element>().apply {
+        addAll(ability1.level1.elementalResistances.keys)
+        ability1.level2?.elementalResistances?.keys?.let { addAll(it) }
+        ability1.level3?.elementalResistances?.keys?.let { addAll(it) }
+        ability2?.level1?.elementalResistances?.keys?.let { addAll(it) }
+        ability2?.level2?.elementalResistances?.keys?.let { addAll(it) }
+        ability2?.level3?.elementalResistances?.keys?.let { addAll(it) }
+        ability3?.level1?.elementalResistances?.keys?.let { addAll(it) }
+        ability3?.level2?.elementalResistances?.keys?.let { addAll(it) }
+        ability3?.level3?.elementalResistances?.keys?.let { addAll(it) }
     }
+
+    private fun searchAbilityTypes(
+        ability1: AdventurerAbility,
+        ability2: AdventurerAbility?,
+        ability3: AdventurerAbility?
+    ) = mutableSetOf<AbilityType>().apply {
+        add(ability1.level1.abilityType)
+        ability1.level2?.abilityType?.let { add(it) }
+        ability1.level3?.abilityType?.let { add(it) }
+        ability2?.level1?.abilityType?.let { add(it) }
+        ability2?.level2?.abilityType?.let { add(it) }
+        ability2?.level3?.abilityType?.let { add(it) }
+        ability3?.level1?.abilityType?.let { add(it) }
+        ability3?.level2?.abilityType?.let { add(it) }
+        ability3?.level3?.abilityType?.let { add(it) }
+    }
+
 }

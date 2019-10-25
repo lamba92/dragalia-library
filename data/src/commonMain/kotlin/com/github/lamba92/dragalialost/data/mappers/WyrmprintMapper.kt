@@ -6,20 +6,21 @@ import com.github.lamba92.dragalialost.data.rawresponses.ImageInfoJSON
 import com.github.lamba92.dragalialost.data.rawresponses.WyrmprintJSON
 import com.github.lamba92.dragalialost.domain.entities.DragaliaEntity
 import com.github.lamba92.dragalialost.domain.entities.WyrmprintEntity
-import com.github.lamba92.dragalialost.domain.entities.enums.Afflictions
+import com.github.lamba92.dragalialost.domain.entities.enums.AbilityType
+import com.github.lamba92.dragalialost.domain.entities.enums.Affliction
 import com.github.lamba92.dragalialost.domain.entities.enums.Element
 import com.github.lamba92.dragalialost.domain.entities.support.SellValue
 import com.github.lamba92.dragalialost.domain.entities.support.WyrmprintAbility
 import com.github.lamba92.dragalialost.domain.entities.support.WyrmprintDescription
 import com.soywiz.klock.parseUtc
 
-class WyrmprintsMapper(
+class WyrmprintMapper(
     private val wyrmprintAbilityMapper: WyrmprintAbilityMapper,
     private val sourceMapper: SourceMapper,
     private val availabilityMapper: AvailabilityMapper,
     private val rarityMapper: RarityMapper,
     private val featuredCharacterMapper: FeaturedCharacterMapper
-) : SingleFromRemoteMapper<WyrmprintsMapper.Params, WyrmprintEntity> {
+) : SingleFromRemoteMapper<WyrmprintMapper.Params, WyrmprintEntity> {
 
     override fun fromRemoteSingle(remote: Params) = with(remote) {
         val ability1 = wyrmprintAbilityMapper(
@@ -58,7 +59,8 @@ class WyrmprintsMapper(
                 searchElementalResistances(ability1, ability2, ability3),
                 ability1,
                 ability2,
-                ability3
+                ability3,
+                searchAbilityTypes(ability1, ability2, ability3)
             )
         }
     }
@@ -67,36 +69,48 @@ class WyrmprintsMapper(
         ability1: WyrmprintAbility,
         ability2: WyrmprintAbility?,
         ability3: WyrmprintAbility?
-    ): MutableSet<Afflictions> {
-        val set = mutableSetOf<Afflictions>()
-        set.addAll(ability1.level1.afflictionResistances.keys)
-        set.addAll(ability1.level2.afflictionResistances.keys)
-        set.addAll(ability1.level3.afflictionResistances.keys)
-        ability2?.level1?.afflictionResistances?.keys?.let { set.addAll(it) }
-        ability2?.level2?.afflictionResistances?.keys?.let { set.addAll(it) }
-        ability2?.level3?.afflictionResistances?.keys?.let { set.addAll(it) }
-        ability3?.level1?.afflictionResistances?.keys?.let { set.addAll(it) }
-        ability3?.level2?.afflictionResistances?.keys?.let { set.addAll(it) }
-        ability3?.level3?.afflictionResistances?.keys?.let { set.addAll(it) }
-        return set
+    ) = mutableSetOf<Affliction>().apply {
+        addAll(ability1.level1.afflictionResistances.keys)
+        addAll(ability1.level2.afflictionResistances.keys)
+        addAll(ability1.level3.afflictionResistances.keys)
+        ability2?.level1?.afflictionResistances?.keys?.let { addAll(it) }
+        ability2?.level2?.afflictionResistances?.keys?.let { addAll(it) }
+        ability2?.level3?.afflictionResistances?.keys?.let { addAll(it) }
+        ability3?.level1?.afflictionResistances?.keys?.let { addAll(it) }
+        ability3?.level2?.afflictionResistances?.keys?.let { addAll(it) }
+        ability3?.level3?.afflictionResistances?.keys?.let { addAll(it) }
     }
 
     private fun searchElementalResistances(
         ability1: WyrmprintAbility,
         ability2: WyrmprintAbility?,
         ability3: WyrmprintAbility?
-    ): Set<Element> {
-        val set = mutableSetOf<Element>()
-        set.addAll(ability1.level1.elementalResistances.keys)
-        set.addAll(ability1.level2.elementalResistances.keys)
-        set.addAll(ability1.level3.elementalResistances.keys)
-        ability2?.level1?.elementalResistances?.keys?.let { set.addAll(it) }
-        ability2?.level2?.elementalResistances?.keys?.let { set.addAll(it) }
-        ability2?.level3?.elementalResistances?.keys?.let { set.addAll(it) }
-        ability3?.level1?.elementalResistances?.keys?.let { set.addAll(it) }
-        ability3?.level2?.elementalResistances?.keys?.let { set.addAll(it) }
-        ability3?.level3?.elementalResistances?.keys?.let { set.addAll(it) }
-        return set
+    ) = mutableSetOf<Element>().apply {
+        addAll(ability1.level1.elementalResistances.keys)
+        addAll(ability1.level2.elementalResistances.keys)
+        addAll(ability1.level3.elementalResistances.keys)
+        ability2?.level1?.elementalResistances?.keys?.let { addAll(it) }
+        ability2?.level2?.elementalResistances?.keys?.let { addAll(it) }
+        ability2?.level3?.elementalResistances?.keys?.let { addAll(it) }
+        ability3?.level1?.elementalResistances?.keys?.let { addAll(it) }
+        ability3?.level2?.elementalResistances?.keys?.let { addAll(it) }
+        ability3?.level3?.elementalResistances?.keys?.let { addAll(it) }
+    }
+
+    private fun searchAbilityTypes(
+        ability1: WyrmprintAbility,
+        ability2: WyrmprintAbility?,
+        ability3: WyrmprintAbility?
+    ) = mutableSetOf<AbilityType>().apply {
+        add(ability1.level1.abilityType)
+        ability1.level2.abilityType.let { add(it) }
+        ability1.level3.abilityType.let { add(it) }
+        ability2?.level1?.abilityType?.let { add(it) }
+        ability2?.level2?.abilityType?.let { add(it) }
+        ability2?.level3?.abilityType?.let { add(it) }
+        ability3?.level1?.abilityType?.let { add(it) }
+        ability3?.level2?.abilityType?.let { add(it) }
+        ability3?.level3?.abilityType?.let { add(it) }
     }
 
     data class Params(

@@ -2,24 +2,25 @@ package com.github.lamba92.dragalialost.data.js.repository
 
 import com.github.lamba92.dragalialost.domain.js.repositories.DragaliaLostJsRepository
 import com.github.lamba92.dragalialost.domain.repositories.DragaliaLostRepository
-import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQueryBuilder
-import com.github.lamba92.dragalialost.domain.repositories.queries.DragonsQueryBuilder
-import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQueryBuilder
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.promise
+import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQuery
+import com.github.lamba92.dragalialost.domain.repositories.queries.DragonsQuery
+import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQuery
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class DragaliaLostJsRepositoryImplementation(
     private val dragaliaLostRepository: DragaliaLostRepository
 ) : DragaliaLostJsRepository {
 
-    override fun searchAdventurers(query: AdventurersQueryBuilder) =
-        GlobalScope.promise { dragaliaLostRepository.searchAdventurers(query).toList() }
+    @ExperimentalCoroutinesApi
+    override fun searchAdventurers(query: AdventurersQuery) =
+        dragaliaLostRepository.searchAdventurers(query).toObservable()
 
-    override fun searchDragons(query: DragonsQueryBuilder) =
-        GlobalScope.promise { dragaliaLostRepository.searchDragons(query).toList() }
+    @ExperimentalCoroutinesApi
+    override fun searchDragons(query: DragonsQuery) =
+        dragaliaLostRepository.searchDragons(query).toObservable()
 
-    override fun searchWyrmprints(query: WyrmprintsQueryBuilder) =
-        GlobalScope.promise { dragaliaLostRepository.searchWyrmprints(query).toList() }
+    @ExperimentalCoroutinesApi
+    override fun searchWyrmprints(query: WyrmprintsQuery) =
+        dragaliaLostRepository.searchWyrmprints(query).toObservable()
 
 }

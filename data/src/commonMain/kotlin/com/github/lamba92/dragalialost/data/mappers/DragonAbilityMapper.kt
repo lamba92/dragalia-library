@@ -10,7 +10,8 @@ import com.github.lamba92.dragalialost.domain.entities.support.DragonAbility
 
 class DragonAbilityMapper(
     private val elementalResistancesMapper: ElementalResistancesMapper,
-    private val afflictionResistancesMapper: AfflictionResistancesMapper
+    private val afflictionResistancesMapper: AfflictionResistancesMapper,
+    private val abilityTypeMapper: AbilityTypeMapper
 ) : SingleFromRemoteMapper<DragonAbilityMapper.Params, DragonAbility> {
     override fun fromRemoteSingle(remote: Params) = with(remote) {
         DragonAbility(
@@ -20,15 +21,17 @@ class DragonAbilityMapper(
                 a1.first.Details.sanitize(),
                 AbilityLevel.ONE,
                 a1.first.PartyPowerWeight.toInt(),
-                afflictionResistancesMapper(AfflictionResistancesMapper.Params(a1.first, a1.third)),
-                elementalResistancesMapper(ElementalResistancesMapper.Params(a1.first, a1.third))
+                afflictionResistancesMapper(a1.first),
+                elementalResistancesMapper(a1.first),
+                abilityTypeMapper(a1.third)
             ),
             AbilityLevelData(
                 a2.first.Details.sanitize(),
                 AbilityLevel.TWO,
                 a1.first.PartyPowerWeight.toInt(),
-                afflictionResistancesMapper(AfflictionResistancesMapper.Params(a2.first, a2.third)),
-                elementalResistancesMapper(ElementalResistancesMapper.Params(a2.first, a2.third))
+                afflictionResistancesMapper(a2.first),
+                elementalResistancesMapper(a2.first),
+                abilityTypeMapper(a2.third)
             )
         )
     }

@@ -35,8 +35,8 @@ data class AdventurerEntity(
     val ability2: AdventurerAbility?,
     val ability3: AdventurerAbility?,
     val coAbility: CoAbility,
-    val afflictionResistances: Set<Afflictions>,
-    val elementalResistances: Set<Element>
+    val afflictionResistances: Set<Affliction>,
+    val abilityTypes: Set<AbilityType>
 ) : DragaliaEntity {
 
     override fun toString() = buildString {
@@ -63,11 +63,6 @@ data class AdventurerEntity(
         append(" - skill 1:\n$skill1")
         append(" - skill 2:\n$skill2")
         append(" - coability:\n$coAbility")
-        if (elementalResistances.isNotEmpty())
-            appendln(" - elemental resistances:")
-        elementalResistances.forEach {
-            appendln("   • ${it.name}")
-        }
         if (afflictionResistances.isNotEmpty())
             appendln(" - affliction resistances:")
         afflictionResistances.forEach {

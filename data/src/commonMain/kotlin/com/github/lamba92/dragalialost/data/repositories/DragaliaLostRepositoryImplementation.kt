@@ -17,14 +17,14 @@ class DragaliaLostRepositoryImplementation(
     private val adventurersQueryMapper: AdventurersQueryMapper,
     private val wyrmprintsQueryMapper: WyrmprintsQueryMapper,
     private val dragonsQueryMapper: DragonsQueryMapper,
-    private val dragonsMapper: DragonsMapper,
+    private val dragonMapper: DragonMapper,
     private val adventurerMapper: AdventurerMapper,
-    private val wyrmprintsMapper: WyrmprintsMapper
+    private val wyrmprintMapper: WyrmprintMapper
 ) : DragaliaLostRepository {
 
     @ExperimentalCoroutinesApi
     @FlowPreview
-    override suspend fun searchAdventurers(query: AdventurersQuery, limit: Int) =
+    override fun searchAdventurers(query: AdventurersQuery, limit: Int) =
         adventurersQueryMapper.toRemote(query)
             .asFlow()
             .map { dsQuery ->
@@ -32,35 +32,35 @@ class DragaliaLostRepositoryImplementation(
                     cache.cacheAdventurerCargoQuery(dsQuery, limit, it)
                 }
             }
-            .flattenConcat()
-            .toSet()
-            .asFlow()
+            .flattenMergeIterable()
+            .distinctUntilChanged()
             .map { (id, variationId) ->
-                cache.getAdventurerByIds(id, variationId) ?: datasource.getAdventurerByIds(id, variationId)
-                    .also { cache.cacheAdventurerByIds(id, variationId, it) }
+                cache.getAdventurerByIds(id, variationId) ?: datasource.getAdventurerByIds(id, variationId).also {
+                    cache.cacheAdventurerByIds(id, variationId, it)
+                }
             }
             .scopedMap { json ->
                 with(json) {
-                    val a11 = async { getAbilityData(Abilities11) }
-                    val a12 = async { getAbilityData(Abilities12) }
-                    val a13 = Abilities13.ifIsNotBlankOrZero { async { getAbilityData(it) } }
+                    val a11 = getAbilityDataAsync(Abilities11)
+                    val a12 = getAbilityDataAsync(Abilities12)
+                    val a13 = Abilities13.ifIsNotBlankOrZero { getAbilityDataAsync(it) }
 
-                    val a21 = async { getAbilityData(Abilities21) }
-                    val a22 = async { getAbilityData(Abilities22) }
-                    val a23 = Abilities23.ifIsNotBlankOrZero { async { getAbilityData(it) } }
+                    val a21 = getAbilityDataAsync(Abilities21)
+                    val a22 = getAbilityDataAsync(Abilities22)
+                    val a23 = Abilities23.ifIsNotBlankOrZero { getAbilityDataAsync(it) }
 
-                    val a31 = async { getAbilityData(Abilities31) }
-                    val a32 = Abilities32.ifIsNotBlankOrZero { async { getAbilityData(it) } }
-                    val a33 = Abilities33.ifIsNotBlankOrZero { async { getAbilityData(it) } }
+                    val a31 = getAbilityDataAsync(Abilities31)
+                    val a32 = Abilities32.ifIsNotBlankOrZero { getAbilityDataAsync(it) }
+                    val a33 = Abilities33.ifIsNotBlankOrZero { getAbilityDataAsync(it) }
 
-                    val s1 = async { getSkillData(Skill1Name) }
-                    val s2 = async { getSkillData(Skill2Name) }
+                    val s1 = getSkillDataAsync(Skill1Name)
+                    val s2 = getSkillDataAsync(Skill2Name)
 
-                    val coa1 = async { getCoAbilityData(ExAbilityData1) }
-                    val coa2 = async { getCoAbilityData(ExAbilityData2) }
-                    val coa3 = async { getCoAbilityData(ExAbilityData3) }
-                    val coa4 = async { getCoAbilityData(ExAbilityData4) }
-                    val coa5 = async { getCoAbilityData(ExAbilityData5) }
+                    val coa1 = getCoAbilityDataAsync(ExAbilityData1)
+                    val coa2 = getCoAbilityDataAsync(ExAbilityData2)
+                    val coa3 = getCoAbilityDataAsync(ExAbilityData3)
+                    val coa4 = getCoAbilityDataAsync(ExAbilityData4)
+                    val coa5 = getCoAbilityDataAsync(ExAbilityData5)
 
                     val images = (Rarity.toInt()..5).map {
                         async { getAndCacheAdventurerPortraitImageInfoByIds(Id, VariationId, it) }
@@ -83,10 +83,9 @@ class DragaliaLostRepositoryImplementation(
             }
             .filter { it in query }
 
-
     @ExperimentalCoroutinesApi
     @FlowPreview
-    override suspend fun searchDragons(query: DragonsQuery, limit: Int) =
+    override fun searchDragons(query: DragonsQuery, limit: Int) =
         dragonsQueryMapper.toRemote(query)
             .asFlow()
             .map { dsQuery ->
@@ -94,27 +93,26 @@ class DragaliaLostRepositoryImplementation(
                     cache.cacheDragonCargoQuery(dsQuery, limit, it)
                 }
             }
-            .flattenConcat()
-            .toSet()
-            .asFlow()
+            .flattenMergeIterable()
+            .distinctUntilChanged()
             .map { dragonId ->
                 cache.getDragonById(dragonId) ?: datasource.getDragonById(dragonId)
                     .also { cache.cacheDragonById(dragonId, it) }
             }
             .scopedMap { json ->
                 with(json) {
-                    val a11 = async { getAbilityData(Abilities11) }
-                    val a12 = async { getAbilityData(Abilities12) }
+                    val a11 = getAbilityDataAsync(Abilities11)
+                    val a12 = getAbilityDataAsync(Abilities12)
 
-                    val a21 = Abilities21.ifIsNotBlankOrZero { async { getAbilityData(it) } }
-                    val a22 = Abilities22.ifIsNotBlankOrZero { async { getAbilityData(it) } }
+                    val a21 = Abilities21.ifIsNotBlankOrZero { getAbilityDataAsync(it) }
+                    val a22 = Abilities22.ifIsNotBlankOrZero { getAbilityDataAsync(it) }
 
-                    val s1 = async { getSkillData(SkillName) }
+                    val s1 = getSkillDataAsync(SkillName)
 
                     val icon = async { getAndCacheDragonIconImageInfoById(BaseId) }
                     val portrait = async { getAndCacheDragonPortraitImageInfoById(BaseId) }
 
-                    DragonsMapper.Params(
+                    DragonMapper.Params(
                         json, a11.await(), a12.await(), a21?.await(), a22?.await(),
                         s1.await(), icon.await(), portrait.await()
                     )
@@ -123,12 +121,14 @@ class DragaliaLostRepositoryImplementation(
             .catch {
                 println("A dragon errored: $it")
             }
-            .map { dragonsMapper(it) }
-            .filter { it in query }
+            .map { dragonMapper(it) }
+            .filter {
+                it in query
+            }
 
     @ExperimentalCoroutinesApi
     @FlowPreview
-    override suspend fun searchWyrmprints(query: WyrmprintsQuery, limit: Int) =
+    override fun searchWyrmprints(query: WyrmprintsQuery, limit: Int) =
         wyrmprintsQueryMapper.toRemote(query)
             .asFlow()
             .map { dsQuery ->
@@ -136,33 +136,32 @@ class DragaliaLostRepositoryImplementation(
                     cache.cacheWyrmprintCargoQuery(dsQuery, limit, it)
                 }
             }
-            .flattenConcat()
-            .toSet()
-            .asFlow()
+            .flattenMergeIterable()
+            .distinctUntilChanged()
             .map { id ->
                 cache.getWyrmprintById(id) ?: datasource.getWyrmprintById(id)
                     .also { cache.cacheWyrmprintById(id, it) }
             }
             .scopedMap { json ->
                 with(json) {
-                    val a11 = async { getAbilityData(Abilities11) }
-                    val a12 = async { getAbilityData(Abilities12) }
-                    val a13 = async { getAbilityData(Abilities13) }
+                    val a11 = getAbilityDataAsync(Abilities11)
+                    val a12 = getAbilityDataAsync(Abilities12)
+                    val a13 = getAbilityDataAsync(Abilities13)
 
-                    val a21 = Abilities21.ifIsNotBlankOrZero { async { getAbilityData(it) } }
-                    val a22 = Abilities22.ifIsNotBlankOrZero { async { getAbilityData(it) } }
-                    val a23 = Abilities23.ifIsNotBlankOrZero { async { getAbilityData(it) } }
+                    val a21 = Abilities21.ifIsNotBlankOrZero { getAbilityDataAsync(it) }
+                    val a22 = Abilities22.ifIsNotBlankOrZero { getAbilityDataAsync(it) }
+                    val a23 = Abilities23.ifIsNotBlankOrZero { getAbilityDataAsync(it) }
 
-                    val a31 = Abilities31.ifIsNotBlankOrZero { async { getAbilityData(it) } }
-                    val a32 = Abilities32.ifIsNotBlankOrZero { async { getAbilityData(it) } }
-                    val a33 = Abilities33.ifIsNotBlankOrZero { async { getAbilityData(it) } }
+                    val a31 = Abilities31.ifIsNotBlankOrZero { getAbilityDataAsync(it) }
+                    val a32 = Abilities32.ifIsNotBlankOrZero { getAbilityDataAsync(it) }
+                    val a33 = Abilities33.ifIsNotBlankOrZero { getAbilityDataAsync(it) }
 
                     val icon1 = async { getAndCacheWyrmprintIconImageInfoById(BaseId, 1) }
                     val icon2 = async { getAndCacheWyrmprintIconImageInfoById(BaseId, 2) }
                     val artwork1 = async { getAndCacheWyrmprintIconPortraitInfoById(BaseId, 1) }
                     val artwork2 = async { getAndCacheWyrmprintIconPortraitInfoById(BaseId, 2) }
 
-                    WyrmprintsMapper.Params(
+                    WyrmprintMapper.Params(
                         json, a11.await(), a12.await(), a13.await(), a21?.await(), a22?.await(),
                         a23?.await(), a31?.await(), a32?.await(), a33?.await(), icon1.await(),
                         icon2.await(), artwork1.await(), artwork2.await()
@@ -172,17 +171,20 @@ class DragaliaLostRepositoryImplementation(
             .catch {
                 println("A wyrmprint errored: $it")
             }
-            .map { wyrmprintsMapper(it) }
+            .map { wyrmprintMapper(it) }
+            .filter { it in query }
 
-    private suspend fun getAbilityData(id: String) =
+    private fun CoroutineScope.getAbilityDataAsync(id: String) = async {
         getAndCacheAbilityById(id) withPair {
             getAndCacheAbilityIconImageInfoByFileName(AbilityIconName) to getAndCacheAbilityGroupByGroupId(AbilityGroup)
         }
+    }
 
-    private suspend fun getCoAbilityData(id: String) =
+    private fun CoroutineScope.getCoAbilityDataAsync(id: String) = async {
         getAndCacheCoAbilityById(id).with { getAndCacheCoAbilityIconImageInfoByFileName(AbilityIconName) }
+    }
 
-    private suspend fun getSkillData(id: String) = coroutineScope {
+    private fun CoroutineScope.getSkillDataAsync(id: String) = async {
         getAndCacheSkillByName(id) with {
             Triple(
                 async { getAndCacheSkillIconImageInfoByFileName(SkillLv1IconName) },
@@ -191,6 +193,7 @@ class DragaliaLostRepositoryImplementation(
             ).await()
         }
     }
+
 
     private suspend fun getAndCacheAbilityById(abilityId: String) = cache.getAbilityById(abilityId)
         ?: datasource.getAbilityById(abilityId).also { cache.cacheAbilityById(abilityId, it) }

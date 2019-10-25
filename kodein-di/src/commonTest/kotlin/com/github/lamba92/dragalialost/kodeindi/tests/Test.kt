@@ -1,167 +1,63 @@
 package com.github.lamba92.dragalialost.kodeindi.tests
 
-import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasource
-import com.github.lamba92.dragalialost.domain.repositories.*
-import com.github.lamba92.dragalialost.domain.repositories.ext.*
+import com.github.lamba92.dragalialost.domain.entities.enums.AbilityType
+import com.github.lamba92.dragalialost.domain.entities.enums.HeroCLass
+import com.github.lamba92.dragalialost.domain.repositories.DragaliaLostRepository
+import com.github.lamba92.dragalialost.domain.repositories.searchAdventurers
+import com.github.lamba92.dragalialost.domain.repositories.searchWyrmprints
 import com.github.lamba92.dragalialost.kodeindi.dragaliaLostModule
-import com.github.lamba92.utils.runTest
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.toList
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.erased.instance
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.time.ExperimentalTime
-import kotlin.time.measureTimedValue
 
-class Test : KodeinAware {
+class AdventurerTests : KodeinAware {
 
     override val kodein by Kodein.lazy {
         import(dragaliaLostModule())
     }
 
     private val repository by instance<DragaliaLostRepository>()
-    private val endpoints by instance<GamepediaDatasource.Endpoints>()
-    private val datasource by instance<GamepediaDatasource>()
 
+    @FlowPreview
     @ExperimentalTime
     @Test
-    fun adventurersTest() = runTest {
-
-        val (res, time) = measureTimedValue { repository.searchAllAdventurers().toList() }
-        val (res2, time2) = measureTimedValue { repository.searchAllAdventurers().toList() }
-
-        res.sortedBy { it.name }.zip(res2.sortedBy { it.name })
-            .forEach { (a1, a2) ->
-                assertEquals(a1, a2)
-            }
-
-        assertEquals(true, time > time2, "That's impossible")
-
-        println(
-            "__________________________\n" +
-                    "| TestAdventurers results: \n" +
-                    "| Total results first call:     ${res.size}\n" +
-                    "| Total results second call:    ${res2.size}\n" +
-                    "| Elapsed time for first call:  ${time.inSeconds}\n" +
-                    "| Elapsed time for second call: ${time2.inSeconds}\n" +
-                    "|_________________________\n"
-        )
-
-    }
-
-
-//    fun adventurersOneByOneComparison
-
-    @ExperimentalTime
-    @Test
-    fun singleAdventurerTest() = runTest {
-        val (res, time) = measureTimedValue {
-            repository.searchAdventurers {
-                name = "Euden"
-            }.toList()
+    fun testEuden() = runTestTimed {
+        repository.searchWyrmprints {
+            addAbilityType(AbilityType.EVENT_PERKS)
         }
-
-        println(
-            "__________________________\n" +
-                    "| TestSingleAdventurers results: \n" +
-                    "| Elapsed time for first call:  ${time.inSeconds}\n" +
-                    "|_________________________"
-        )
-        println(res)
-    }
-
-    @ExperimentalTime
-    @Test
-    fun dragonsTest() = runTest {
-        val (res, time) = measureTimedValue { repository.searchAllDragons().toList() }
-        val (res2, time2) = measureTimedValue { repository.searchAllDragons().toList() }
-        assertEquals(true, time > time2)
-        println(
-            "__________________________\n" +
-                    "| TestDragons results: \n" +
-                    "| Total results first call:     ${res.size}\n" +
-                    "| Total results second call:    ${res2.size}\n" +
-                    "| Elapsed time for first call:  ${time.inSeconds}\n" +
-                    "| Elapsed time for second call: ${time2.inSeconds}\n" +
-                    "|_________________________\n"
-        )
-
-    }
-
-    @ExperimentalTime
-    @Test
-    fun singleDragonTest() = runTest {
-        val (res, time) = measureTimedValue {
-            repository.searchDragons {
-                name = "Agni"
-            }.toList()
-        }
-
-        assertEquals(1, res.size)
-        assertEquals("Agni", res.first().name)
-
-        println(
-            "__________________________\n" +
-                    "| TestSingleDragon results: \n" +
-                    "| Elapsed time for first call:  ${time.inSeconds}\n" +
-                    "|_________________________"
-        )
-        println(res)
-    }
-
-    @ExperimentalTime
-    @Test
-    fun wyrmprintsTest() = runTest {
-        val (res, time) = measureTimedValue { repository.searchAllWyrmprints().toList() }
-        val (res2, time2) = measureTimedValue { repository.searchAllWyrmprints().toList() }
-        assertEquals(res, res2)
-        assertEquals(true, time > time2)
-
-        println(
-            "__________________________\n" +
-                    "| TestWyrmprints results: \n" +
-                    "| Total results first call:     ${res.size}\n" +
-                    "| Total results second call:    ${res2.size}\n" +
-                    "| Elapsed time for first call:  ${time.inSeconds}\n" +
-                    "| Elapsed time for second call: ${time2.inSeconds}\n" +
-                    "|_________________________"
-        )
-
-    }
-
-    @ExperimentalTime
-    @Test
-    fun singleWyrmprintTest() = runTest {
-        val (res, time) = measureTimedValue {
-            repository.searchWyrmprints {
-                name = "Resounding Rendition"
-            }.toList()
-        }
-
-        assertEquals(1, res.size)
-        assertEquals("Resounding Rendition", res.first().name)
-
-        println(
-            "__________________________\n" +
-                    "| TestSingleWyrmprint results: \n" +
-                    "| Elapsed time for first call:  ${time.inSeconds}\n" +
-                    "|_________________________"
-        )
-
-
-        println(res)
-    }
-
-    @Test
-    fun test() = runTest {
-
-        repository.searchAllAdventurers()
-            .filter { it.elementalResistances.isNotEmpty() }
             .collect { println(it) }
-
     }
+
+    @ExperimentalTime
+    @Test
+    fun testHeroClassSingleFilter() = runTestTimed {
+        val attackers = repository.searchAdventurers {
+            addHeroClass(HeroCLass.ATTACK)
+        }
+
+        attackers.collect { adventurer ->
+            println(adventurer.name)
+        }
+    }
+
+    @ExperimentalTime
+    @Test
+    fun testHeroClassMultipleFilters() = runTestTimed {
+        repository.searchAdventurers {
+            addHeroClass(HeroCLass.ATTACK)
+            addHeroClass(HeroCLass.HEALING)
+        }.collect {
+            assertEquals(
+                true, it.heroClass == HeroCLass.ATTACK || it.heroClass == HeroCLass.HEALING,
+                "${it.name} is not HeroCLass.ATTACK or HeroCLass.HEALING, it is ${it.heroClass}"
+            )
+        }
+    }
+
 
 }

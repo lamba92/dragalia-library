@@ -10,17 +10,17 @@ import kotlinx.coroutines.flow.Flow
 
 interface DragaliaLostRepository {
 
-    suspend fun searchAdventurers(
+    fun searchAdventurers(
         query: AdventurersQuery,
         limit: Int = 500
     ): Flow<AdventurerEntity>
 
-    suspend fun searchDragons(
+    fun searchDragons(
         query: DragonsQuery,
         limit: Int = 500
     ): Flow<DragonEntity>
 
-    suspend fun searchWyrmprints(
+    fun searchWyrmprints(
         query: WyrmprintsQuery,
         limit: Int = 500
     ): Flow<WyrmprintEntity>

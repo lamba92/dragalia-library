@@ -1,6 +1,7 @@
 package com.github.lamba92.dragalialost.domain.repositories.queries
 
-import com.github.lamba92.dragalialost.domain.entities.enums.Afflictions
+import com.github.lamba92.dragalialost.domain.entities.enums.AbilityType
+import com.github.lamba92.dragalialost.domain.entities.enums.Affliction
 import com.github.lamba92.dragalialost.domain.entities.enums.Element
 import com.github.lamba92.dragalialost.domain.entities.enums.Rarity
 
@@ -8,14 +9,10 @@ import com.github.lamba92.dragalialost.domain.entities.enums.Rarity
 class WyrmprintsQueryBuilder {
 
     var name: String? = null
-    //    val wyrmprintAbilityTypes = mutableSetOf<WyrmprintAbilityType>()
     val rarities = mutableSetOf<Rarity>()
-    val afflictionResistances = mutableSetOf<Afflictions>()
+    val afflictionResistances = mutableSetOf<Affliction>()
     val elementalResistances = mutableSetOf<Element>()
-
-//    fun addWyrmprintAbilityType(wyrmprintAbilityType: WyrmprintAbilityType) {
-//        wyrmprintAbilityTypes.add(wyrmprintAbilityType)
-//    }
+    val abilityTypes = mutableSetOf<AbilityType>()
 
     fun addRarity(rarity: Rarity) {
         rarities.add(rarity)
@@ -25,23 +22,22 @@ class WyrmprintsQueryBuilder {
         elementalResistances.add(element)
     }
 
-    fun addAfflictionResistance(affliction: Afflictions) {
+    fun addAfflictionResistance(affliction: Affliction) {
         afflictionResistances.add(affliction)
+    }
+
+    fun addAbilityType(abilityType: AbilityType) {
+        abilityTypes.add(abilityType)
     }
 
     fun anyRarity() =
         Rarity.values().forEach { addRarity(it) }
 
-    fun anyElementalResistance() =
-        Element.values().forEach { addElementalResistance(it) }
-
-    fun anyAfflictionResistance() =
-        Afflictions.values().forEach { addAfflictionResistance(it) }
-
     fun toQuery() = WyrmprintsQuery(
         name,
         rarities.toSet(),
         afflictionResistances.toSet(),
-        elementalResistances.toSet()
+        elementalResistances.toSet(),
+        abilityTypes.toSet()
     )
 }
