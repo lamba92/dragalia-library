@@ -5,14 +5,11 @@ import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasourceCache
 import com.github.lamba92.dragalialost.data.mappers.*
 import com.github.lamba92.dragalialost.data.utils.*
 import com.github.lamba92.dragalialost.domain.repositories.DragaliaLostRepository
-import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQueryBuilder
-import com.github.lamba92.dragalialost.domain.repositories.queries.DragonsQueryBuilder
-import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQueryBuilder
+import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQuery
+import com.github.lamba92.dragalialost.domain.repositories.queries.DragonsQuery
+import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQuery
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toSet
+import kotlinx.coroutines.flow.*
 
 class DragaliaLostRepositoryImplementation(
     private val datasource: GamepediaDatasource,
@@ -27,7 +24,7 @@ class DragaliaLostRepositoryImplementation(
 
     @ExperimentalCoroutinesApi
     @FlowPreview
-    override suspend fun searchAdventurers(query: AdventurersQueryBuilder, limit: Int) =
+    override suspend fun searchAdventurers(query: AdventurersQuery, limit: Int) =
         adventurersQueryMapper.toRemote(query)
             .asFlow()
             .map { dsQuery ->
@@ -84,10 +81,12 @@ class DragaliaLostRepositoryImplementation(
             .catch {
                 println("An adventurer errored: $it")
             }
+            .filter { it in query }
+
 
     @ExperimentalCoroutinesApi
     @FlowPreview
-    override suspend fun searchDragons(query: DragonsQueryBuilder, limit: Int) =
+    override suspend fun searchDragons(query: DragonsQuery, limit: Int) =
         dragonsQueryMapper.toRemote(query)
             .asFlow()
             .map { dsQuery ->
@@ -125,10 +124,11 @@ class DragaliaLostRepositoryImplementation(
                 println("A dragon errored: $it")
             }
             .map { dragonsMapper(it) }
+            .filter { it in query }
 
     @ExperimentalCoroutinesApi
     @FlowPreview
-    override suspend fun searchWyrmprints(query: WyrmprintsQueryBuilder, limit: Int) =
+    override suspend fun searchWyrmprints(query: WyrmprintsQuery, limit: Int) =
         wyrmprintsQueryMapper.toRemote(query)
             .asFlow()
             .map { dsQuery ->

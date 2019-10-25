@@ -2,15 +2,15 @@ package com.github.lamba92.dragalialost.data.mappers
 
 import com.github.lamba92.dragalialost.data.datasource.queries.WyrmprintsCargoQuery
 import com.github.lamba92.dragalialost.data.utils.combine
-import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQueryBuilder
+import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQuery
 
 class WyrmprintsQueryMapper(
     private val wyrmprintAbilityTypeMapper: WyrmprintAbilityTypeMapper,
     private val elementMapper: ElementMapper,
     private val rarityMapper: RarityMapper
-) : SingleToRemoteMapper<List<WyrmprintsCargoQuery>, WyrmprintsQueryBuilder> {
+) : SingleToRemoteMapper<List<WyrmprintsCargoQuery>, WyrmprintsQuery> {
 
-    override fun toRemote(entity: WyrmprintsQueryBuilder) = with(entity) {
+    override fun toRemote(entity: WyrmprintsQuery) = with(entity) {
         if (wyrmprintAbilityTypes.isNotEmpty() && elements.isNotEmpty() && rarities.isNotEmpty())
             combine(wyrmprintAbilityTypes, elements, rarities) { wyrmType, element, rarity ->
                 WyrmprintsCargoQuery(

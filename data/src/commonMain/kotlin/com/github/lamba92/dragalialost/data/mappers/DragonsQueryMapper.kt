@@ -2,13 +2,13 @@ package com.github.lamba92.dragalialost.data.mappers
 
 import com.github.lamba92.dragalialost.data.datasource.queries.DragonsCargoQuery
 import com.github.lamba92.dragalialost.data.utils.combine
-import com.github.lamba92.dragalialost.domain.repositories.queries.DragonsQueryBuilder
+import com.github.lamba92.dragalialost.domain.repositories.queries.DragonsQuery
 
 class DragonsQueryMapper(
     private val rarityMapper: RarityMapper,
     private val elementMapper: ElementMapper
-) : SingleToRemoteMapper<List<DragonsCargoQuery>, DragonsQueryBuilder> {
-    override fun toRemote(entity: DragonsQueryBuilder) = with(entity) {
+) : SingleToRemoteMapper<List<DragonsCargoQuery>, DragonsQuery> {
+    override fun toRemote(entity: DragonsQuery) = with(entity) {
         if (elements.isEmpty() && rarities.isNotEmpty())
             rarities.map {
                 DragonsCargoQuery(null, rarityMapper.toRemote(it), name)

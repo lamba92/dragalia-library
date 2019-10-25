@@ -9,4 +9,12 @@ open class WithElementQueryBuilder : DragaliaQueryBuilder() {
     fun addElement(element: Element) {
         elements.add(element)
     }
+
+    fun addEveryElement() =
+        Element.values().forEach { addElement(it) }
+
+    fun toQuery() = WithElementQuery(
+        name, elements.toSet(), rarities.toSet()
+    )
 }
+

@@ -1,7 +1,7 @@
 package com.github.lamba92.dragalialost.kodeindi.tests
 
 import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasource
-import com.github.lamba92.dragalialost.domain.repositories.DragaliaLostRepository
+import com.github.lamba92.dragalialost.domain.repositories.*
 import com.github.lamba92.dragalialost.domain.repositories.ext.*
 import com.github.lamba92.dragalialost.kodeindi.dragaliaLostModule
 import com.github.lamba92.utils.runTest

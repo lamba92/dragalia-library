@@ -61,7 +61,6 @@ interface GamepediaDatasource {
 
         fun searchWyrmprintIdsUrl(
             name: String? = null,
-            element: String? = null,
             rarity: Int? = null,
             limit: Int = 500
         ): Url

@@ -82,13 +82,25 @@ class GamepediaEndpointsImplementation(
     private inline fun <reified T : CargoQueryable> buildIdUrl(
         table: DatasourceTables,
         name: String?,
+        rarity: Int?,
+        limit: Int,
+        noinline builder: CargoQueryWhereClauseBuilder.() -> Unit = {}
+    ) = buildIdUrl<T>(table, limit) {
+        name?.let { appendLike(CargoProperties.nameOf<T>(), it) }
+        rarity?.let { appendEquality("Rarity ", it) }
+        builder()
+    }
+
+    @JsName("buildIdUrl4")
+    private inline fun <reified T : CargoQueryable> buildIdUrl(
+        table: DatasourceTables,
+        name: String?,
         element: String?,
         rarity: Int?,
         limit: Int,
         noinline builder: CargoQueryWhereClauseBuilder.() -> Unit = {}
-    ) = buildIdUrl<T>(table, name, limit) {
+    ) = buildIdUrl<T>(table, name, rarity, limit) {
         element?.let { appendEquality("ElementalType", it) }
-        rarity?.let { appendEquality("Rarity ", it) }
         builder()
     }
 
@@ -107,8 +119,8 @@ class GamepediaEndpointsImplementation(
     override fun searchDragonIdsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
         buildIdUrl<DragonJSON>(DRAGONS_TABLE, name, element, rarity, limit)
 
-    override fun searchWyrmprintIdsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
-        buildIdUrl<WyrmprintJSON>(WYRMPRINTS_TABLE, name, element, rarity, limit)
+    override fun searchWyrmprintIdsUrl(name: String?, rarity: Int?, limit: Int) =
+        buildIdUrl<WyrmprintJSON>(WYRMPRINTS_TABLE, name, rarity, limit)
 
     override fun searchWeaponIdsUrl(name: String?, element: String?, rarity: Int?, limit: Int) =
         buildIdUrl<WeaponJSON>(WEAPONS_TABLE, name, element, rarity, limit)

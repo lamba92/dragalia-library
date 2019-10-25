@@ -10,4 +10,8 @@ abstract class DragaliaQueryBuilder {
     fun addRarity(rarity: Rarity) {
         rarities.add(rarity)
     }
+
+    fun addEveryRarity() =
+        Rarity.values().forEach { addRarity(it) }
+
 }

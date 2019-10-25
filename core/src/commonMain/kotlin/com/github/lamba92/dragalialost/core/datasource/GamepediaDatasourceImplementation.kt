@@ -27,7 +27,7 @@ class GamepediaDatasourceImplementation(
     }
 
     override suspend fun searchWyrmprintIds(query: WyrmprintsCargoQuery, limit: Int) = with(query) {
-        httpClient.get<WyrmprintIdCargoJSON>(endpoints.searchWyrmprintIdsUrl(name, element, rarity, limit))
+        httpClient.get<WyrmprintIdCargoJSON>(endpoints.searchWyrmprintIdsUrl(name, rarity, limit))
             .cargoquery.map { it.title.Id }
     }
 

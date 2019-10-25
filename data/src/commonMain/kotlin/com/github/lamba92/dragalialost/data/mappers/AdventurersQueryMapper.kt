@@ -2,18 +2,18 @@ package com.github.lamba92.dragalialost.data.mappers
 
 import com.github.lamba92.dragalialost.data.datasource.queries.AdventurersCargoQuery
 import com.github.lamba92.dragalialost.data.utils.combine
-import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQueryBuilder
+import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQuery
 
 class AdventurersQueryMapper(
     private val rarityMapper: RarityMapper,
     private val weaponTypeMapper: WeaponTypeMapper,
     private val heroClassMapper: HeroClassMapper,
     private val elementMapper: ElementMapper
-) : SingleToRemoteMapper<List<AdventurersCargoQuery>, AdventurersQueryBuilder> {
+) : SingleToRemoteMapper<List<AdventurersCargoQuery>, AdventurersQuery> {
 
-    override fun toRemote(entity: AdventurersQueryBuilder) = with(entity) {
-        if (rarities.isEmpty() && weaponTypes.isNotEmpty() && heroCLasses.isNotEmpty() && elements.isNotEmpty())
-            combine(weaponTypes, heroCLasses, elements) { weaponType, heroClass, element ->
+    override fun toRemote(entity: AdventurersQuery) = with(entity) {
+        if (rarities.isEmpty() && weaponTypes.isNotEmpty() && heroClasses.isNotEmpty() && elements.isNotEmpty())
+            combine(weaponTypes, heroClasses, elements) { weaponType, heroClass, element ->
                 AdventurersCargoQuery(
                     weaponTypeMapper.toRemote(weaponType),
                     heroClassMapper.toRemote(heroClass),
@@ -22,8 +22,8 @@ class AdventurersQueryMapper(
                     name
                 )
             }
-        else if (rarities.isNotEmpty() && weaponTypes.isEmpty() && heroCLasses.isNotEmpty() && elements.isNotEmpty())
-            combine(rarities, heroCLasses, elements) { rarity, heroClass, element ->
+        else if (rarities.isNotEmpty() && weaponTypes.isEmpty() && heroClasses.isNotEmpty() && elements.isNotEmpty())
+            combine(rarities, heroClasses, elements) { rarity, heroClass, element ->
                 AdventurersCargoQuery(
                     null,
                     heroClassMapper.toRemote(heroClass),
@@ -32,7 +32,7 @@ class AdventurersQueryMapper(
                     name
                 )
             }
-        else if (rarities.isNotEmpty() && weaponTypes.isNotEmpty() && heroCLasses.isEmpty() && elements.isNotEmpty())
+        else if (rarities.isNotEmpty() && weaponTypes.isNotEmpty() && heroClasses.isEmpty() && elements.isNotEmpty())
             combine(rarities, weaponTypes, elements) { rarity, weaponType, element ->
                 AdventurersCargoQuery(
                     weaponTypeMapper.toRemote(weaponType),
@@ -42,8 +42,8 @@ class AdventurersQueryMapper(
                     name
                 )
             }
-        else if (rarities.isNotEmpty() && weaponTypes.isNotEmpty() && heroCLasses.isNotEmpty() && elements.isEmpty())
-            combine(rarities, weaponTypes, heroCLasses) { rarity, weaponType, heroClass ->
+        else if (rarities.isNotEmpty() && weaponTypes.isNotEmpty() && heroClasses.isNotEmpty() && elements.isEmpty())
+            combine(rarities, weaponTypes, heroClasses) { rarity, weaponType, heroClass ->
                 AdventurersCargoQuery(
                     weaponTypeMapper.toRemote(weaponType),
                     heroClassMapper.toRemote(heroClass),
@@ -52,8 +52,8 @@ class AdventurersQueryMapper(
                     name
                 )
             }
-        else if (rarities.isEmpty() && weaponTypes.isEmpty() && heroCLasses.isNotEmpty() && elements.isNotEmpty())
-            combine(heroCLasses, elements) { heroClass, element ->
+        else if (rarities.isEmpty() && weaponTypes.isEmpty() && heroClasses.isNotEmpty() && elements.isNotEmpty())
+            combine(heroClasses, elements) { heroClass, element ->
                 AdventurersCargoQuery(
                     null,
                     heroClassMapper.toRemote(heroClass),
@@ -62,7 +62,7 @@ class AdventurersQueryMapper(
                     name
                 )
             }
-        else if (rarities.isEmpty() && weaponTypes.isNotEmpty() && heroCLasses.isEmpty() && elements.isNotEmpty())
+        else if (rarities.isEmpty() && weaponTypes.isNotEmpty() && heroClasses.isEmpty() && elements.isNotEmpty())
             combine(weaponTypes, elements) { weaponType, element ->
                 AdventurersCargoQuery(
                     weaponTypeMapper.toRemote(weaponType),
@@ -72,8 +72,8 @@ class AdventurersQueryMapper(
                     name
                 )
             }
-        else if (rarities.isEmpty() && weaponTypes.isNotEmpty() && heroCLasses.isNotEmpty() && elements.isEmpty())
-            combine(weaponTypes, heroCLasses) { weaponType, heroClass ->
+        else if (rarities.isEmpty() && weaponTypes.isNotEmpty() && heroClasses.isNotEmpty() && elements.isEmpty())
+            combine(weaponTypes, heroClasses) { weaponType, heroClass ->
                 AdventurersCargoQuery(
                     weaponTypeMapper.toRemote(weaponType),
                     heroClassMapper.toRemote(heroClass),
@@ -82,7 +82,7 @@ class AdventurersQueryMapper(
                     name
                 )
             }
-        else if (rarities.isEmpty() && weaponTypes.isEmpty() && heroCLasses.isEmpty() && elements.isNotEmpty())
+        else if (rarities.isEmpty() && weaponTypes.isEmpty() && heroClasses.isEmpty() && elements.isNotEmpty())
             elements.map {
                 AdventurersCargoQuery(
                     null,
@@ -92,8 +92,8 @@ class AdventurersQueryMapper(
                     name
                 )
             }
-        else if (rarities.isEmpty() && weaponTypes.isEmpty() && heroCLasses.isNotEmpty() && elements.isEmpty())
-            heroCLasses.map {
+        else if (rarities.isEmpty() && weaponTypes.isEmpty() && heroClasses.isNotEmpty() && elements.isEmpty())
+            heroClasses.map {
                 AdventurersCargoQuery(
                     null,
                     heroClassMapper.toRemote(it),
@@ -102,7 +102,7 @@ class AdventurersQueryMapper(
                     name
                 )
             }
-        else if (rarities.isEmpty() && weaponTypes.isNotEmpty() && heroCLasses.isEmpty() && elements.isEmpty())
+        else if (rarities.isEmpty() && weaponTypes.isNotEmpty() && heroClasses.isEmpty() && elements.isEmpty())
             weaponTypes.map {
                 AdventurersCargoQuery(
                     weaponTypeMapper.toRemote(it),
@@ -112,7 +112,7 @@ class AdventurersQueryMapper(
                     name
                 )
             }
-        else if (rarities.isNotEmpty() && weaponTypes.isEmpty() && heroCLasses.isEmpty() && elements.isEmpty())
+        else if (rarities.isNotEmpty() && weaponTypes.isEmpty() && heroClasses.isEmpty() && elements.isEmpty())
             rarities.map {
                 AdventurersCargoQuery(
                     null,
