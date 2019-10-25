@@ -6,13 +6,29 @@ plugins {
 }
 
 kotlin {
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+
+    metadata {
+        mavenPublication {
+            artifactId = "${rootProject.name}-${project.name}-metadata"
         }
     }
+
+    jvm {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+        mavenPublication {
+            artifactId = "${rootProject.name}-${project.name}-jvm"
+        }
+    }
+
     js {
         nodejs()
+        mavenPublication {
+            artifactId = "${rootProject.name}-${project.name}-js"
+        }
     }
 
     sourceSets {
@@ -65,6 +81,8 @@ publishing {
             }
         }
     }
+    val commonModulePublication = publications["kotlinMultiplatform"] as MavenPublication
+    commonModulePublication.artifactId = "${rootProject.name}-${project.name}-common"
 }
 //
 //tasks.register<Copy>("buildNodePackage") {

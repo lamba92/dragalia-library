@@ -8,17 +8,28 @@ plugins {
 }
 
 kotlin {
+
+    metadata {
+        mavenPublication {
+            artifactId = "${rootProject.name}-${project.name}-metadata"
+        }
+    }
+
     jvm {
         compilations.all {
             kotlinOptions {
                 jvmTarget = "1.8"
             }
         }
+        mavenPublication {
+            artifactId = "${rootProject.name}-${project.name}-jvm"
+        }
     }
 
     js {
-        compilations.all {
-            nodejs()
+        nodejs()
+        mavenPublication {
+            artifactId = "${rootProject.name}-${project.name}-js"
         }
     }
 
@@ -102,6 +113,8 @@ publishing {
             }
         }
     }
+    val commonModulePublication = publications["kotlinMultiplatform"] as MavenPublication
+    commonModulePublication.artifactId = "${rootProject.name}-${project.name}-common"
 }
 
 @Suppress("unused")
