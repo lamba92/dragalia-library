@@ -73,6 +73,7 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 api(kotlin("test-junit"))
+                api(lamba("kotlin-multiplatform-coroutines-runtest-jvm", coroutineRunTestVersion))
             }
         }
 
@@ -90,6 +91,7 @@ kotlin {
         val jsTest by getting {
             dependencies {
                 api(kotlin("test-js"))
+                api(lamba("kotlin-multiplatform-coroutines-runtest-js", coroutineRunTestVersion))
             }
         }
 

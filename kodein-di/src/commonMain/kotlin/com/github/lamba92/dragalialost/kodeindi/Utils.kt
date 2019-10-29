@@ -13,6 +13,7 @@ fun dragaliaLostModule(isDebug: Boolean = false, httpLogLevel: LogLevel = LogLev
     import(MappersModule)
     import(NetworkModule)
     import(RepositoriesModule)
+    import(UseCasesModule)
     import(ConstantsModule)
         constant("isDebug") with isDebug
         if (isDebug) constant("httpLogLevel") with httpLogLevel

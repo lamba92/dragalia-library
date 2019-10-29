@@ -19,4 +19,15 @@ class RarityMapper : SingleToRemoteMapper<Int, Rarity>, SingleFromRemoteMapper<S
         else -> throw IllegalArgumentException("Rarity $remote has not been managed yet")
     }
 
+    fun fromRemoteSingle(remote: Int) = when (remote) {
+        2 -> TWO
+        3 -> THREE
+        4 -> FOUR
+        5 -> FIVE
+        else -> throw IllegalArgumentException("Rarity $remote has not been managed yet")
+    }
+
+    operator fun invoke(remote: Int) =
+        fromRemoteSingle(remote)
+
 }

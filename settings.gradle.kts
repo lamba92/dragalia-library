@@ -21,13 +21,5 @@ pluginManagement {
 
 rootProject.name = "dragalia-library"
 include(":domain", ":data", ":core", "kodein-di")
-//includeBuild("../kotlin-multiplatform-coroutines-runtest") {
-//    dependencySubstitution {
-//        substitute(module("com.github.lamba92:kotlin-multiplatform-coroutines-runtest-metadata")).with(project(":"))
-//        substitute(module("com.github.lamba92:kotlin-multiplatform-coroutines-runtest-jvm")).with(project(":"))
-//        substitute(module("com.github.lamba92:kotlin-multiplatform-coroutines-runtest-js")).with(project(":"))
-//        substitute(module("com.github.lamba92:kotlin-multiplatform-coroutines-runtest")).with(project(":"))
-//    }
-//}
 
 enableFeaturePreview("GRADLE_METADATA")

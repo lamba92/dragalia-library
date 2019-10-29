@@ -27,7 +27,6 @@ subprojects {
                 password = property_("githubToken")
             }
         }
-        maven("https://jitpack.io")
     }
 }
 

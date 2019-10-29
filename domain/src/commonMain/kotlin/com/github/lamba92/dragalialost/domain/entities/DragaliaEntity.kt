@@ -17,6 +17,8 @@ interface DragaliaEntity {
     val obtainedFrom: List<Source>
     val releaseDate: DateTime
     val availability: List<Availability>
+    val icon: String
+    val artwork: String
 
     companion object {
         const val WYRMPRINTS_MAX_LVL = 100

@@ -26,7 +26,7 @@ class AdventurerMapper(
     private val rarityMapper: RarityMapper,
     private val sourceMapper: SourceMapper,
     private val availabilityMapper: AvailabilityMapper,
-    private val imageMapper: ImageMapper
+    private val adventurerImageMapper: AdventurerImageMapper
 ) : SingleFromRemoteMapper<AdventurerMapper.Params, AdventurerEntity> {
 
     override fun fromRemoteSingle(remote: Params) = with(remote) {
@@ -82,8 +82,8 @@ class AdventurerMapper(
                 sourceMapper(Obtain),
                 DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
                 availabilityMapper(Availability),
-                imageMapper(artworks),
-                imageMapper(icons),
+                adventurerImageMapper(artworks),
+                adventurerImageMapper(icons),
                 elementMapper(ElementalType),
                 weaponType,
                 skill1,
@@ -116,8 +116,8 @@ class AdventurerMapper(
         val coabilityLvl5: Pair<CoAbilityJSON, ImageInfoJSON>,
         val skill1: Pair<SkillJSON, Triple<ImageInfoJSON, ImageInfoJSON, ImageInfoJSON>>,
         val skill2: Pair<SkillJSON, Triple<ImageInfoJSON, ImageInfoJSON, ImageInfoJSON>>,
-        val artworks: List<ImageInfoJSON>,
-        val icons: List<ImageInfoJSON>
+        val artworks: List<Pair<Int, ImageInfoJSON>>,
+        val icons: List<Pair<Int, ImageInfoJSON>>
     )
 
     @Suppress("PrivatePropertyName")

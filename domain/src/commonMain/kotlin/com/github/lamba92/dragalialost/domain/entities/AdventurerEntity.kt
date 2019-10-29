@@ -25,8 +25,8 @@ data class AdventurerEntity(
     override val obtainedFrom: List<Source>,
     override val releaseDate: DateTime,
     override val availability: List<Availability>,
-    val artworks: List<String>,
-    val icons: List<String>,
+    val artworks: Map<Rarity, String>,
+    val icons: Map<Rarity, String>,
     val element: Element,
     val weaponType: WeaponType,
     val skill1: AdventurerSkill,
@@ -38,6 +38,11 @@ data class AdventurerEntity(
     val afflictionResistances: Set<Affliction>,
     val abilityTypes: Set<AbilityType>
 ) : DragaliaEntity {
+
+    override val icon: String
+        get() = icons.getValue(icons.keys.minBy { it }!!)
+    override val artwork: String
+        get() = artworks.getValue(artworks.keys.minBy { it }!!)
 
     override fun toString() = buildString {
         appendln("Adventurer $name:")

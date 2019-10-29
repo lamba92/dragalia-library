@@ -217,14 +217,14 @@ class DragaliaLostRepositoryImplementation(
             .also { cache.cacheSkillIconByIconName(fileName, it) }
 
     private suspend fun getAndCacheAdventurerPortraitImageInfoByIds(id: String, variationId: String, rarity: Int) =
-        cache.getAdventurerPortraitById(id, variationId, rarity)
+        rarity to (cache.getAdventurerPortraitById(id, variationId, rarity)
             ?: datasource.getAdventurerPortraitById(id, variationId, rarity)
-                .also { cache.cacheAdventurerPortraitById(id, variationId, rarity, it) }
+                .also { cache.cacheAdventurerPortraitById(id, variationId, rarity, it) })
 
     private suspend fun getAndCacheAdventurerIconImageInfoByIds(id: String, variationId: String, rarity: Int) =
-        cache.getAdventurerIconById(id, variationId, rarity)
+        rarity to (cache.getAdventurerIconById(id, variationId, rarity)
             ?: datasource.getAdventurerIconById(id, variationId, rarity)
-                .also { cache.cacheAdventurerIconById(id, variationId, rarity, it) }
+                .also { cache.cacheAdventurerIconById(id, variationId, rarity, it) })
 
     private suspend fun getAndCacheDragonPortraitImageInfoById(id: String) =
         cache.getDragonPortraitById(id) ?: datasource.getDragonPortraitById(id)
