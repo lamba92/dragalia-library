@@ -4,7 +4,7 @@ plugins {
 
 allprojects {
     group = "com.github.lamba92"
-    version = "1.0.3"
+    version = "1.0.4"
 
     extensions.findByName("buildScan")?.withGroovyBuilder {
         setProperty("termsOfServiceUrl", "https://gradle.com/terms-of-service")

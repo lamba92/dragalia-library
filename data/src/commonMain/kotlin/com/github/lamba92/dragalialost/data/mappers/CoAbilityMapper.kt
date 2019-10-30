@@ -18,22 +18,22 @@ class CoAbilityMapper : SingleFromRemoteMapper<CoAbilityMapper.Params, CoAbility
                 lvl1.first.PartyPowerWeight.toInt()
             ),
             CoAbilityLevelData(
-                CoAbilityLevel.ONE,
+                CoAbilityLevel.TWO,
                 lvl2.first.Details.sanitize(),
                 lvl2.first.PartyPowerWeight.toInt()
             ),
             CoAbilityLevelData(
-                CoAbilityLevel.ONE,
+                CoAbilityLevel.THREE,
                 lvl3.first.Details.sanitize(),
                 lvl3.first.PartyPowerWeight.toInt()
             ),
             CoAbilityLevelData(
-                CoAbilityLevel.ONE,
+                CoAbilityLevel.FOUR,
                 lvl4.first.Details.sanitize(),
                 lvl4.first.PartyPowerWeight.toInt()
             ),
             CoAbilityLevelData(
-                CoAbilityLevel.ONE,
+                CoAbilityLevel.FIVE,
                 lvl5.first.Details.sanitize(),
                 lvl5.first.PartyPowerWeight.toInt()
             )
