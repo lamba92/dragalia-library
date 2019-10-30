@@ -59,6 +59,6 @@ object MappersModule : KodeinModuleProvider {
         bind<ElementalResistancesMapper>() with singleton { ElementalResistancesMapper() }
         bind<AfflictionResistancesMapper>() with singleton { AfflictionResistancesMapper(instance()) }
         bind<ResistancePercentageMapper>() with singleton { ResistancePercentageMapper() }
-
+        bind<AdventurerImageMapper>() with singleton { AdventurerImageMapper(instance()) }
     }
 }
