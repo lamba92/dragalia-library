@@ -11,7 +11,7 @@ class AbilityTypeMapper : SingleFromRemoteMapper<AbilityGroupJSON, AbilityType> 
         "support" -> AbilityType.SUPPORT
         "anti-poison", "anti-burn", "anti-freeze", "anti-paralysis",
         "anti-blindness", "anti-stun", "anti-curse", "anti-bog",
-        "anti-sleep" -> AbilityType.AFFLICTIONS_RESISTANCE
+        "anti-sleep", "afflictions" -> AbilityType.AFFLICTIONS_RESISTANCE
         "anti-flame", "anti-water", "anti-wind",
         "anti-light", "anti-shadow" -> AbilityType.ELEMENT_RESISTANCE
         "anti-class" -> AbilityType.ANTI_CLASS

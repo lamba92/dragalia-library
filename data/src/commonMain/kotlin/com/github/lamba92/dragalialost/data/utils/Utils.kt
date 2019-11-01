@@ -51,18 +51,46 @@ inline infix fun <T, R> T.with(function: T.() -> R) =
 inline infix fun <T, R, K> T.withPair(function: T.() -> Pair<R, K>) =
     function(this).let { Triple(this, it.first, it.second) }
 
-internal val sanitizationRegex1 = Regex("(&lt;span )?style=.*&gt;(\\d*%)&lt.*;( |\\.)")
-internal val sanitizationRegex2 = Regex("(&lt;span )?style=.*&gt;(\\d{1,2}%) \\((\\d{1,3}%)\\).*")
-internal val sanitizationRegex3 = Regex("\\[\\[.*\\|(.*)\\]\\]")
-internal val sanitizationRegex4 = Regex("\\[\\[(.*)\\]\\]")
-internal val sanitizationRegex5 = Regex("&quot;(.*)\\.&quot;")
+internal val sanitizationRegexes = listOf(
+    Regex("\\[\\[.*\\|(.*)\\]\\]") to "$1",
+    Regex("\\[\\[(.*)\\]\\]") to "$1",
+    Regex("color:#(.{6});") to "",
+    Regex(" br([A-Z])") to " $1",
+    Regex("\\.(\\w)") to ". $1",
+    Regex("(\\d)\\. (\\d)") to "$1.$2"
+)
 
-fun String.sanitize() =
-    replace("'''", "")
-        .replace(sanitizationRegex1, "$2 ")
-        .replace(sanitizationRegex2, "$2 ($3)")
-        .replace(sanitizationRegex3, "$1")
-        .replace(sanitizationRegex4, "$1")
-        .replace("&lt;br&gt;", "")
-        .replace("\n", "")
-        .replace(sanitizationRegex5, "$1")
+internal val sanitizationRemoves = listOf(
+    "&lt;span ", "&quot;", "&gt;", "&lt;", "/span", "brbr",
+    "style=", "&lt;br&gt;", "\n", "]]", "[[", "'''", "font-weight:bold;"
+)
+
+internal val sanitizationSubstitutions = listOf(
+    "  " to " ", "br/" to ". "
+)
+
+@JvmName("replaceRegex")
+fun String.replace(values: Pair<Regex, String>) =
+    replace(values.first, values.second)
+
+@JvmName("replaceString")
+fun String.replace(values: Pair<String, String>) =
+    replace(values.first, values.second)
+
+fun String.remove(chars: String) =
+    replace(chars, "")
+
+fun String.sanitize(): String {
+    var me = this
+    sanitizationRegexes.forEach {
+        me = me.replace(it)
+    }
+    sanitizationRemoves.forEach {
+        me = me.remove(it)
+    }
+    sanitizationSubstitutions.forEach {
+        me = me.replace(it)
+    }
+    return me.replace(Regex(" br([A-Z])"), " $1")
+
+}
