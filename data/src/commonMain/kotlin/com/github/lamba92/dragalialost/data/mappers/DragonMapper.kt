@@ -92,8 +92,8 @@ class DragonMapper(
 
     data class Params(
         val dragon: DragonJSON,
-        val ability1lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
         val ability1lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
+        val ability1lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
         val ability2lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
         val ability2lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
         val skill1: Pair<SkillJSON, Triple<ImageInfoJSON, ImageInfoJSON, ImageInfoJSON>>,
