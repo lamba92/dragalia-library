@@ -7,8 +7,8 @@ before_cache:
 
 cache:
   directories:
-    - $HOME/.gradle/
-    - $HOME/.konan/
+    - $HOME/.gradle/caches
+    - $HOME/.gradle/wrapper
 
 script: ./gradlew check --scan
 
@@ -17,7 +17,8 @@ before_install:
 
 deploy:
   provider: script
-  script: ./gradlew publish --continue
+  script: ./gradlew bintrayUpload
   skip_cleanup: true
   on:
     branch: release
+    tag: true

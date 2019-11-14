@@ -1,58 +1,24 @@
 plugins {
-    kotlin("multiplatform") apply false
+    id("dragalia-gradle-plugin") apply false
 }
 
 allprojects {
-    group = "com.github.lamba92"
-    version = "1.0.6"
 
-    extensions.findByName("buildScan")?.withGroovyBuilder {
-        setProperty("termsOfServiceUrl", "https://gradle.com/terms-of-service")
-        setProperty("termsOfServiceAgree", "yes")
-    }
-}
-
-fun property_(propertyName: String): String? =
-    project.findProperty(propertyName) as String? ?: System.getenv(propertyName)
-
-subprojects {
     repositories {
         jcenter()
+        maven("https://dl.bintray.com/lamba92/com.github.lamba92")
         mavenCentral()
-        maven("https://dl.bintray.com/kotlin/kotlin-eap")
-        maven("https://maven.pkg.github.com/${property("githubAccount")}/${rootProject.name}") {
-            name = "GitHubPackages"
-            credentials {
-                username = property_("githubAccount")
-                password = property_("githubToken")
-            }
-        }
     }
-}
 
-tasks.register<Delete>("turboClean") {
-    group = "clean"
-    allprojects {
-        delete(buildDir)
-    }
-}
+    group = "com.github.lamba92"
+    version = System.getenv("TRAVIS_TAG") ?: "1.0.7"
 
-//val nodePackagesCopyTask by tasks.register<Copy>("copyNodePackagesFromSubprojects") {
-//    evaluationDependsOnChildren()
-//    into(file("$buildDir/nodePackages"))
-//    subprojects {
-//        if ("buildNodePackage" in tasks.map { it.name }) {
-//            val t by tasks.named<Copy>("buildNodePackage")
-//            dependsOn(t)
-//            from(t.destinationDir) {
-//                into("${rootProject.name}-$name")
-//            }
-//        }
-//    }
-//}
+}
 
 tasks.register<Zip>("zipNodePackages") {
-    dependsOn(tasks.named("build"))
+    subprojects {
+        dependsOn(tasks.named("build"))
+    }
     from("$buildDir/js") {
         include("*")
         include("**/*")
