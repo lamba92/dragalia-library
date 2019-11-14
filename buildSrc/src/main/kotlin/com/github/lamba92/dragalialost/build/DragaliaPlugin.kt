@@ -19,11 +19,6 @@ class DragaliaPlugin : Plugin<Project> {
         plugins.apply("org.gradle.maven-publish")
         plugins.apply("com.jfrog.bintray")
 
-        extensions.findByName("buildScan")?.withGroovyBuilder {
-            setProperty("termsOfServiceUrl", "https://gradle.com/terms-of-service")
-            setProperty("termsOfServiceAgree", "yes")
-        }
-
         extensions.configure<KotlinMultiplatformExtension> {
             metadata {
                 mavenPublication {
