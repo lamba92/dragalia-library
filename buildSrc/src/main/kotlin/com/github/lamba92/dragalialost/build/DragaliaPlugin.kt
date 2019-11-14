@@ -3,8 +3,10 @@ package com.github.lamba92.dragalialost.build
 import com.jfrog.bintray.gradle.BintrayExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.publish.PublishingExtension
+import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.withGroovyBuilder
+import org.gradle.kotlin.dsl.named
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 @Suppress("unused")
@@ -38,7 +40,6 @@ class DragaliaPlugin : Plugin<Project> {
             }
 
             js {
-                //                nodejs()
                 mavenPublication {
                     artifactId = "${rootProject.name}-${project.name}-js"
                 }
@@ -48,6 +49,12 @@ class DragaliaPlugin : Plugin<Project> {
                 languageSettings.enableLanguageFeature("InlineClasses")
             }
 
+        }
+
+        extensions.configure<PublishingExtension> {
+            publications.named<MavenPublication>("kotlinMultiplatform") {
+                artifactId = "${rootProject.name}-${project.name}"
+            }
         }
 
         extensions.configure<BintrayExtension> {
