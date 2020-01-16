@@ -24,7 +24,7 @@ class DragaliaLostRepositoryImplementation(
 
     @ExperimentalCoroutinesApi
     @FlowPreview
-    override fun searchAdventurers(query: AdventurersQuery, limit: Int) =
+    override suspend fun searchAdventurers(query: AdventurersQuery, limit: Int) =
         adventurersQueryMapper.toRemote(query)
             .asFlow()
             .map { dsQuery ->
@@ -32,8 +32,7 @@ class DragaliaLostRepositoryImplementation(
                     cache.cacheAdventurerCargoQuery(dsQuery, limit, it)
                 }
             }
-            .flattenMergeIterable()
-            .distinctUntilChanged()
+            .flattenConcatIterable()
             .map { (id, variationId) ->
                 cache.getAdventurerByIds(id, variationId) ?: datasource.getAdventurerByIds(id, variationId).also {
                     cache.cacheAdventurerByIds(id, variationId, it)
@@ -82,10 +81,11 @@ class DragaliaLostRepositoryImplementation(
                 println("An adventurer errored: $it")
             }
             .filter { it in query }
+            .toList()
 
     @ExperimentalCoroutinesApi
     @FlowPreview
-    override fun searchDragons(query: DragonsQuery, limit: Int) =
+    override suspend fun searchDragons(query: DragonsQuery, limit: Int) =
         dragonsQueryMapper.toRemote(query)
             .asFlow()
             .map { dsQuery ->
@@ -93,7 +93,7 @@ class DragaliaLostRepositoryImplementation(
                     cache.cacheDragonCargoQuery(dsQuery, limit, it)
                 }
             }
-            .flattenMergeIterable()
+            .flattenConcatIterable()
             .distinctUntilChanged()
             .map { dragonId ->
                 cache.getDragonById(dragonId) ?: datasource.getDragonById(dragonId)
@@ -122,13 +122,12 @@ class DragaliaLostRepositoryImplementation(
                 println("A dragon errored: $it")
             }
             .map { dragonMapper(it) }
-            .filter {
-                it in query
-            }
+            .filter { it in query }
+            .toList()
 
     @ExperimentalCoroutinesApi
     @FlowPreview
-    override fun searchWyrmprints(query: WyrmprintsQuery, limit: Int) =
+    override suspend fun searchWyrmprints(query: WyrmprintsQuery, limit: Int) =
         wyrmprintsQueryMapper.toRemote(query)
             .asFlow()
             .map { dsQuery ->
@@ -173,6 +172,7 @@ class DragaliaLostRepositoryImplementation(
             }
             .map { wyrmprintMapper(it) }
             .filter { it in query }
+            .toList()
 
     private fun CoroutineScope.getAbilityDataAsync(id: String) = async {
         getAndCacheAbilityById(id) withPair {

@@ -4,23 +4,23 @@ import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQu
 import com.github.lamba92.dragalialost.domain.repositories.queries.DragonsQueryBuilder
 import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQueryBuilder
 
-fun DragaliaLostRepository.searchAdventurers(
+suspend fun DragaliaLostRepository.searchAdventurers(
     limit: Int = 500,
     queryBuilder: AdventurersQueryBuilder.() -> Unit
 ) = searchAdventurers(AdventurersQueryBuilder().apply(queryBuilder).toQuery(), limit)
 
-fun DragaliaLostRepository.searchDragons(
+suspend fun DragaliaLostRepository.searchDragons(
     limit: Int = 500, queryBuilder: DragonsQueryBuilder.() -> Unit
 ) = searchDragons(DragonsQueryBuilder().apply(queryBuilder).toQuery(), limit)
 
-fun DragaliaLostRepository.searchWyrmprints(limit: Int = 500, queryBuilder: WyrmprintsQueryBuilder.() -> Unit) =
+suspend fun DragaliaLostRepository.searchWyrmprints(limit: Int = 500, queryBuilder: WyrmprintsQueryBuilder.() -> Unit) =
     searchWyrmprints(WyrmprintsQueryBuilder().apply(queryBuilder).toQuery(), limit)
 
-fun DragaliaLostRepository.searchAllAdventurers() =
+suspend fun DragaliaLostRepository.searchAllAdventurers() =
     searchAdventurers {}
 
-fun DragaliaLostRepository.searchAllDragons() =
+suspend fun DragaliaLostRepository.searchAllDragons() =
     searchDragons {}
 
-fun DragaliaLostRepository.searchAllWyrmprints() =
+suspend fun DragaliaLostRepository.searchAllWyrmprints() =
     searchWyrmprints {}

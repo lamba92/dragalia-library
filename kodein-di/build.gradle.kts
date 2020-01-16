@@ -1,7 +1,3 @@
-import com.github.lamba92.dragalialost.build.kodein
-import com.github.lamba92.dragalialost.build.ktor
-import com.github.lamba92.dragalialost.build.lamba
-
 plugins {
     id("dragalia-gradle-plugin")
 }
@@ -46,9 +42,9 @@ kotlin {
         api(ktor("client-js", ktorVersion))
         api(ktor("client-serialization-js", ktorVersion))
         api(ktor("client-logging-js", ktorVersion))
-        api(npm("utf-8-validate", utf8ValidateVersion))
-        api(npm("bufferutil", bufferutilVersion))
-        api(npm("node-fetch", nodeFetchVersion))
+//        api(npm("utf-8-validate", utf8ValidateVersion))
+//        api(npm("bufferutil", bufferutilVersion))
+//        api(npm("node-fetch", nodeFetchVersion))
     }
 
     sourceSets["jsTest"].dependencies {

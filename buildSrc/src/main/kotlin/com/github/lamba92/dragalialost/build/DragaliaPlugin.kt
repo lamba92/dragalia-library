@@ -12,9 +12,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 @Suppress("unused")
 class DragaliaPlugin : Plugin<Project> {
 
-    private val kotlinVersion = "1.3.50"
-    private val bintrayVersion = "1.8.4"
-
     override fun apply(target: Project) = with(target) {
 
         plugins.apply("org.jetbrains.kotlin.multiplatform")
@@ -43,6 +40,7 @@ class DragaliaPlugin : Plugin<Project> {
                 mavenPublication {
                     artifactId = "${rootProject.name}-${project.name}-js"
                 }
+                browser()
             }
 
             sourceSets.all {

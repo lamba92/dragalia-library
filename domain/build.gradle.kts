@@ -1,5 +1,3 @@
-import com.github.lamba92.dragalialost.build.kotlinx
-
 plugins {
     id("dragalia-gradle-plugin")
 }
@@ -35,7 +33,8 @@ kotlin {
         api(kotlin("stdlib-js"))
         api("com.soywiz.korlibs.klock:klock-js:$klockVersion")
         api(kotlinx("coroutines-core-js", coroutinesVersion))
-        implementation(npm("rxjs", rxjsVersion))
+        implementation(npm("rxjs"))
+        implementation(npm("left-pad"))
     }
 
     sourceSets["jsTest"].dependencies {
