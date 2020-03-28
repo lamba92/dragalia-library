@@ -30,7 +30,7 @@ data class WyrmprintEntity(
     val ability1: WyrmprintAbility,
     val ability2: WyrmprintAbility?,
     val ability3: WyrmprintAbility?,
-    val abilityTypes: Set<AbilityType>
+    override val abilityTypes: Set<AbilityType>
 ) : DragaliaEntity {
 
     override fun toString() = buildString {

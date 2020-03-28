@@ -315,7 +315,6 @@ class InMemoryGamepediaCache : GamepediaDatasourceCache {
             adventurersCache, dragonsCache, weaponsCache, abilitiesCache, coAbilitiesCache, skillsCache,
             coAbilitiesCache, adventurersQueryCache, dragonsQueryCache, wyrmprintsQueryCache, weaponsQueryCache,
             abilitiesQueryCache, coAbilitiesQueryCache, skillsQueryCache, abilityLimitedGroupsQueryCache
-        )
-            .forEach { it.getAndApply { clear() } }
+        ).forEach { it.getAndApply { clear() } }
 
 }

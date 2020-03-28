@@ -3,6 +3,7 @@ import com.github.lamba92.dragalialost.build.serialization
 
 plugins {
     id("dragalia-gradle-plugin")
+    kotlin("plugin.serialization")
 }
 
 kotlin {

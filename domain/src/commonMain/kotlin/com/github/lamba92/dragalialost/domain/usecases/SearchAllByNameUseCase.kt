@@ -10,13 +10,13 @@ import kotlinx.coroutines.coroutineScope
 
 class SearchAllByNameUseCase(
     private val repo: DragaliaLostRepository
-) : UseCaseWithParamsSuspend<String, List<DragaliaEntity>> {
+) : UseCaseWithParams<String, List<DragaliaEntity>> {
 
     override suspend fun buildAction(params: String) = coroutineScope {
         val a = async { repo.searchAdventurers { name = params } }
         val d = async { repo.searchDragons { name = params } }
         val w = async { repo.searchWyrmprints { name = params } }
-        a.await() + d.await() + w.await()
+        (a.await() + d.await() + w.await()).sortedBy { it.name }
     }
 
 }

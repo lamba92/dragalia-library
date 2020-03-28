@@ -14,6 +14,8 @@ gradlePlugin {
 repositories {
     jcenter()
     maven("https://plugins.gradle.org/m2/")
+    maven("https://dl.bintray.com/kotlin/kotlin-eap")
+    maven("https://kotlin.bintray.com/kotlinx")
 }
 
 dependencies {
@@ -21,4 +23,5 @@ dependencies {
     val bintrayVersion: String by project
     api("org.jetbrains.kotlin", "kotlin-gradle-plugin", kotlinVersion)
     api("com.jfrog.bintray.gradle", "gradle-bintray-plugin", bintrayVersion)
+    api("org.jetbrains.kotlin", "kotlin-serialization", kotlinVersion)
 }

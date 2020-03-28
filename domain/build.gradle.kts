@@ -1,3 +1,5 @@
+import com.github.lamba92.dragalialost.build.kotlinx
+
 plugins {
     id("dragalia-gradle-plugin")
 }
@@ -6,7 +8,6 @@ kotlin {
 
     val klockVersion: String by project
     val coroutinesVersion: String by project
-    val rxjsVersion: String by project
 
     sourceSets["commonMain"].dependencies {
         api(kotlin("stdlib-common"))

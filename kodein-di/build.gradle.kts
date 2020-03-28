@@ -1,3 +1,6 @@
+import com.github.lamba92.dragalialost.build.kodein
+import com.github.lamba92.dragalialost.build.ktor
+
 plugins {
     id("dragalia-gradle-plugin")
 }
@@ -6,11 +9,7 @@ kotlin {
 
     val kodeinVersion: String by project
     val ktorVersion: String by project
-    val coroutineRunTestVersion: String by project
     val logbackVersion: String by project
-    val utf8ValidateVersion: String by project
-    val bufferutilVersion: String by project
-    val nodeFetchVersion: String by project
 
     sourceSets["commonMain"].dependencies {
         api(project(":core"))
@@ -21,7 +20,6 @@ kotlin {
     }
 
     sourceSets["commonTest"].dependencies {
-        api(lamba("kotlin-multiplatform-coroutines-runtest", coroutineRunTestVersion))
         api(kotlin("test-annotations-common"))
         api(kotlin("test-common"))
     }
@@ -35,21 +33,16 @@ kotlin {
 
     sourceSets["jvmTest"].dependencies {
         api(kotlin("test-junit"))
-        api(lamba("kotlin-multiplatform-coroutines-runtest-jvm", coroutineRunTestVersion))
     }
 
     sourceSets["jsMain"].dependencies {
         api(ktor("client-js", ktorVersion))
         api(ktor("client-serialization-js", ktorVersion))
         api(ktor("client-logging-js", ktorVersion))
-//        api(npm("utf-8-validate", utf8ValidateVersion))
-//        api(npm("bufferutil", bufferutilVersion))
-//        api(npm("node-fetch", nodeFetchVersion))
     }
 
     sourceSets["jsTest"].dependencies {
         api(kotlin("test-js"))
-        api(lamba("kotlin-multiplatform-coroutines-runtest-js", coroutineRunTestVersion))
     }
 
 }

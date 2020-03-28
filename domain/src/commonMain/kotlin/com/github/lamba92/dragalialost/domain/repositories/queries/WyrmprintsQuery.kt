@@ -7,12 +7,12 @@ import com.github.lamba92.dragalialost.domain.entities.enums.Element
 import com.github.lamba92.dragalialost.domain.entities.enums.Rarity
 
 data class WyrmprintsQuery(
-    val name: String?,
-    val rarities: Set<Rarity>,
+    override val name: String?,
+    override val rarities: Set<Rarity>,
+    override val abilityTypes: Set<AbilityType>,
     val afflictionResistances: Set<Affliction>,
-    val elementalResistances: Set<Element>,
-    val abilityTypes: Set<AbilityType>
-) {
+    val elementalResistances: Set<Element>
+) : DragaliaQuery() {
     operator fun contains(entity: WyrmprintEntity) =
         (if (rarities.isNotEmpty()) entity.baseRarity in rarities else true) &&
                 (if (abilityTypes.isNotEmpty()) entity.abilityTypes.any { it in abilityTypes } else true) &&

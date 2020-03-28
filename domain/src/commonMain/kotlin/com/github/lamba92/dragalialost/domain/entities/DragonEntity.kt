@@ -29,10 +29,10 @@ data class DragonEntity(
     val ability1: DragonAbility?,
     val ability2: DragonAbility?,
     val basicAttackModifier: List<AttackComboData>,
-    val element: Element,
+    override val element: Element,
     val elementalResistances: Set<Element>,
-    val abilityTypes: Set<AbilityType>
-) : DragaliaEntity {
+    override val abilityTypes: Set<AbilityType>
+) : DragaliaWithElementEntity {
 
     override fun toString() = buildString {
         appendln("Dragon $name:")

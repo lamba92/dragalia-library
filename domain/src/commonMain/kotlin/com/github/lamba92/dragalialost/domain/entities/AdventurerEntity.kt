@@ -27,7 +27,7 @@ data class AdventurerEntity(
     override val availability: List<Availability>,
     val artworks: Map<Rarity, String>,
     val icons: Map<Rarity, String>,
-    val element: Element,
+    override val element: Element,
     val weaponType: WeaponType,
     val skill1: AdventurerSkill,
     val skill2: AdventurerSkill,
@@ -36,8 +36,8 @@ data class AdventurerEntity(
     val ability3: AdventurerAbility?,
     val coAbility: CoAbility,
     val afflictionResistances: Set<Affliction>,
-    val abilityTypes: Set<AbilityType>
-) : DragaliaEntity {
+    override val abilityTypes: Set<AbilityType>
+) : DragaliaWithElementEntity {
 
     override val icon: String
         get() = icons.getValue(icons.keys.minBy { it }!!)

@@ -1,46 +1,42 @@
 package com.github.lamba92.dragalialost.build
 
-import com.jfrog.bintray.gradle.BintrayExtension
+import com.jfrog.bintray.gradle.BintrayPlugin
+import com.jfrog.bintray.gradle.tasks.BintrayUploadTask
+import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.named
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.gradle.api.publish.maven.internal.artifact.FileBasedMavenArtifact
+import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
+import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 
 @Suppress("unused")
 class DragaliaPlugin : Plugin<Project> {
 
-    override fun apply(target: Project) = with(target) {
+    override fun apply(target: Project): Unit = with(target) {
 
-        plugins.apply("org.jetbrains.kotlin.multiplatform")
-        plugins.apply("org.gradle.maven-publish")
-        plugins.apply("com.jfrog.bintray")
+        apply<KotlinMultiplatformPluginWrapper>()
+        apply<MavenPublishPlugin>()
+        apply<BintrayPlugin>()
 
-        extensions.configure<KotlinMultiplatformExtension> {
-            metadata {
-                mavenPublication {
-                    artifactId = "${rootProject.name}-${project.name}-metadata"
-                }
-            }
+        val mavenAction = Action<MavenPublication> {
+            if (!artifactId.startsWith(rootProject.name))
+                artifactId = "${rootProject.name}-$artifactId"
+        }
+
+        kotlin {
 
             jvm {
                 compilations.all {
-                    kotlinOptions {
-                        jvmTarget = "1.8"
-                    }
-                }
-                mavenPublication {
-                    artifactId = "${rootProject.name}-${project.name}-jvm"
+                    kotlinOptions.jvmTarget = "1.8"
                 }
             }
 
             js {
-                mavenPublication {
-                    artifactId = "${rootProject.name}-${project.name}-js"
-                }
                 browser()
+                nodejs()
             }
 
             sourceSets.all {
@@ -49,27 +45,36 @@ class DragaliaPlugin : Plugin<Project> {
 
         }
 
-        extensions.configure<PublishingExtension> {
-            publications.named<MavenPublication>("kotlinMultiplatform") {
-                artifactId = "${rootProject.name}-${project.name}"
-            }
-        }
+        publishing.publications.withType(mavenAction.asLambda())
 
-        extensions.configure<BintrayExtension> {
+        bintray {
             user = searchPropertyOrNull("bintrayUsername")
             key = searchPropertyOrNull("bintrayApiKey")
             pkg {
                 version {
-                    name = project.version.toString()
+                    name = project.version as String
                 }
-                repo = "com.github.lamba92"
-                name = "dragalia-library"
+                repo = group as String
+                name = rootProject.name
                 setLicenses("Apache-2.0")
                 vcsUrl = "https://github.com/lamba92/dragalia-library"
                 issueTrackerUrl = "https://github.com/lamba92/dragalia-library/issues"
             }
             publish = true
-            setPublications("jvm", "js", "kotlinMultiplatform")
+            setPublications(publishing.publications.names)
+        }
+
+        tasks.withType<BintrayUploadTask> {
+            doFirst {
+                publishing.publications.withType<MavenPublication> {
+                    buildDir.resolve("publications/$name/module.json").also {
+                        if (it.exists())
+                            artifact(object : FileBasedMavenArtifact(it) {
+                                override fun getDefaultExtension() = "module"
+                            })
+                    }
+                }
+            }
         }
 
     }

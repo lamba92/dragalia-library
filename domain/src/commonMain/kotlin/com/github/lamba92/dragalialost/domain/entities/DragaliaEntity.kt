@@ -1,5 +1,6 @@
 package com.github.lamba92.dragalialost.domain.entities
 
+import com.github.lamba92.dragalialost.domain.entities.enums.AbilityType
 import com.github.lamba92.dragalialost.domain.entities.enums.Availability
 import com.github.lamba92.dragalialost.domain.entities.enums.Rarity
 import com.github.lamba92.dragalialost.domain.entities.enums.Source
@@ -19,6 +20,7 @@ interface DragaliaEntity {
     val availability: List<Availability>
     val icon: String
     val artwork: String
+    val abilityTypes: Set<AbilityType>
 
     companion object {
         const val WYRMPRINTS_MAX_LVL = 100
