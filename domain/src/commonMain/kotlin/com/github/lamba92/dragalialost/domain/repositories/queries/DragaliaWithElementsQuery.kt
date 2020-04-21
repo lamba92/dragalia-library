@@ -6,7 +6,7 @@ import com.github.lamba92.dragalialost.domain.entities.enums.Element
 
 abstract class DragaliaWithElementsQuery : DragaliaQuery() {
 
-    protected abstract val elements: Set<Element>
+    abstract val elements: Set<Element>
 
     operator fun <T : DragaliaWithElementEntity> contains(entity: T) =
         contains(entity as DragaliaEntity) &&

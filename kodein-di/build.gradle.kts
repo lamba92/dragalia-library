@@ -1,5 +1,6 @@
-import com.github.lamba92.dragalialost.build.kodein
-import com.github.lamba92.dragalialost.build.ktor
+import com.github.lamba92.gradle.utils.api
+import com.github.lamba92.gradle.utils.kodein
+import com.github.lamba92.gradle.utils.ktor
 
 plugins {
     id("dragalia-gradle-plugin")
@@ -28,7 +29,7 @@ kotlin {
         api(ktor("client-okhttp", ktorVersion))
         api(ktor("client-serialization-jvm", ktorVersion))
         api(ktor("client-logging-jvm", ktorVersion))
-        api("ch.qos.logback:logback-classic:$logbackVersion")
+        api("ch.qos.logback", "logback-classic", logbackVersion)
     }
 
     sourceSets["jvmTest"].dependencies {

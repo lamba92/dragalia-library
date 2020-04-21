@@ -114,8 +114,12 @@ class InMemoryGamepediaCache : GamepediaDatasourceCache {
     override suspend fun getCoAbilityById(id: String) =
         coAbilitiesCache[id]
 
-    override suspend fun getSkillByName(id: String) =
+    override suspend fun getSkillById(id: String) =
         skillsCache[id]
+
+    override suspend fun getSkillByName(name: String): SkillJSON? {
+        TODO("Not yet implemented")
+    }
 
     override suspend fun getAbilityLimitedGroupById(id: String) =
         abilityLimitedGroupsCache[id]
@@ -183,9 +187,13 @@ class InMemoryGamepediaCache : GamepediaDatasourceCache {
         return true
     }
 
-    override suspend fun cacheSkillByName(id: String, data: SkillJSON): Boolean {
+    override suspend fun cacheSkillById(id: String, data: SkillJSON): Boolean {
         skillsCache[id] = data
         return true
+    }
+
+    override suspend fun cacheSkillByName(name: String, data: SkillJSON): Boolean {
+        TODO("Not yet implemented")
     }
 
     override suspend fun cacheAbilityLimitedGroupById(id: String, data: AbilityLimitedGroupJSON): Boolean {

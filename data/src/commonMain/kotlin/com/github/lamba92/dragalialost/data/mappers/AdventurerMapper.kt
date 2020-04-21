@@ -58,12 +58,9 @@ class AdventurerMapper(
             )
             AdventurerEntity(
                 if (Name !in FullName) "$FullName $Name" else FullName,
-                Description.sanitize(),
+                DragaliaEntity.ADVENTURERS_MAX_LVL,
                 MaxHp.toInt(),
                 MaxAtk.toInt(),
-                DragaliaEntity.ADVENTURERS_MAX_LVL,
-                bonusHp,
-                bonusStr,
                 MinHpAtk + coability.level1.might + skill1.level1.might,
                 MaxHp.toInt() + MaxAtk.toInt() + coability.level5.might +
                         (skill1.level3?.might ?: skill1.level2.might) +
@@ -72,18 +69,22 @@ class AdventurerMapper(
                         (ability2.level3?.might ?: ability1.level2?.might ?: ability2.level1.might) +
                         (ability3.level3?.might ?: ability3.level2?.might ?: ability3.level1.might) +
                         DragaliaEntity.FORCE_STRIKE_LVL2_MIGHT + bonusHp.total + bonusStr.total,
+                rarityMapper(Rarity),
+                sourceMapper(Obtain),
+                DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
+                availabilityMapper(Availability),
+                adventurerImageMapper(icons),
+                adventurerImageMapper(artworks),
+                Description.sanitize(),
+                bonusHp,
+                searchAbilityTypes(ability1, ability2, ability3),
+                bonusStr,
                 weaponType.defenseProvided,
                 heroClassMapper(CharaType),
                 genderMapper(Gender),
                 raceMapper(Race),
-                rarityMapper(Rarity),
                 VoiceActor(EnglishCV),
                 VoiceActor(JapaneseCV),
-                sourceMapper(Obtain),
-                DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
-                availabilityMapper(Availability),
-                adventurerImageMapper(artworks),
-                adventurerImageMapper(icons),
                 elementMapper(ElementalType),
                 weaponType,
                 skill1,
@@ -92,32 +93,31 @@ class AdventurerMapper(
                 ability2,
                 ability3,
                 coability,
-                searchAfflictionResistances(ability1, ability2, ability3),
-                searchAbilityTypes(ability1, ability2, ability3)
+                searchAfflictionResistances(ability1, ability2, ability3)
             )
         }
     }
 
     data class Params(
         val adventurer: AdventurerJSON,
-        val ability1lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val ability1lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val ability1lvl3: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
-        val ability2lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val ability2lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val ability2lvl3: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
-        val ability3lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val ability3lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
-        val ability3lvl3: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
-        val coabilityLvl1: Pair<CoAbilityJSON, ImageInfoJSON>,
-        val coabilityLvl2: Pair<CoAbilityJSON, ImageInfoJSON>,
-        val coabilityLvl3: Pair<CoAbilityJSON, ImageInfoJSON>,
-        val coabilityLvl4: Pair<CoAbilityJSON, ImageInfoJSON>,
-        val coabilityLvl5: Pair<CoAbilityJSON, ImageInfoJSON>,
-        val skill1: Pair<SkillJSON, Triple<ImageInfoJSON, ImageInfoJSON, ImageInfoJSON>>,
-        val skill2: Pair<SkillJSON, Triple<ImageInfoJSON, ImageInfoJSON, ImageInfoJSON>>,
-        val artworks: List<Pair<Int, ImageInfoJSON>>,
-        val icons: List<Pair<Int, ImageInfoJSON>>
+        val ability1lvl1: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val ability1lvl2: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val ability1lvl3: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?,
+        val ability2lvl1: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val ability2lvl2: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val ability2lvl3: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?,
+        val ability3lvl1: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val ability3lvl2: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?,
+        val ability3lvl3: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?,
+        val coabilityLvl1: Pair<CoAbilityJSON, ImageInfoJSON?>,
+        val coabilityLvl2: Pair<CoAbilityJSON, ImageInfoJSON?>,
+        val coabilityLvl3: Pair<CoAbilityJSON, ImageInfoJSON?>,
+        val coabilityLvl4: Pair<CoAbilityJSON, ImageInfoJSON?>,
+        val coabilityLvl5: Pair<CoAbilityJSON, ImageInfoJSON?>,
+        val skill1: Pair<SkillJSON, Triple<ImageInfoJSON?, ImageInfoJSON?, ImageInfoJSON?>>,
+        val skill2: Pair<SkillJSON, Triple<ImageInfoJSON?, ImageInfoJSON?, ImageInfoJSON?>>,
+        val artworks: List<Pair<Int, ImageInfoJSON?>>,
+        val icons: List<Pair<Int, ImageInfoJSON?>>
     )
 
     @Suppress("PrivatePropertyName")

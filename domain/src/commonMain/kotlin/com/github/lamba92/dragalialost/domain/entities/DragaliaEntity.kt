@@ -8,6 +8,7 @@ import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
 
 interface DragaliaEntity {
+
     val name: String
     val maxLevel: Int
     val hp: Int
@@ -18,8 +19,8 @@ interface DragaliaEntity {
     val obtainedFrom: List<Source>
     val releaseDate: DateTime
     val availability: List<Availability>
-    val icon: String
-    val artwork: String
+    val icon: String?
+    val artwork: String?
     val abilityTypes: Set<AbilityType>
 
     companion object {
@@ -35,4 +36,5 @@ interface DragaliaEntity {
         const val DRAGON_SKILL_LIL1_MIGHT = 50
         const val DRAGON_SKILL_LVL2_MIGHT = 100
     }
+
 }

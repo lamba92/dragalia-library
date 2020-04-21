@@ -1,12 +1,10 @@
-package com.github.lamba92.dragalialost.kodeindi.modules
+package com.github.lamba92.dragalialost.di.modules
 
 import com.github.lamba92.dragalialost.core.datasource.GamepediaDatasourceImplementation
 import com.github.lamba92.dragalialost.core.datasource.GamepediaEndpointsImplementation
-import com.github.lamba92.dragalialost.core.datasource.InMemoryGamepediaCache
 import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasource
-import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasourceCache
-import com.github.lamba92.dragalialost.kodeindi.DITags.*
-import com.github.lamba92.dragalialost.kodeindi.KodeinModuleProvider
+import com.github.lamba92.dragalialost.di.DITags.*
+import com.github.lamba92.dragalialost.di.KodeinModuleProvider
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
@@ -23,6 +21,6 @@ object DatasourcesModule : KodeinModuleProvider {
             )
         }
         bind<GamepediaDatasource>() with singleton { GamepediaDatasourceImplementation(instance(), instance()) }
-        bind<GamepediaDatasourceCache>() with singleton { InMemoryGamepediaCache() }
+//        bind<GamepediaDatasourceCache>() with singleton { InMemoryGamepediaCache() }
     }
 }

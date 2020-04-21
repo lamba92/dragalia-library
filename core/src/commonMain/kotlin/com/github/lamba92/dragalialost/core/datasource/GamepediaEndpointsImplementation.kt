@@ -1,10 +1,10 @@
 package com.github.lamba92.dragalialost.core.datasource
 
 import com.github.lamba92.dragalialost.core.datasource.DatasourceTables.*
+import com.github.lamba92.dragalialost.core.utils.CargoProperties
 import com.github.lamba92.dragalialost.core.utils.buildCargoWhereClause
 import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasource
 import com.github.lamba92.dragalialost.data.rawresponses.*
-import com.github.lamba92.dragalialost.data.utils.CargoProperties
 import com.github.lamba92.dragalialost.data.utils.addIfNotWith
 import io.ktor.http.URLProtocol
 import io.ktor.http.Url
@@ -175,6 +175,11 @@ class GamepediaEndpointsImplementation(
     override fun getCoAbilityByIdUrl(id: String) =
         buildAllFieldsUrl<CoAbilityJSON>(CO_ABILITIES_TABLE) {
             appendEquality("Id", id)
+        }
+
+    override fun getSkillByIdUrl(id: String) =
+        buildAllFieldsUrl<SkillJSON>(SKILLS_TABLE) {
+            appendEquality("SkillId", id)
         }
 
     override fun getSkillByNameUrl(name: String) =

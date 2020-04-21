@@ -4,7 +4,7 @@ import com.github.lamba92.dragalialost.domain.utils.appendln
 
 data class CoAbility(
     val name: String,
-    val icon: String,
+    val icon: String?,
     val level1: CoAbilityLevelData,
     val level2: CoAbilityLevelData,
     val level3: CoAbilityLevelData,

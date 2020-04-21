@@ -6,10 +6,11 @@ import com.github.lamba92.dragalialost.domain.utils.appendln
 data class AdventurerSkill(
     val name: String,
     val skillPointCost: Long,
-    val icon: String,
+    val icon: String?,
     val level1: SkillLevelData,
     val level2: SkillLevelData,
-    val level3: SkillLevelData? = null
+    val level3: SkillLevelData? = null,
+    val level4: SkillLevelData? = null
 ) {
     override fun toString() = buildString {
         appendln("   • $name")
@@ -18,5 +19,6 @@ data class AdventurerSkill(
         appendln("     • LVL1: $level1")
         appendln("     • LVL2: $level2")
         level3?.let { appendln("     • LVL3: $it") }
+        level4?.let { appendln("     • LVL4: $it") }
     }
 }

@@ -47,8 +47,8 @@ class DragonMapper(
                 emptyList(), // TODO source!
                 DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
                 availabilityMapper(Availability),
-                portrait.url,
-                icon.url,
+                portrait?.url,
+                icon?.url,
                 skill,
                 ability1,
                 ability2,
@@ -92,13 +92,13 @@ class DragonMapper(
 
     data class Params(
         val dragon: DragonJSON,
-        val ability1lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val ability1lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val ability2lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
-        val ability2lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
-        val skill1: Pair<SkillJSON, Triple<ImageInfoJSON, ImageInfoJSON, ImageInfoJSON>>,
-        val icon: ImageInfoJSON,
-        val portrait: ImageInfoJSON
+        val ability1lvl1: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val ability1lvl2: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val ability2lvl1: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?,
+        val ability2lvl2: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?,
+        val skill1: Pair<SkillJSON, Triple<ImageInfoJSON?, ImageInfoJSON?, ImageInfoJSON?>>,
+        val icon: ImageInfoJSON?,
+        val portrait: ImageInfoJSON?
     )
 
 }

@@ -17,7 +17,7 @@ class AdventurerAbilityMapper(
     override fun fromRemoteSingle(remote: Params) = with(remote) {
         AdventurerAbility(
             lvl1.first.GenericName,
-            lvl1.second.url,
+            lvl1.second?.url,
             AbilityLevelData(
                 lvl1.first.Details.sanitize(),
                 AbilityLevel.ONE,
@@ -50,9 +50,9 @@ class AdventurerAbilityMapper(
     }
 
     data class Params(
-        val lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
-        val lvl3: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?
+        val lvl1: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val lvl2: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?,
+        val lvl3: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?
     )
 
 }

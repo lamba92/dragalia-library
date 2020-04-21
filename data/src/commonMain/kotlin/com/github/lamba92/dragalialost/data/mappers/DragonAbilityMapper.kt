@@ -16,7 +16,7 @@ class DragonAbilityMapper(
     override fun fromRemoteSingle(remote: Params) = with(remote) {
         DragonAbility(
             a1.first.GenericName,
-            a1.second.url,
+            a1.second?.url,
             AbilityLevelData(
                 a1.first.Details.sanitize(),
                 AbilityLevel.ONE,
@@ -37,8 +37,8 @@ class DragonAbilityMapper(
     }
 
     data class Params(
-        val a1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val a2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>
+        val a1: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val a2: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>
     )
 
 }

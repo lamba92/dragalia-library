@@ -1,7 +1,7 @@
-package com.github.lamba92.dragalialost.kodeindi.modules
+package com.github.lamba92.dragalialost.di.modules
 
-import com.github.lamba92.dragalialost.kodeindi.KodeinModuleProvider
-import com.github.lamba92.dragalialost.kodeindi.isDebug
+import com.github.lamba92.dragalialost.di.DITags
+import com.github.lamba92.dragalialost.di.KodeinModuleProvider
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
@@ -18,9 +18,9 @@ object NetworkModule : KodeinModuleProvider {
                 install(JsonFeature) {
                     serializer = KotlinxSerializer()
                 }
-                if (isDebug)
+                if (instance(DITags.IS_DEBUG))
                     install(Logging) {
-                        level = instance("httpLogLevel")
+                        level = instance(DITags.HTTP_LOG_LEVEL)
                     }
             }
         }

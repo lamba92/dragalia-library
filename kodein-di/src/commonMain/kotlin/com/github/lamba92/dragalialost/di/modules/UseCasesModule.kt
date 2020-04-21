@@ -1,7 +1,7 @@
-package com.github.lamba92.dragalialost.kodeindi.modules
+package com.github.lamba92.dragalialost.di.modules
 
+import com.github.lamba92.dragalialost.di.KodeinModuleProvider
 import com.github.lamba92.dragalialost.domain.usecases.SearchAllByNameUseCase
-import com.github.lamba92.dragalialost.kodeindi.KodeinModuleProvider
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance

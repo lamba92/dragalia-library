@@ -4,7 +4,7 @@ import com.github.lamba92.dragalialost.domain.utils.appendln
 
 data class WyrmprintAbility(
     val name: String,
-    val icon: String,
+    val icon: String?,
     val level1: AbilityLevelData,
     val level2: AbilityLevelData,
     val level3: AbilityLevelData

@@ -1,4 +1,4 @@
-package com.github.lamba92.dragalialost.kodeindi
+package com.github.lamba92.dragalialost.di
 
 import org.kodein.di.Kodein
 import org.kodein.di.Kodein.OverridingException

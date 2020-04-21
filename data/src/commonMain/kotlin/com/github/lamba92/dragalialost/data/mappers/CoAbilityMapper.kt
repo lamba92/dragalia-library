@@ -11,7 +11,7 @@ class CoAbilityMapper : SingleFromRemoteMapper<CoAbilityMapper.Params, CoAbility
     override fun fromRemoteSingle(remote: Params) = with(remote) {
         CoAbility(
             lvl1.first.GenericName,
-            lvl1.second.url,
+            lvl1.second?.url,
             CoAbilityLevelData(
                 CoAbilityLevel.ONE,
                 lvl1.first.Details.sanitize(),
@@ -41,11 +41,11 @@ class CoAbilityMapper : SingleFromRemoteMapper<CoAbilityMapper.Params, CoAbility
     }
 
     data class Params(
-        val lvl1: Pair<CoAbilityJSON, ImageInfoJSON>,
-        val lvl2: Pair<CoAbilityJSON, ImageInfoJSON>,
-        val lvl3: Pair<CoAbilityJSON, ImageInfoJSON>,
-        val lvl4: Pair<CoAbilityJSON, ImageInfoJSON>,
-        val lvl5: Pair<CoAbilityJSON, ImageInfoJSON>
+        val lvl1: Pair<CoAbilityJSON, ImageInfoJSON?>,
+        val lvl2: Pair<CoAbilityJSON, ImageInfoJSON?>,
+        val lvl3: Pair<CoAbilityJSON, ImageInfoJSON?>,
+        val lvl4: Pair<CoAbilityJSON, ImageInfoJSON?>,
+        val lvl5: Pair<CoAbilityJSON, ImageInfoJSON?>
     )
 
 }

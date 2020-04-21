@@ -47,10 +47,10 @@ class WyrmprintMapper(
                 sourceMapper(Obtain),
                 DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
                 availabilityMapper(Availability),
-                portrait1.url,
-                portrait2.url,
-                icon1.url,
-                icon2.url,
+                portrait1?.url,
+                portrait2?.url,
+                icon1?.url,
+                icon2?.url,
                 rarityMapper(Rarity),
                 DragaliaEntity.WYRMPRINTS_MAX_LVL,
                 SellValue(SellCoin.toInt(), SellDewPoint.toInt()),
@@ -115,19 +115,19 @@ class WyrmprintMapper(
 
     data class Params(
         val wyrmprint: WyrmprintJSON,
-        val ability1lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val ability1lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val ability1lvl3: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val ability2lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
-        val ability2lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
-        val ability2lvl3: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
-        val ability3lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
-        val ability3lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
-        val ability3lvl3: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>?,
-        val icon1: ImageInfoJSON,
-        val icon2: ImageInfoJSON,
-        val portrait1: ImageInfoJSON,
-        val portrait2: ImageInfoJSON
+        val ability1lvl1: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val ability1lvl2: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val ability1lvl3: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val ability2lvl1: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?,
+        val ability2lvl2: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?,
+        val ability2lvl3: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?,
+        val ability3lvl1: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?,
+        val ability3lvl2: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?,
+        val ability3lvl3: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>?,
+        val icon1: ImageInfoJSON?,
+        val icon2: ImageInfoJSON?,
+        val portrait1: ImageInfoJSON?,
+        val portrait2: ImageInfoJSON?
     )
 
 }

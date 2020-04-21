@@ -5,7 +5,7 @@ import com.github.lamba92.dragalialost.domain.utils.appendln
 data class DragonSkill(
     val name: String,
     val skillPointCost: Long,
-    val icon: String,
+    val icon: String?,
     val level1: SkillLevelData,
     val level2: SkillLevelData
 ) {

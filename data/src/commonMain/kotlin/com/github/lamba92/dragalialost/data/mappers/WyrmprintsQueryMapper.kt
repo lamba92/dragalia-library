@@ -4,8 +4,6 @@ import com.github.lamba92.dragalialost.data.datasource.queries.WyrmprintsCargoQu
 import com.github.lamba92.dragalialost.domain.repositories.queries.WyrmprintsQuery
 
 class WyrmprintsQueryMapper(
-    private val abilityTypeMapper: AbilityTypeMapper,
-    private val elementMapper: ElementMapper,
     private val rarityMapper: RarityMapper
 ) : SingleToRemoteMapper<List<WyrmprintsCargoQuery>, WyrmprintsQuery> {
 

@@ -1,4 +1,4 @@
-package com.github.lamba92.dragalialost.data.utils
+package com.github.lamba92.dragalialost.core.utils
 
 import com.github.lamba92.dragalialost.data.rawresponses.*
 
@@ -74,7 +74,9 @@ object CargoProperties {
             "TitleTC",
             "VariationId",
             "WeaponType",
-            "WeaponTypeId"
+            "WeaponTypeId",
+            "Skill1ID",
+            "Skill2ID"
         )
         DragonJSON::class -> listOf(
             "BaseId",
@@ -227,21 +229,25 @@ object CargoProperties {
             "AvailabilityId"
         )
         SkillJSON::class -> listOf(
-            "SkillId",
-            "Name",
-            "SkillLv1IconName",
-            "SkillLv2IconName",
-            "SkillLv3IconName",
+            "CrisisModifier",
             "Description1",
             "Description2",
             "Description3",
-            "HideLevel3",
+            "Description4",
+            "IframeDuration",
+            "IsAffectedByTension",
+            "Name",
+            "SkillId",
+            "MaxSkillLevel",
+            "SkillLv1IconName",
+            "SkillLv2IconName",
+            "SkillLv3IconName",
+            "SkillLv4IconName",
             "Sp",
             "SPLv2",
             "SpRegen",
-            "IsAffectedByTension",
-            "CrisisModifier",
-            "IframeDuration"
+            "MaxAmmo",
+            "AmmoUsage"
         )
         AbilityLimitedGroupJSON::class -> listOf(
             "Id",
@@ -259,14 +265,17 @@ object CargoProperties {
     inline fun <reified T : CargoQueryable> idOf() = when (T::class) {
         AdventurerJSON::class -> listOf("Id", "VariationId")
         WyrmprintJSON::class, DragonJSON::class, AbilityJSON::class,
-        CoAbilityJSON::class, AbilityLimitedGroupJSON::class -> listOf("Id")
+        CoAbilityJSON::class, AbilityLimitedGroupJSON::class
+        -> listOf("Id")
         WeaponJSON::class -> listOf("Id", "FormId")
-        SkillJSON::class -> listOf("name")
+        SkillJSON::class -> listOf("SkillId")
         else -> throw IllegalArgumentException("${T::class.simpleName} Id has not been declared")
     }
 
-    inline fun <reified T> nameOf() = when (T::class) {
-        AdventurerJSON::class -> "FullName"
-        else -> "Name"
-    }
+//    inline fun <reified T : CargoQueryable> nameOf() = when (T::class) {
+//        AdventurerJSON::class -> "FullName"
+//        else -> "Name"
+//    }
+
+    inline fun <reified T : CargoQueryable> nameOf() = "Name"
 }

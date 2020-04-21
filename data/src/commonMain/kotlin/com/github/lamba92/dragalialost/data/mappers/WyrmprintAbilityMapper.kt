@@ -17,7 +17,7 @@ class WyrmprintAbilityMapper(
     override fun fromRemoteSingle(remote: Params) = with(remote) {
         WyrmprintAbility(
             lvl1.first.GenericName,
-            lvl1.second.url,
+            lvl1.second?.url,
             AbilityLevelData(
                 lvl1.first.Details.sanitize(),
                 AbilityLevel.ONE,
@@ -42,9 +42,9 @@ class WyrmprintAbilityMapper(
     }
 
     data class Params(
-        val lvl1: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val lvl2: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>,
-        val lvl3: Triple<AbilityJSON, ImageInfoJSON, AbilityGroupJSON>
+        val lvl1: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val lvl2: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>,
+        val lvl3: Triple<AbilityJSON, ImageInfoJSON?, AbilityGroupJSON>
     )
 
 }

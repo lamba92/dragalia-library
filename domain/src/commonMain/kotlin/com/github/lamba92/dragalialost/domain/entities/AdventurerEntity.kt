@@ -7,26 +7,27 @@ import com.soywiz.klock.DateTime
 
 data class AdventurerEntity(
     override val name: String,
-    val description: String,
+    override val maxLevel: Int,
     override val hp: Int,
     override val strength: Int,
-    override val maxLevel: Int,
-    val bonusHp: ManaCircleBonusStats,
-    val bonusStrength: ManaCircleBonusStats,
     override val baseMinMight: Int,
     override val baseMaxMight: Int,
+    override val baseRarity: Rarity,
+    override val obtainedFrom: List<Source>,
+    override val releaseDate: DateTime,
+    override val availability: List<Availability>,
+    val icons: Map<Rarity, String?>,
+    val artworks: Map<Rarity, String?>,
+    val description: String,
+    val bonusHp: ManaCircleBonusStats,
+    override val abilityTypes: Set<AbilityType>,
+    val bonusStrength: ManaCircleBonusStats,
     val defense: Int,
     val heroClass: HeroCLass,
     val gender: Gender,
     val race: Race,
-    override val baseRarity: Rarity,
     val voiceActorEN: VoiceActor,
     val voiceActorJP: VoiceActor,
-    override val obtainedFrom: List<Source>,
-    override val releaseDate: DateTime,
-    override val availability: List<Availability>,
-    val artworks: Map<Rarity, String>,
-    val icons: Map<Rarity, String>,
     override val element: Element,
     val weaponType: WeaponType,
     val skill1: AdventurerSkill,
@@ -35,14 +36,13 @@ data class AdventurerEntity(
     val ability2: AdventurerAbility?,
     val ability3: AdventurerAbility?,
     val coAbility: CoAbility,
-    val afflictionResistances: Set<Affliction>,
-    override val abilityTypes: Set<AbilityType>
+    val afflictionResistances: Set<Affliction>
 ) : DragaliaWithElementEntity {
 
-    override val icon: String
-        get() = icons.getValue(icons.keys.minBy { it }!!)
-    override val artwork: String
-        get() = artworks.getValue(artworks.keys.minBy { it }!!)
+    override val icon
+        get() = icons.minBy { (rarity, _) -> rarity }!!.value
+    override val artwork
+        get() = artworks.minBy { (rarity, _) -> rarity }!!.value
 
     override fun toString() = buildString {
         appendln("Adventurer $name:")

@@ -11,22 +11,27 @@ import com.github.lamba92.dragalialost.domain.entities.support.AdventurerSkill
 import com.github.lamba92.dragalialost.domain.entities.support.SkillLevelData
 
 class AdventurerSkillMapper :
-    SingleFromRemoteMapper<Pair<SkillJSON, Triple<ImageInfoJSON, ImageInfoJSON, ImageInfoJSON>>, AdventurerSkill> {
+    SingleFromRemoteMapper<Pair<SkillJSON, Triple<ImageInfoJSON?, ImageInfoJSON?, ImageInfoJSON?>>, AdventurerSkill> {
 
-    override fun fromRemoteSingle(remote: Pair<SkillJSON, Triple<ImageInfoJSON, ImageInfoJSON, ImageInfoJSON>>) =
+    override fun fromRemoteSingle(remote: Pair<SkillJSON, Triple<ImageInfoJSON?, ImageInfoJSON?, ImageInfoJSON?>>) =
         with(remote) {
-        AdventurerSkill(
-            first.Name,
-            first.Sp.toLong(),
-            second.first.url,
-            SkillLevelData(SkillLevel.ONE, ADVENTURER_SKILL_LIL1_MIGHT, first.Description1.sanitize()),
-            SkillLevelData(SkillLevel.TWO, ADVENTURER_SKILL_LVL2_MIGHT, first.Description2.sanitize()),
-            if (first.HideLevel3 == "Yes" || first.HideLevel3 == "1") null else SkillLevelData(
-                SkillLevel.THREE,
-                ADVENTURER_SKILL_LVL3_MIGHT,
-                first.Description3.sanitize()
+            AdventurerSkill(
+                first.Name,
+                first.Sp.toLong(),
+                second.first?.url,
+                SkillLevelData(SkillLevel.ONE, ADVENTURER_SKILL_LIL1_MIGHT, first.Description1.sanitize()),
+                SkillLevelData(SkillLevel.TWO, ADVENTURER_SKILL_LVL2_MIGHT, first.Description2.sanitize()),
+                if (first.MaxSkillLevel >= 3) SkillLevelData(
+                    SkillLevel.THREE,
+                    ADVENTURER_SKILL_LVL3_MIGHT,
+                    first.Description3!!.sanitize()
+                ) else null,
+                if (first.MaxSkillLevel >= 4) SkillLevelData(
+                    SkillLevel.THREE,
+                    ADVENTURER_SKILL_LVL3_MIGHT,
+                    first.Description4!!.sanitize()
+                ) else null
             )
-        )
-    }
+        }
 
 }

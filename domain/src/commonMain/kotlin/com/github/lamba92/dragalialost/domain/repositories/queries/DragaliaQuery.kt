@@ -13,7 +13,6 @@ abstract class DragaliaQuery {
     operator fun <T : DragaliaEntity> contains(entity: T) =
         (if (abilityTypes.isNotEmpty()) entity.abilityTypes.all { it in abilityTypes } else true) &&
                 (if (rarities.isNotEmpty()) entity.baseRarity in rarities else true) &&
-                name?.let { it.toLowerCase() in entity.name.toLowerCase() }
-                ?: true
+                name?.let { it.toLowerCase() in entity.name.toLowerCase() } ?: true
 
 }

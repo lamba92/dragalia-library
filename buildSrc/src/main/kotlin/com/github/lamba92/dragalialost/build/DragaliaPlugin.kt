@@ -1,12 +1,14 @@
 package com.github.lamba92.dragalialost.build
 
+import com.github.lamba92.gradle.utils.asLambda
+import com.github.lamba92.gradle.utils.kotlinMultiplatform
+import com.github.lamba92.gradle.utils.prepareForPublication
+import com.github.lamba92.gradle.utils.publishing
 import com.jfrog.bintray.gradle.BintrayPlugin
-import com.jfrog.bintray.gradle.tasks.BintrayUploadTask
 import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.publish.maven.internal.artifact.FileBasedMavenArtifact
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.withType
@@ -26,7 +28,7 @@ class DragaliaPlugin : Plugin<Project> {
                 artifactId = "${rootProject.name}-$artifactId"
         }
 
-        kotlin {
+        kotlinMultiplatform {
 
             jvm {
                 compilations.all {
@@ -46,36 +48,7 @@ class DragaliaPlugin : Plugin<Project> {
         }
 
         publishing.publications.withType(mavenAction.asLambda())
-
-        bintray {
-            user = searchPropertyOrNull("bintrayUsername")
-            key = searchPropertyOrNull("bintrayApiKey")
-            pkg {
-                version {
-                    name = project.version as String
-                }
-                repo = group as String
-                name = rootProject.name
-                setLicenses("Apache-2.0")
-                vcsUrl = "https://github.com/lamba92/dragalia-library"
-                issueTrackerUrl = "https://github.com/lamba92/dragalia-library/issues"
-            }
-            publish = true
-            setPublications(publishing.publications.names)
-        }
-
-        tasks.withType<BintrayUploadTask> {
-            doFirst {
-                publishing.publications.withType<MavenPublication> {
-                    buildDir.resolve("publications/$name/module.json").also {
-                        if (it.exists())
-                            artifact(object : FileBasedMavenArtifact(it) {
-                                override fun getDefaultExtension() = "module"
-                            })
-                    }
-                }
-            }
-        }
+        prepareForPublication()
 
     }
 

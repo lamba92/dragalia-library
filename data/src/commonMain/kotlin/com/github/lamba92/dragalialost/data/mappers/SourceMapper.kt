@@ -36,7 +36,7 @@ class SourceMapper(
                     storyRegexWithEvent.find(it)!!.groupValues[2]
                 )
                 storyRegexWithEvent2.matches(it) -> Source.Story(null, storyRegexWithEvent2.find(it)!!.groupValues[1])
-                else -> throw IllegalArgumentException("Source \"$it\" has not been handled yet!\nOriginal Source string: $remote")
+                else -> Source.Other(it)
             }
         }
 

@@ -13,15 +13,20 @@ gradlePlugin {
 
 repositories {
     jcenter()
+    google()
     maven("https://plugins.gradle.org/m2/")
     maven("https://dl.bintray.com/kotlin/kotlin-eap")
     maven("https://kotlin.bintray.com/kotlinx")
+    maven("https://dl.bintray.com/lamba92/com.github.lamba92")
 }
 
 dependencies {
+
     val kotlinVersion: String by project
-    val bintrayVersion: String by project
-    api("org.jetbrains.kotlin", "kotlin-gradle-plugin", kotlinVersion)
-    api("com.jfrog.bintray.gradle", "gradle-bintray-plugin", bintrayVersion)
-    api("org.jetbrains.kotlin", "kotlin-serialization", kotlinVersion)
+    val lambaGradleUtils: String by project
+
+    api(kotlin("stdlib-jdk8", kotlinVersion))
+    api(kotlin("reflect", kotlinVersion))
+    api("com.github.lamba92", "lamba-gradle-utils", lambaGradleUtils)
+
 }

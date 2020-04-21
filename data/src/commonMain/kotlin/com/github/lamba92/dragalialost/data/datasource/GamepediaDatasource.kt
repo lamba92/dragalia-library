@@ -22,19 +22,20 @@ interface GamepediaDatasource {
     suspend fun getWeaponsById(id: String): WeaponJSON
     suspend fun getAbilityById(id: String): AbilityJSON
     suspend fun getCoAbilityById(id: String): CoAbilityJSON
-    suspend fun getSkillByName(id: String): SkillJSON
+    suspend fun getSkillById(id: String): SkillJSON
+    suspend fun getSkillByName(name: String): SkillJSON
     suspend fun getAbilityLimitedGroupsById(id: String): AbilityLimitedGroupJSON
-    suspend fun getAbilityGroupsByGroupId(groupId: String): AbilityGroupJSON
 
-    suspend fun getAdventurerIconById(id: String, variationId: String, rarity: Int): ImageInfoJSON
-    suspend fun getAdventurerPortraitById(id: String, variationId: String, rarity: Int): ImageInfoJSON
-    suspend fun getDragonIconById(id: String): ImageInfoJSON
-    suspend fun getDragonPortraitById(id: String): ImageInfoJSON
-    suspend fun getWyrmprintIconByIds(id: String, vestige: Int): ImageInfoJSON
-    suspend fun getWyrmprintPortraitByIds(id: String, vestige: Int): ImageInfoJSON
-    suspend fun getAbilityIconByFileName(fileName: String): ImageInfoJSON
-    suspend fun getCoAbilityIconByFileName(fileName: String): ImageInfoJSON
-    suspend fun getSkillIconByIconName(fileName: String): ImageInfoJSON
+    suspend fun getAbilityGroupsByGroupId(groupId: String): AbilityGroupJSON
+    suspend fun getAdventurerIconById(id: String, variationId: String, rarity: Int): ImageInfoJSON?
+    suspend fun getAdventurerPortraitById(id: String, variationId: String, rarity: Int): ImageInfoJSON?
+    suspend fun getDragonIconById(id: String): ImageInfoJSON?
+    suspend fun getDragonPortraitById(id: String): ImageInfoJSON?
+    suspend fun getWyrmprintIconByIds(id: String, vestige: Int): ImageInfoJSON?
+    suspend fun getWyrmprintPortraitByIds(id: String, vestige: Int): ImageInfoJSON?
+    suspend fun getAbilityIconByFileName(fileName: String): ImageInfoJSON?
+    suspend fun getCoAbilityIconByFileName(fileName: String): ImageInfoJSON?
+    suspend fun getSkillIconByIconName(fileName: String): ImageInfoJSON?
 
     interface Endpoints {
 
@@ -90,6 +91,7 @@ interface GamepediaDatasource {
         fun getWeaponByIdUrl(id: String): Url
         fun getAbilityByIdUrl(id: String): Url
         fun getCoAbilityByIdUrl(id: String): Url
+        fun getSkillByIdUrl(id: String): Url
         fun getSkillByNameUrl(name: String): Url
         fun getAbilityLimitedGroupByIdUrl(id: String): Url
         fun getAbilityGroupByGroupIdUrl(groupId: String): Url

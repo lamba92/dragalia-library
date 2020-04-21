@@ -74,6 +74,8 @@ data class AdventurerJSON(
     val ReleaseDate: String,
     val ReleaseDate__precision: String? = null,
     @SerialName("ReleaseDate  precision") val ReleaseDate__precision2: String? = null,
+    val Skill1ID: String,
+    val Skill2ID: String,
     val Skill1Name: String,
     val Skill2Name: String,
     val Title: String,

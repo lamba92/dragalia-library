@@ -1,5 +1,5 @@
-import com.github.lamba92.dragalialost.build.ktor
-import com.github.lamba92.dragalialost.build.serialization
+import com.github.lamba92.gradle.utils.ktor
+import com.github.lamba92.gradle.utils.serialization
 
 plugins {
     id("dragalia-gradle-plugin")

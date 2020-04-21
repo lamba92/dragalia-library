@@ -42,8 +42,8 @@ fun String.addIfNotStartsWith(prefix: String) =
 fun String.addIfNotWith(prefix: String, suffix: String) =
     addIfNotStartsWith(prefix).addIfNotEndsWith(suffix)
 
-suspend inline fun <A, B, C> Triple<Deferred<A>, Deferred<B>, Deferred<C>>.await() =
-    Triple(first.await(), second.await(), third.await())
+suspend inline fun <A, B, C> Triple<Deferred<A>, Deferred<B>, Deferred<C>?>.await() =
+    Triple(first.await(), second.await(), third?.await())
 
 inline infix fun <T, R> T.with(function: T.() -> R) =
     this to function(this)
@@ -92,5 +92,7 @@ fun String.sanitize(): String {
         me = me.replace(it)
     }
     return me.replace(Regex(" br([A-Z])"), " $1")
+        .replace("&amp;", "")
+        .replace("  ", " ")
 
 }

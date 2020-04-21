@@ -1,5 +1,5 @@
-import com.github.lamba92.dragalialost.build.kotlinx
-import com.github.lamba92.dragalialost.build.ktor
+import com.github.lamba92.gradle.utils.kotlinx
+import com.github.lamba92.gradle.utils.ktor
 
 plugins {
     id("dragalia-gradle-plugin")

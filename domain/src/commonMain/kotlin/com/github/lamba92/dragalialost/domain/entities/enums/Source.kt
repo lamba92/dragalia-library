@@ -21,7 +21,6 @@ sealed class Source {
             eventName?.let { "$it - Summon Showcase" } ?: "Summoning"
     }
 
-
     data class Event(val eventName: String) : Source() {
         override fun toString() =
             "$eventName - Event"
@@ -50,5 +49,7 @@ sealed class Source {
         override fun toString() =
             eventName?.let { "Treasure Trade - Event: $it" } ?: "Treasure Trade"
     }
+
+    data class Other(val value: String) : Source()
 
 }

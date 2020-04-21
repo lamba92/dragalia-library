@@ -1,7 +1,7 @@
-package com.github.lamba92.dragalialost.kodeindi.modules
+package com.github.lamba92.dragalialost.di.modules
 
-import com.github.lamba92.dragalialost.kodeindi.DITags.*
-import com.github.lamba92.dragalialost.kodeindi.KodeinModuleProvider
+import com.github.lamba92.dragalialost.di.DITags.*
+import com.github.lamba92.dragalialost.di.KodeinModuleProvider
 import io.ktor.http.URLProtocol.Companion.HTTPS
 import org.kodein.di.Kodein
 import org.kodein.di.erased.with

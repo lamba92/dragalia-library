@@ -17,11 +17,12 @@ data class QueryJSON(
 
 @Serializable
 data class PageInfoJSON(
-    val pageid: Int,
+    val pageid: Int? = null,
     val ns: Int,
     val title: String,
     val imagerepository: String,
-    val imageinfo: List<ImageInfoJSON>
+    val imageinfo: List<ImageInfoJSON> = emptyList(),
+    val missing: String? = null
 )
 
 @Serializable

@@ -1,7 +1,7 @@
-package com.github.lamba92.dragalialost.kodeindi.modules
+package com.github.lamba92.dragalialost.di.modules
 
 import com.github.lamba92.dragalialost.data.mappers.*
-import com.github.lamba92.dragalialost.kodeindi.KodeinModuleProvider
+import com.github.lamba92.dragalialost.di.KodeinModuleProvider
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
@@ -34,7 +34,7 @@ object MappersModule : KodeinModuleProvider {
             AdventurersQueryMapper(instance(), instance(), instance(), instance())
         }
         bind<DragonsQueryMapper>() with singleton { DragonsQueryMapper(instance(), instance()) }
-        bind<WyrmprintsQueryMapper>() with singleton { WyrmprintsQueryMapper(instance(), instance(), instance()) }
+        bind<WyrmprintsQueryMapper>() with singleton { WyrmprintsQueryMapper(instance()) }
 
         bind<ElementMapper>() with singleton { ElementMapper() }
         bind<HeroClassMapper>() with singleton { HeroClassMapper() }

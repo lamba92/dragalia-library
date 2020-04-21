@@ -1,4 +1,4 @@
-import com.github.lamba92.dragalialost.build.`TRAVIS-TAG`
+import com.github.lamba92.gradle.utils.TRAVIS_TAG
 
 plugins {
     id("dragalia-gradle-plugin") apply false
@@ -14,6 +14,6 @@ allprojects {
     }
 
     group = "com.github.lamba92"
-    version = `TRAVIS-TAG` ?: "1.0.7"
+    version = TRAVIS_TAG ?: "1.0.7"
 
 }
