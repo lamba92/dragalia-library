@@ -124,8 +124,8 @@ class InMemoryGamepediaCache : GamepediaDatasourceCache {
     override suspend fun getAbilityLimitedGroupById(id: String) =
         abilityLimitedGroupsCache[id]
 
-    override suspend fun getAbilityGroupsByGroupId(groupId: String) =
-        abilityGroupsCache[groupId]
+    override suspend fun getAbilityGroupsByGroupId(id: String) =
+        abilityGroupsCache[id]
 
     // images cache retrieval implementations
     override suspend fun getAdventurerIconById(id: String, variationId: String, rarity: Int) =
@@ -318,7 +318,7 @@ class InMemoryGamepediaCache : GamepediaDatasourceCache {
         return true
     }
 
-    override fun invalidateCache() =
+    override suspend fun invalidateCache() =
         listOf(
             adventurersCache, dragonsCache, weaponsCache, abilitiesCache, coAbilitiesCache, skillsCache,
             coAbilitiesCache, adventurersQueryCache, dragonsQueryCache, wyrmprintsQueryCache, weaponsQueryCache,

@@ -23,7 +23,7 @@ interface GamepediaDatasourceCache : Cache {
     suspend fun getSkillById(id: String): SkillJSON?
     suspend fun getSkillByName(name: String): SkillJSON?
     suspend fun getAbilityLimitedGroupById(id: String): AbilityLimitedGroupJSON?
-    suspend fun getAbilityGroupsByGroupId(groupId: String): AbilityGroupJSON?
+    suspend fun getAbilityGroupsByGroupId(id: String): AbilityGroupJSON?
 
     suspend fun getAdventurerIconById(id: String, variationId: String, rarity: Int): ImageInfoJSON?
     suspend fun getAdventurerPortraitById(id: String, variationId: String, rarity: Int): ImageInfoJSON?

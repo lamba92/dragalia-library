@@ -1,3 +1,4 @@
+import com.github.lamba92.gradle.utils.api
 import com.github.lamba92.gradle.utils.kotlinx
 import com.github.lamba92.gradle.utils.ktor
 
@@ -9,6 +10,7 @@ kotlin {
 
     val ktorVersion: String by project
     val textEncodingVersion: String by project
+    val kMongoVersion: String by project
     val atomicfuVersion: String by project
 
     sourceSets["commonMain"].dependencies {
@@ -21,6 +23,7 @@ kotlin {
         api(project(":data"))
         api(ktor("client-core-jvm", ktorVersion))
         api(kotlinx("atomicfu-common", atomicfuVersion, false))
+        api("org.litote.kmongo", "kmongo-coroutine-serialization", kMongoVersion)
     }
 
     sourceSets["jvmTest"].dependencies {
