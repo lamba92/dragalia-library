@@ -10,14 +10,14 @@ cache:
     - $HOME/.gradle/caches
     - $HOME/.gradle/wrapper
 
-script: ./gradlew check --scan
+script: ./gradlew check --console=plain
 
 before_install:
   - chmod +x gradlew
 
 deploy:
   provider: script
-  script: ./gradlew bintrayUpload
+  script: ./gradlew bintrayUpload --console=plain
   skip_cleanup: true
   on:
     branch: master
