@@ -37,7 +37,6 @@ class DragaliaPlugin : Plugin<Project> {
             }
 
             js {
-                browser()
                 nodejs()
             }
 
