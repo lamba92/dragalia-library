@@ -3,58 +3,70 @@ package com.github.lamba92.dragalialost.core.datasource
 import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasourceCache
 import com.github.lamba92.dragalialost.data.datasource.queries.*
 import com.github.lamba92.dragalialost.data.rawresponses.*
+import com.mongodb.MongoWriteException
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Serializable
+import org.litote.kmongo.coroutine.CoroutineClient
+import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.coroutine.CoroutineDatabase
 
-class MongoDBGamepediaCache private constructor(db: CoroutineDatabase) : GamepediaDatasourceCache {
+class MongoDBGamepediaCache private constructor(
+    private val client: CoroutineClient,
+    db: CoroutineDatabase
+) : GamepediaDatasourceCache {
 
     companion object {
 
-        private suspend fun createCollections(db: CoroutineDatabase) {
-            db.createCollection("adventurers")
-            db.createCollection("dragons")
-            db.createCollection("wyrmprints")
-            db.createCollection("weapons")
-            db.createCollection("abilities")
-            db.createCollection("coAbilities")
-            db.createCollection("skillsById")
-            db.createCollection("skillsByName")
-            db.createCollection("abilityLimitedGroup")
-            db.createCollection("abilityGroup")
-            db.createCollection("adventurerIcons")
-            db.createCollection("adventurerPortraits")
-            db.createCollection("dragonIcons")
-            db.createCollection("dragonPortraits")
-            db.createCollection("wyrmprintIcons")
-            db.createCollection("wyrmprintPortraits")
-            db.createCollection("abilityIcons")
-            db.createCollection("coAbilityIcons")
-            db.createCollection("skillIcons")
-        }
+        private suspend fun createCollections(db: CoroutineDatabase) = listOf(
+            "adventurers", "dragons", "wyrmprints", "weapons", "abilities",
+            "coAbilities", "skillsById", "skillsByName", "abilityLimitedGroup", "abilityGroup", "adventurerIcons",
+            "adventurerPortraits", "dragonIcons", "dragonPortraits", "wyrmprintIcons", "wyrmprintPortraits",
+            "abilityIcons", "coAbilityIcons", "skillIcons"
+        ).filter { it !in db.listCollectionNames() }
+            .forEach { db.createCollection(it) }
 
-        suspend fun initialize(db: CoroutineDatabase): MongoDBGamepediaCache {
+        suspend fun initialize(db: CoroutineDatabase, client: CoroutineClient): MongoDBGamepediaCache {
             createCollections(db)
-            return MongoDBGamepediaCache(db)
+            return MongoDBGamepediaCache(client, db)
         }
 
-        fun initializeBlocking(db: CoroutineDatabase) =
+        fun initializeBlocking(db: CoroutineDatabase, client: CoroutineClient) =
             runBlocking {
-                initialize(db)
+                initialize(db, client)
             }
     }
 
+    @Serializable
     private data class AdventurerDocument(val _id: String, val data: AdventurerJSON)
+
+    @Serializable
     private data class DragonDocument(val _id: String, val data: DragonJSON)
+
+    @Serializable
     private data class WyrmprintDocument(val _id: String, val data: WyrmprintJSON)
+
+    @Serializable
     private data class WeaponDocument(val _id: String, val data: WeaponJSON)
+
+    @Serializable
     private data class AbilityDocument(val _id: String, val data: AbilityJSON)
+
+    @Serializable
     private data class CoAbilityDocument(val _id: String, val data: CoAbilityJSON)
+
+    @Serializable
     private data class SkillDocument(val _id: String, val data: SkillJSON)
+
+    @Serializable
     private data class AbilityLimitedGroupDocument(val _id: String, val data: AbilityLimitedGroupJSON)
+
+    @Serializable
     private data class AbilityGroupDocument(val _id: String, val data: AbilityGroupJSON)
+
+    @Serializable
     private data class ImageInfoDocument(val _id: String, val data: ImageInfoJSON)
 
     private val adventurersCollection =
@@ -155,10 +167,10 @@ class MongoDBGamepediaCache private constructor(db: CoroutineDatabase) : Gameped
         abilityGroupsCollection.findOneById(id)?.data
 
     override suspend fun getAdventurerIconById(id: String, variationId: String, rarity: Int) =
-        adventurerIconsCollection.findOne("${id}_${variationId}_$rarity")?.data
+        adventurerIconsCollection.findOneById("${id}_${variationId}_$rarity")?.data
 
     override suspend fun getAdventurerPortraitById(id: String, variationId: String, rarity: Int) =
-        adventurerPortraitsCollection.findOne("${id}_${variationId}_$rarity")?.data
+        adventurerPortraitsCollection.findOneById("${id}_${variationId}_$rarity")?.data
 
     override suspend fun getDragonIconById(id: String) =
         dragonIconsCollection.findOneById(id)?.data
@@ -221,53 +233,69 @@ class MongoDBGamepediaCache private constructor(db: CoroutineDatabase) : Gameped
     ) =
         true
 
+//    private suspend fun <T> CoroutineClient.transaction(action: suspend (ClientSession) -> T) =
+//        startSession().let {
+//            it.startTransaction()
+//            val r = action(it)
+//            it.commitTransactionAndAwait()
+//            r
+//        }
+
+    private suspend fun <T : Any> CoroutineCollection<T>.insertOrUpdate(id: Any, document: T) {
+        try {
+            insertOne(document)
+        } catch (e: MongoWriteException) {
+            updateOneById(id, document)
+        }
+    }
+
     override suspend fun cacheAbilityGroupsByGroupId(groupId: String, data: AbilityGroupJSON): Boolean {
-        abilityGroupsCollection.updateOneById(groupId, AbilityGroupDocument(groupId, data))
+        abilityGroupsCollection.insertOrUpdate(groupId, AbilityGroupDocument(groupId, data))
         return true
     }
 
     override suspend fun cacheAdventurerByIds(id: String, variationId: String, data: AdventurerJSON): Boolean {
-        adventurersCollection.updateOneById("${id}_$variationId", AdventurerDocument("${id}_$variationId", data))
+        adventurersCollection.insertOrUpdate("${id}_$variationId", AdventurerDocument("${id}_$variationId", data))
         return true
     }
 
     override suspend fun cacheDragonById(id: String, data: DragonJSON): Boolean {
-        dragonsCollection.updateOneById(id, DragonDocument(id, data))
+        dragonsCollection.insertOrUpdate(id, DragonDocument(id, data))
         return true
     }
 
     override suspend fun cacheWyrmprintById(id: String, data: WyrmprintJSON): Boolean {
-        wyrmprintsCollection.updateOneById(id, WyrmprintDocument(id, data))
+        wyrmprintsCollection.insertOrUpdate(id, WyrmprintDocument(id, data))
         return true
     }
 
     override suspend fun cacheWeaponById(id: String, data: WeaponJSON): Boolean {
-        weaponsCollection.updateOneById(id, WeaponDocument(id, data))
+        weaponsCollection.insertOrUpdate(id, WeaponDocument(id, data))
         return true
     }
 
     override suspend fun cacheAbilityById(id: String, data: AbilityJSON): Boolean {
-        abilitiesCollection.updateOneById(id, AbilityDocument(id, data))
+        abilitiesCollection.insertOrUpdate(id, AbilityDocument(id, data))
         return true
     }
 
     override suspend fun cacheCoAbilityById(id: String, data: CoAbilityJSON): Boolean {
-        coAbilitiesCollection.updateOneById(id, CoAbilityDocument(id, data))
+        coAbilitiesCollection.insertOrUpdate(id, CoAbilityDocument(id, data))
         return true
     }
 
     override suspend fun cacheSkillById(id: String, data: SkillJSON): Boolean {
-        skillsByIdCollection.updateOneById(id, SkillDocument(id, data))
+        skillsByIdCollection.insertOrUpdate(id, SkillDocument(id, data))
         return true
     }
 
     override suspend fun cacheSkillByName(name: String, data: SkillJSON): Boolean {
-        skillsByNameCollection.updateOneById(name, SkillDocument(name, data))
+        skillsByNameCollection.insertOrUpdate(name, SkillDocument(name, data))
         return true
     }
 
     override suspend fun cacheAbilityLimitedGroupById(id: String, data: AbilityLimitedGroupJSON): Boolean {
-        abilityLimitedGroupsCollection.updateOneById(id, AbilityLimitedGroupDocument(id, data))
+        abilityLimitedGroupsCollection.insertOrUpdate(id, AbilityLimitedGroupDocument(id, data))
         return true
     }
 
@@ -298,37 +326,37 @@ class MongoDBGamepediaCache private constructor(db: CoroutineDatabase) : Gameped
     }
 
     override suspend fun cacheDragonIconById(id: String, data: ImageInfoJSON): Boolean {
-        dragonIconsCollection.updateOneById(id, ImageInfoDocument(id, data))
+        dragonIconsCollection.insertOrUpdate(id, ImageInfoDocument(id, data))
         return true
     }
 
     override suspend fun cacheDragonPortraitById(id: String, data: ImageInfoJSON): Boolean {
-        dragonPortraitsCollection.updateOneById(id, ImageInfoDocument(id, data))
+        dragonPortraitsCollection.insertOrUpdate(id, ImageInfoDocument(id, data))
         return true
     }
 
     override suspend fun cacheWyrmprintIconByIds(id: String, vestige: Int, data: ImageInfoJSON): Boolean {
-        wyrmprintIconsCollection.updateOneById("${id}_$vestige", ImageInfoDocument("${id}_$vestige", data))
+        wyrmprintIconsCollection.insertOrUpdate("${id}_$vestige", ImageInfoDocument("${id}_$vestige", data))
         return true
     }
 
     override suspend fun cacheWyrmprintPortraitByIds(id: String, vestige: Int, data: ImageInfoJSON): Boolean {
-        wyrmprintPortraitsCollection.updateOneById("${id}_$vestige", ImageInfoDocument("${id}_$vestige", data))
+        wyrmprintPortraitsCollection.insertOrUpdate("${id}_$vestige", ImageInfoDocument("${id}_$vestige", data))
         return true
     }
 
     override suspend fun cacheAbilityIconByFileName(fileName: String, data: ImageInfoJSON): Boolean {
-        abilityIconsCollection.updateOneById(fileName, ImageInfoDocument(fileName, data))
+        abilityIconsCollection.insertOrUpdate(fileName, ImageInfoDocument(fileName, data))
         return true
     }
 
     override suspend fun cacheCoAbilityIconByFileName(fileName: String, data: ImageInfoJSON): Boolean {
-        coAbilityIconsCollection.updateOneById(fileName, ImageInfoDocument(fileName, data))
+        coAbilityIconsCollection.insertOrUpdate(fileName, ImageInfoDocument(fileName, data))
         return true
     }
 
     override suspend fun cacheSkillIconByIconName(fileName: String, data: ImageInfoJSON): Boolean {
-        skillIconsCollection.updateOneById(fileName, ImageInfoDocument(fileName, data))
+        skillIconsCollection.insertOrUpdate(fileName, ImageInfoDocument(fileName, data))
         return true
     }
 

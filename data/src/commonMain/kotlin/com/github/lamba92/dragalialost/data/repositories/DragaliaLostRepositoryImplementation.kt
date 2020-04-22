@@ -78,6 +78,9 @@ class DragaliaLostRepositoryImplementation(
             }
             .map { adventurerMapper(it) }
             .filter { it in query }
+            .catch {
+                println("An adventurer errored: $it")
+            }
             .toList()
 
     @ExperimentalCoroutinesApi
@@ -115,10 +118,10 @@ class DragaliaLostRepositoryImplementation(
                     )
                 }
             }
-//            .catch {
-//                println("A dragon errored: $it")
-//            }
             .map { dragonMapper(it) }
+            .catch {
+                println("An dragon errored: $it")
+            }
             .filter { it in query }
             .toList()
 
@@ -164,9 +167,9 @@ class DragaliaLostRepositoryImplementation(
                     )
                 }
             }
-//            .catch {
-//                println("A wyrmprint errored: $it")
-//            }
+            .catch {
+                println("A wyrmprint errored: $it")
+            }
             .map { wyrmprintMapper(it) }
             .filter { it in query }
             .toList()

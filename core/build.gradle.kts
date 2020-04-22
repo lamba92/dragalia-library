@@ -4,6 +4,7 @@ import com.github.lamba92.gradle.utils.ktor
 
 plugins {
     id("dragalia-gradle-plugin")
+    kotlin("plugin.serialization")
 }
 
 kotlin {
