@@ -1,6 +1,7 @@
 package com.github.lamba92.dragalialost.domain.repositories
 
 import com.github.lamba92.dragalialost.domain.entities.AdventurerEntity
+import com.github.lamba92.dragalialost.domain.entities.DragaliaId
 import com.github.lamba92.dragalialost.domain.entities.DragonEntity
 import com.github.lamba92.dragalialost.domain.entities.WyrmprintEntity
 import com.github.lamba92.dragalialost.domain.repositories.queries.AdventurersQuery
@@ -23,5 +24,9 @@ interface DragaliaLostRepository {
         query: WyrmprintsQuery,
         limit: Int = 500
     ): List<WyrmprintEntity>
+
+    suspend fun getAdventurerById(id: DragaliaId): AdventurerEntity
+    suspend fun getDragonById(id: DragaliaId): DragonEntity
+    suspend fun getWyrmprintById(id: DragaliaId): WyrmprintEntity
 
 }

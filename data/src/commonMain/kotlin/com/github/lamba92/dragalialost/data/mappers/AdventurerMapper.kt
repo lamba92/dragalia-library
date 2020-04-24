@@ -4,6 +4,7 @@ import com.github.lamba92.dragalialost.data.rawresponses.*
 import com.github.lamba92.dragalialost.data.utils.sanitize
 import com.github.lamba92.dragalialost.domain.entities.AdventurerEntity
 import com.github.lamba92.dragalialost.domain.entities.DragaliaEntity
+import com.github.lamba92.dragalialost.domain.entities.DragaliaId
 import com.github.lamba92.dragalialost.domain.entities.enums.AbilityType
 import com.github.lamba92.dragalialost.domain.entities.enums.Affliction
 import com.github.lamba92.dragalialost.domain.entities.enums.Element
@@ -57,6 +58,7 @@ class AdventurerMapper(
                 McFullBonusAtk5.toInt()
             )
             AdventurerEntity(
+                DragaliaId(Id, VariationId),
                 if (Name !in FullName) "$FullName $Name" else FullName,
                 DragaliaEntity.ADVENTURERS_MAX_LVL,
                 MaxHp.toInt(),

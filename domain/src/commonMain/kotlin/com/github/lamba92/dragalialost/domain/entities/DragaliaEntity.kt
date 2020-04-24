@@ -9,6 +9,7 @@ import com.soywiz.klock.DateTime
 
 interface DragaliaEntity {
 
+    val id: DragaliaId
     val name: String
     val maxLevel: Int
     val hp: Int

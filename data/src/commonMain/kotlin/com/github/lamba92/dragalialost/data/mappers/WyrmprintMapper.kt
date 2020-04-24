@@ -5,6 +5,7 @@ import com.github.lamba92.dragalialost.data.rawresponses.AbilityJSON
 import com.github.lamba92.dragalialost.data.rawresponses.ImageInfoJSON
 import com.github.lamba92.dragalialost.data.rawresponses.WyrmprintJSON
 import com.github.lamba92.dragalialost.domain.entities.DragaliaEntity
+import com.github.lamba92.dragalialost.domain.entities.DragaliaId
 import com.github.lamba92.dragalialost.domain.entities.WyrmprintEntity
 import com.github.lamba92.dragalialost.domain.entities.enums.AbilityType
 import com.github.lamba92.dragalialost.domain.entities.enums.Affliction
@@ -37,6 +38,7 @@ class WyrmprintMapper(
 
         with(wyrmprint) {
             WyrmprintEntity(
+                DragaliaId(Id),
                 Name,
                 WyrmprintDescription(FlavorText1, FlavorText2, FlavorText3, FlavorText4, FlavorText5),
                 MaxAtk.toInt(),

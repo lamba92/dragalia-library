@@ -2,10 +2,14 @@ package com.github.lamba92.dragalialost.domain.entities
 
 import com.github.lamba92.dragalialost.domain.entities.enums.*
 import com.github.lamba92.dragalialost.domain.entities.support.*
+import com.github.lamba92.dragalialost.domain.utils.DateTimeSerializer
 import com.github.lamba92.dragalialost.domain.utils.appendln
 import com.soywiz.klock.DateTime
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class DragonEntity(
+    override val id: DragaliaId,
     override val name: String,
     val description: String,
     override val hp: Int,
@@ -21,7 +25,7 @@ data class DragonEntity(
     val voiceActorJP: VoiceActor,
     val gender: Gender,
     override val obtainedFrom: List<Source>,
-    override val releaseDate: DateTime,
+    @Serializable(with = DateTimeSerializer::class) override val releaseDate: DateTime,
     override val availability: List<Availability>,
     override val artwork: String?,
     override val icon: String?,

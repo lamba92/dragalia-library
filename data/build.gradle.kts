@@ -1,36 +1,33 @@
+import com.github.lamba92.gradle.utils.api
 import com.github.lamba92.gradle.utils.ktor
-import com.github.lamba92.gradle.utils.serialization
 
 plugins {
     id("dragalia-gradle-plugin")
-    kotlin("plugin.serialization")
 }
 
 kotlin {
 
     val ktorVersion: String by project
-    val kotlinxSerializationVersion: String by project
+    val kMongoVersion: String by project
 
     sourceSets["commonMain"].dependencies {
         api(project(":domain"))
         api(ktor("http", ktorVersion))
         api(ktor("utils", ktorVersion))
-        api(serialization("runtime-common", kotlinxSerializationVersion))
     }
 
     sourceSets["jvmMain"].dependencies {
         api(project(":domain"))
         api(ktor("http-jvm", ktorVersion))
         api(ktor("utils-jvm", ktorVersion))
-        api(serialization("runtime", kotlinxSerializationVersion))
         api(kotlin("reflect"))
+        api("org.litote.kmongo", "kmongo-coroutine-serialization", kMongoVersion)
     }
 
     sourceSets["jsMain"].dependencies {
         api(project(":domain"))
         api(ktor("http-js", ktorVersion))
         api(ktor("utils-js", ktorVersion))
-        api(serialization("runtime-js", kotlinxSerializationVersion))
     }
 
 }

@@ -2,10 +2,14 @@ package com.github.lamba92.dragalialost.domain.entities
 
 import com.github.lamba92.dragalialost.domain.entities.enums.*
 import com.github.lamba92.dragalialost.domain.entities.support.*
+import com.github.lamba92.dragalialost.domain.utils.DateTimeSerializer
 import com.github.lamba92.dragalialost.domain.utils.appendln
 import com.soywiz.klock.DateTime
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class AdventurerEntity(
+    override val id: DragaliaId,
     override val name: String,
     override val maxLevel: Int,
     override val hp: Int,
@@ -14,7 +18,7 @@ data class AdventurerEntity(
     override val baseMaxMight: Int,
     override val baseRarity: Rarity,
     override val obtainedFrom: List<Source>,
-    override val releaseDate: DateTime,
+    @Serializable(with = DateTimeSerializer::class) override val releaseDate: DateTime,
     override val availability: List<Availability>,
     val icons: Map<Rarity, String?>,
     val artworks: Map<Rarity, String?>,

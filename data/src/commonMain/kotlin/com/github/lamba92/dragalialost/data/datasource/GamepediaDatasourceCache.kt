@@ -2,6 +2,7 @@ package com.github.lamba92.dragalialost.data.datasource
 
 import com.github.lamba92.dragalialost.data.datasource.queries.*
 import com.github.lamba92.dragalialost.data.rawresponses.*
+import com.github.lamba92.dragalialost.domain.utils.Cache
 
 interface GamepediaDatasourceCache : Cache {
 

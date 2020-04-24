@@ -2,6 +2,7 @@ package com.github.lamba92.dragalialost.data.mappers
 
 import com.github.lamba92.dragalialost.data.rawresponses.*
 import com.github.lamba92.dragalialost.domain.entities.DragaliaEntity
+import com.github.lamba92.dragalialost.domain.entities.DragaliaId
 import com.github.lamba92.dragalialost.domain.entities.DragonEntity
 import com.github.lamba92.dragalialost.domain.entities.enums.AbilityType
 import com.github.lamba92.dragalialost.domain.entities.enums.Affliction
@@ -29,6 +30,7 @@ class DragonMapper(
         val skill = dragonSkillMapper(skill1)
         with(dragon) {
             DragonEntity(
+                DragaliaId(Id),
                 if (Name !in FullName) "$FullName $Name" else FullName,
                 ProfileText,
                 MaxHp.toInt(),

@@ -20,6 +20,7 @@ class DragaliaPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
 
         apply<KotlinMultiplatformPluginWrapper>()
+        plugins.apply("org.jetbrains.kotlin.plugin.serialization")
         apply<MavenPublishPlugin>()
         apply<BintrayPlugin>()
 

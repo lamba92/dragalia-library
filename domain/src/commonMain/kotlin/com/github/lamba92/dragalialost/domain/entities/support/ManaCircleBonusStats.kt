@@ -1,5 +1,8 @@
 package com.github.lamba92.dragalialost.domain.entities.support
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ManaCircleBonusStats(
     val circle1: Int,
     val circle2: Int,
