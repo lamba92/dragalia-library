@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 
 @Serializer(forClass = DateTime::class)
 object DateTimeSerializer : KSerializer<DateTime> {
+
     override val descriptor = PrimitiveDescriptor("WithCustomDefault", PrimitiveKind.STRING)
 
     override fun serialize(encoder: Encoder, value: DateTime) {

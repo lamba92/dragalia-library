@@ -41,10 +41,6 @@ class DragaliaPlugin : Plugin<Project> {
                 nodejs()
             }
 
-            sourceSets.all {
-                languageSettings.enableLanguageFeature("InlineClasses")
-            }
-
         }
 
         publishing.publications.withType(mavenAction.asLambda())

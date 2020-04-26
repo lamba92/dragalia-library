@@ -21,7 +21,6 @@ kotlin {
     sourceSets["commonTest"].dependencies {
         api(kotlin("test-annotations-common"))
         api(kotlin("test-common"))
-        api(serialization("runtime-common", kotlinxSerializationVersion))
     }
 
     sourceSets["jvmMain"].dependencies {
