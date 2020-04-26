@@ -9,6 +9,7 @@ class RarityMapper : SingleToRemoteMapper<Int, Rarity>, SingleFromRemoteMapper<S
         THREE -> 3
         FOUR -> 4
         FIVE -> 5
+        SIX -> 6
     }
 
     override fun fromRemoteSingle(remote: String) = when (remote) {
@@ -16,6 +17,7 @@ class RarityMapper : SingleToRemoteMapper<Int, Rarity>, SingleFromRemoteMapper<S
         "3" -> THREE
         "4" -> FOUR
         "5" -> FIVE
+        "6" -> SIX
         else -> throw IllegalArgumentException("Rarity $remote has not been managed yet")
     }
 
@@ -24,6 +26,7 @@ class RarityMapper : SingleToRemoteMapper<Int, Rarity>, SingleFromRemoteMapper<S
         3 -> THREE
         4 -> FOUR
         5 -> FIVE
+        6 -> SIX
         else -> throw IllegalArgumentException("Rarity $remote has not been managed yet")
     }
 
