@@ -6,8 +6,7 @@ import com.soywiz.klock.format
 import com.soywiz.klock.parseUtc
 import kotlinx.serialization.*
 
-@Serializer(forClass = DateTime::class)
-object DateTimeSerializer : KSerializer<DateTime> {
+class DateTimeSerializer : KSerializer<DateTime> {
 
     override val descriptor = PrimitiveDescriptor("WithCustomDefault", PrimitiveKind.STRING)
 

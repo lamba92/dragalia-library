@@ -73,7 +73,7 @@ class AdventurerMapper(
                         DragaliaEntity.FORCE_STRIKE_LVL2_MIGHT + bonusHp.total + bonusStr.total,
                 rarityMapper(Rarity),
                 sourceMapper(Obtain),
-                DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
+//                DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
                 availabilityMapper(Availability),
                 adventurerImageMapper(icons),
                 adventurerImageMapper(artworks),

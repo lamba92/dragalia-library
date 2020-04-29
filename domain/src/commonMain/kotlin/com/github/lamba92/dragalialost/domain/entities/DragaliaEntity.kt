@@ -18,7 +18,7 @@ interface DragaliaEntity {
     val baseMaxMight: Int
     val baseRarity: Rarity
     val obtainedFrom: List<Source>
-    val releaseDate: DateTime
+//    val releaseDate: DateTime // TODO
     val availability: List<Availability>
     val icon: String?
     val artwork: String?

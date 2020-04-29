@@ -47,7 +47,7 @@ class DragonMapper(
                 VoiceActor(JapaneseCV),
                 Gender.MALE, //TODO gender!
                 emptyList(), // TODO source!
-                DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
+//                DragaliaEntity.DATE_TIME_FORMAT.parseUtc(ReleaseDate.substring(0, 10)),
                 availabilityMapper(Availability),
                 portrait?.url,
                 icon?.url,

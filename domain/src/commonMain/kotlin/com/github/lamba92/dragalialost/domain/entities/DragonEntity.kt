@@ -25,7 +25,7 @@ data class DragonEntity(
     val voiceActorJP: VoiceActor,
     val gender: Gender,
     override val obtainedFrom: List<Source>,
-    @Serializable(with = DateTimeSerializer::class) override val releaseDate: DateTime,
+//    @Serializable(with = DateTimeSerializer::class) override val releaseDate: DateTime,
     override val availability: List<Availability>,
     override val artwork: String?,
     override val icon: String?,

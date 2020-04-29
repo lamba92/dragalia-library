@@ -18,7 +18,7 @@ data class AdventurerEntity(
     override val baseMaxMight: Int,
     override val baseRarity: Rarity,
     override val obtainedFrom: List<Source>,
-    @Serializable(with = DateTimeSerializer::class) override val releaseDate: DateTime,
+//    @Serializable(with = DateTimeSerializer::class) override val releaseDate: DateTime,
     override val availability: List<Availability>,
     val icons: Map<Rarity, String?>,
     val artworks: Map<Rarity, String?>,
