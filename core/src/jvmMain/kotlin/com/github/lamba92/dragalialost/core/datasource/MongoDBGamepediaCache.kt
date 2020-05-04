@@ -1,10 +1,10 @@
 package com.github.lamba92.dragalialost.core.datasource
 
+import com.github.lamba92.dragalialost.core.utils.MongoDocument
 import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasourceCache
 import com.github.lamba92.dragalialost.data.datasource.queries.*
 import com.github.lamba92.dragalialost.data.rawresponses.*
 import com.github.lamba92.dragalialost.data.utils.MongoDBInitializer
-import com.mongodb.MongoWriteException
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -12,6 +12,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.coroutine.CoroutineDatabase
+import org.litote.kmongo.eq
+import org.litote.kmongo.setValue
 
 class MongoDBGamepediaCache private constructor(db: CoroutineDatabase) : GamepediaDatasourceCache {
 
@@ -37,34 +39,74 @@ class MongoDBGamepediaCache private constructor(db: CoroutineDatabase) : Gameped
     }
 
     @Serializable
-    private data class AdventurerDocument(val _id: String, val data: AdventurerJSON)
+    private data class AdventurerDocument(
+        override val _id: String,
+        val data: AdventurerJSON,
+        override val creationTime: Long = System.currentTimeMillis()
+    )  : MongoDocument
 
     @Serializable
-    private data class DragonDocument(val _id: String, val data: DragonJSON)
+    private data class DragonDocument(
+        override val _id: String,
+        val data: DragonJSON,
+        override val creationTime: Long = System.currentTimeMillis()
+    )  : MongoDocument
 
     @Serializable
-    private data class WyrmprintDocument(val _id: String, val data: WyrmprintJSON)
+    private data class WyrmprintDocument(
+        override val _id: String,
+        val data: WyrmprintJSON,
+        override val creationTime: Long = System.currentTimeMillis()
+    )  : MongoDocument
 
     @Serializable
-    private data class WeaponDocument(val _id: String, val data: WeaponJSON)
+    private data class WeaponDocument(
+        override val _id: String,
+        val data: WeaponJSON,
+        override val creationTime: Long = System.currentTimeMillis()
+    )  : MongoDocument
 
     @Serializable
-    private data class AbilityDocument(val _id: String, val data: AbilityJSON)
+    private data class AbilityDocument(
+        override val _id: String,
+        val data: AbilityJSON,
+        override val creationTime: Long = System.currentTimeMillis()
+    )  : MongoDocument
 
     @Serializable
-    private data class CoAbilityDocument(val _id: String, val data: CoAbilityJSON)
+    private data class CoAbilityDocument(
+        override val _id: String,
+        val data: CoAbilityJSON,
+        override val creationTime: Long = System.currentTimeMillis()
+    )  : MongoDocument
 
     @Serializable
-    private data class SkillDocument(val _id: String, val data: SkillJSON)
+    private data class SkillDocument(
+        override val _id: String,
+        val data: SkillJSON,
+        override val creationTime: Long = System.currentTimeMillis()
+    )  : MongoDocument
 
     @Serializable
-    private data class AbilityLimitedGroupDocument(val _id: String, val data: AbilityLimitedGroupJSON)
+    private data class AbilityLimitedGroupDocument(
+        override val _id: String,
+        val data: AbilityLimitedGroupJSON,
+        override val creationTime: Long = System.currentTimeMillis()
+    )  : MongoDocument
 
     @Serializable
-    private data class AbilityGroupDocument(val _id: String, val data: AbilityGroupJSON)
+    private data class AbilityGroupDocument(
+        override val _id: String,
+        val data: AbilityGroupJSON,
+        override val creationTime: Long = System.currentTimeMillis()
+    )  : MongoDocument
 
     @Serializable
-    private data class ImageInfoDocument(val _id: String, val data: ImageInfoJSON)
+    private data class ImageInfoDocument(
+        override val _id: String,
+        val data: ImageInfoJSON,
+        override val creationTime: Long = System.currentTimeMillis()
+    )  : MongoDocument
 
     private val adventurersCollection =
         db.getCollection<AdventurerDocument>("adventurers")
@@ -230,69 +272,53 @@ class MongoDBGamepediaCache private constructor(db: CoroutineDatabase) : Gameped
     ) =
         true
 
-//    private suspend fun <T> CoroutineClient.transaction(action: suspend (ClientSession) -> T) =
-//        startSession().let {
-//            it.startTransaction()
-//            val r = action(it)
-//            it.commitTransactionAndAwait()
-//            r
-//        }
-
-    private suspend fun <T : Any> CoroutineCollection<T>.unsafeInsertOrUpdate(id: Any, document: T) {
-        try {
-            insertOne(document)
-        } catch (e: MongoWriteException) {
-            updateOneById(id, document)
-        }
-    }
-
     override suspend fun cacheAbilityGroupsByGroupId(groupId: String, data: AbilityGroupJSON): Boolean {
-        abilityGroupsCollection.unsafeInsertOrUpdate(groupId, AbilityGroupDocument(groupId, data))
+        abilityGroupsCollection.save(AbilityGroupDocument(groupId, data))
         return true
     }
 
     override suspend fun cacheAdventurerByIds(id: String, variationId: String, data: AdventurerJSON): Boolean {
-        adventurersCollection.unsafeInsertOrUpdate("${id}_$variationId", AdventurerDocument("${id}_$variationId", data))
+        adventurersCollection.save(AdventurerDocument("${id}_$variationId", data))
         return true
     }
 
     override suspend fun cacheDragonById(id: String, data: DragonJSON): Boolean {
-        dragonsCollection.unsafeInsertOrUpdate(id, DragonDocument(id, data))
+        dragonsCollection.save(DragonDocument(id, data))
         return true
     }
 
     override suspend fun cacheWyrmprintById(id: String, data: WyrmprintJSON): Boolean {
-        wyrmprintsCollection.unsafeInsertOrUpdate(id, WyrmprintDocument(id, data))
+        wyrmprintsCollection.save(WyrmprintDocument(id, data))
         return true
     }
 
     override suspend fun cacheWeaponById(id: String, data: WeaponJSON): Boolean {
-        weaponsCollection.unsafeInsertOrUpdate(id, WeaponDocument(id, data))
+        weaponsCollection.save(WeaponDocument(id, data))
         return true
     }
 
     override suspend fun cacheAbilityById(id: String, data: AbilityJSON): Boolean {
-        abilitiesCollection.unsafeInsertOrUpdate(id, AbilityDocument(id, data))
+        abilitiesCollection.save(AbilityDocument(id, data))
         return true
     }
 
     override suspend fun cacheCoAbilityById(id: String, data: CoAbilityJSON): Boolean {
-        coAbilitiesCollection.unsafeInsertOrUpdate(id, CoAbilityDocument(id, data))
+        coAbilitiesCollection.save(CoAbilityDocument(id, data))
         return true
     }
 
     override suspend fun cacheSkillById(id: String, data: SkillJSON): Boolean {
-        skillsByIdCollection.unsafeInsertOrUpdate(id, SkillDocument(id, data))
+        skillsByIdCollection.save(SkillDocument(id, data))
         return true
     }
 
     override suspend fun cacheSkillByName(name: String, data: SkillJSON): Boolean {
-        skillsByNameCollection.unsafeInsertOrUpdate(name, SkillDocument(name, data))
+        skillsByNameCollection.save(SkillDocument(name, data))
         return true
     }
 
     override suspend fun cacheAbilityLimitedGroupById(id: String, data: AbilityLimitedGroupJSON): Boolean {
-        abilityLimitedGroupsCollection.unsafeInsertOrUpdate(id, AbilityLimitedGroupDocument(id, data))
+        abilityLimitedGroupsCollection.save(AbilityLimitedGroupDocument(id, data))
         return true
     }
 
@@ -323,37 +349,37 @@ class MongoDBGamepediaCache private constructor(db: CoroutineDatabase) : Gameped
     }
 
     override suspend fun cacheDragonIconById(id: String, data: ImageInfoJSON): Boolean {
-        dragonIconsCollection.unsafeInsertOrUpdate(id, ImageInfoDocument(id, data))
+        dragonIconsCollection.save(ImageInfoDocument(id, data))
         return true
     }
 
     override suspend fun cacheDragonPortraitById(id: String, data: ImageInfoJSON): Boolean {
-        dragonPortraitsCollection.unsafeInsertOrUpdate(id, ImageInfoDocument(id, data))
+        dragonPortraitsCollection.save(ImageInfoDocument(id, data))
         return true
     }
 
     override suspend fun cacheWyrmprintIconByIds(id: String, vestige: Int, data: ImageInfoJSON): Boolean {
-        wyrmprintIconsCollection.unsafeInsertOrUpdate("${id}_$vestige", ImageInfoDocument("${id}_$vestige", data))
+        wyrmprintIconsCollection.save(ImageInfoDocument("${id}_$vestige", data))
         return true
     }
 
     override suspend fun cacheWyrmprintPortraitByIds(id: String, vestige: Int, data: ImageInfoJSON): Boolean {
-        wyrmprintPortraitsCollection.unsafeInsertOrUpdate("${id}_$vestige", ImageInfoDocument("${id}_$vestige", data))
+        wyrmprintPortraitsCollection.save(ImageInfoDocument("${id}_$vestige", data))
         return true
     }
 
     override suspend fun cacheAbilityIconByFileName(fileName: String, data: ImageInfoJSON): Boolean {
-        abilityIconsCollection.unsafeInsertOrUpdate(fileName, ImageInfoDocument(fileName, data))
+        abilityIconsCollection.save(ImageInfoDocument(fileName, data))
         return true
     }
 
     override suspend fun cacheCoAbilityIconByFileName(fileName: String, data: ImageInfoJSON): Boolean {
-        coAbilityIconsCollection.unsafeInsertOrUpdate(fileName, ImageInfoDocument(fileName, data))
+        coAbilityIconsCollection.save(ImageInfoDocument(fileName, data))
         return true
     }
 
     override suspend fun cacheSkillIconByIconName(fileName: String, data: ImageInfoJSON): Boolean {
-        skillIconsCollection.unsafeInsertOrUpdate(fileName, ImageInfoDocument(fileName, data))
+        skillIconsCollection.save(ImageInfoDocument(fileName, data))
         return true
     }
 

@@ -13,7 +13,7 @@ import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
-fun dragaliaMongoDBCacheModule(host: String = "localhost", port: Int = 27017, dbName: String = "db") =
+fun dragaliaMongoDBCacheModule(host: String = "localhost", port: Int = 27017, dbName: String = "dragalia") =
     Kodein.Module("Dragalia Lost Cache Module") {
         bind<CoroutineClient>() with singleton {
             KMongo.createClient("mongodb://$host:$port").coroutine

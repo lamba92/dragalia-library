@@ -1,8 +1,10 @@
 package com.github.lamba92.dragalialost.core.datasource
 
+import com.github.lamba92.dragalialost.data.DragaliaError
 import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasource
 import com.github.lamba92.dragalialost.data.datasource.queries.*
 import com.github.lamba92.dragalialost.data.rawresponses.*
+import com.github.lamba92.dragalialost.data.utils.asDragaliaId
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 
@@ -72,8 +74,11 @@ class GamepediaDatasourceImplementation(
     override suspend fun getWeaponsById(id: String) =
         httpClient.get<WeaponCargoJSON>(endpoints.getWeaponByIdUrl(id)).cargoquery.first().title
 
-    override suspend fun getAbilityById(id: String) =
+    override suspend fun getAbilityById(id: String) = try {
         httpClient.get<AbilityCargoJSON>(endpoints.getAbilityByIdUrl(id)).cargoquery.first().title
+    } catch (e: Throwable) {
+        throw DragaliaError.AbilityNotFoundException(asDragaliaId(id), e)
+    }
 
     override suspend fun getCoAbilityById(id: String) =
         httpClient.get<CoAbilityCargoJSON>(endpoints.getCoAbilityByIdUrl(id)).cargoquery.first().title

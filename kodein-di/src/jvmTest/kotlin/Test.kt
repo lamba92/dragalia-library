@@ -1,6 +1,7 @@
 import com.github.lamba92.dragalialost.di.dragaliaLostModule
 import com.github.lamba92.dragalialost.di.dragaliaMongoDBCacheModule
 import com.github.lamba92.dragalialost.domain.usecases.SearchAllByNameUseCase
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -18,7 +19,7 @@ class Testotron : KodeinAware {
 
     @Test
     fun testtttttttttttt() = runBlocking {
-        val stuff = uv.buildAction("")
+        val t = uv.buildAction("")
     }
 
 }

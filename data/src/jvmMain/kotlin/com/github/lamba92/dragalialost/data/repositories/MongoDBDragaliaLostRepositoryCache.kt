@@ -8,11 +8,11 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.coroutine.CoroutineDatabase
+import java.time.Instant
 
 class MongoDBDragaliaLostRepositoryCache private constructor(db: CoroutineDatabase) : DragaliaLostRepositoryCache {
 
-    companion object :
-        MongoDBInitializer<MongoDBDragaliaLostRepositoryCache> {
+    companion object : MongoDBInitializer<MongoDBDragaliaLostRepositoryCache> {
         override suspend fun initCollections(db: CoroutineDatabase) {
             listOf("adventurerEntities", "dragonEntities", "wyrmprintEntities")
                 .filter { it !in db.listCollectionNames() }
@@ -20,31 +20,36 @@ class MongoDBDragaliaLostRepositoryCache private constructor(db: CoroutineDataba
         }
 
         override suspend fun initialize(db: CoroutineDatabase): MongoDBDragaliaLostRepositoryCache {
-            initCollections(
-                db
-            )
-            return MongoDBDragaliaLostRepositoryCache(
-                db
-            )
+            initCollections(db)
+            return MongoDBDragaliaLostRepositoryCache(db)
         }
 
         override fun initializeBlocking(db: CoroutineDatabase) =
             runBlocking {
-                initialize(
-                    db
-                )
+                initialize(db)
             }
-
     }
 
     @Serializable
-    private data class AdventurerDocument(val _id: String, val data: AdventurerEntity)
+    private data class AdventurerDocument(
+        val _id: String,
+        val data: AdventurerEntity,
+        val creationTime: Long = System.currentTimeMillis()
+    )
 
     @Serializable
-    private data class DragonDocument(val _id: String, val data: DragonEntity)
+    private data class DragonDocument(
+        val _id: String,
+        val data: DragonEntity,
+        val creationTime: Long = System.currentTimeMillis()
+    )
 
     @Serializable
-    private data class WyrmprintDocument(val _id: String, val data: WyrmprintEntity)
+    private data class WyrmprintDocument(
+        val _id: String,
+        val data: WyrmprintEntity,
+        val creationTime: Long = System.currentTimeMillis()
+    )
 
     private val adventurersCollection =
         db.getCollection<AdventurerDocument>("adventurerEntities")
@@ -64,37 +69,11 @@ class MongoDBDragaliaLostRepositoryCache private constructor(db: CoroutineDataba
     override suspend fun getWyrmprintById(id: DragaliaId) =
         wyrmprintsCollection.findOneById(id.toString())?.data
 
-    private suspend fun <T : Any> CoroutineCollection<T>.unsafeInsertOrUpdate(id: Any, document: T) {
-        try {
-            insertOne(document)
-        } catch (e: MongoWriteException) {
-            updateOneById(id, document)
-        }
-    }
-
     override suspend fun cache(data: DragaliaEntity): Boolean {
         when (data) {
-            is AdventurerEntity -> adventurersCollection.unsafeInsertOrUpdate(
-                data.id,
-                AdventurerDocument(
-                    data.id.toString(),
-                    data
-                )
-            )
-            is DragonEntity -> dragonsCollection.unsafeInsertOrUpdate(
-                data.id,
-                DragonDocument(
-                    data.id.toString(),
-                    data
-                )
-            )
-            is WyrmprintEntity -> wyrmprintsCollection.unsafeInsertOrUpdate(
-                data.id,
-                WyrmprintDocument(
-                    data.id.toString(),
-                    data
-                )
-            )
+            is AdventurerEntity -> adventurersCollection.save(AdventurerDocument(data.id.toString(), data))
+            is DragonEntity -> dragonsCollection.save(DragonDocument(data.id.toString(), data))
+            is WyrmprintEntity -> wyrmprintsCollection.save(WyrmprintDocument(data.id.toString(), data))
         }
         return true
     }

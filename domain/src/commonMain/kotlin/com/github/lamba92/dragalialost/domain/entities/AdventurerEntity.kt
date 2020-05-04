@@ -2,9 +2,7 @@ package com.github.lamba92.dragalialost.domain.entities
 
 import com.github.lamba92.dragalialost.domain.entities.enums.*
 import com.github.lamba92.dragalialost.domain.entities.support.*
-import com.github.lamba92.dragalialost.domain.utils.DateTimeSerializer
 import com.github.lamba92.dragalialost.domain.utils.appendln
-import com.soywiz.klock.DateTime
 import kotlinx.serialization.Serializable
 
 @Serializable

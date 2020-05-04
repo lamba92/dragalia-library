@@ -44,7 +44,7 @@ data class DragonJSON(
     @SerialName("ReleaseDate  precision") val ReleaseDate__precision2: String? = null,
     val SellCoin: String,
     val SellDewPoint: String,
-    val Skill1: String,
+    val SkillID: String,
     val SkillDescription: String,
     val SkillName: String,
     val Title: String,

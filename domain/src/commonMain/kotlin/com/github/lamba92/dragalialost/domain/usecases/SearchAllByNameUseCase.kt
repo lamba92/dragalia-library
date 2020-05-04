@@ -5,18 +5,22 @@ import com.github.lamba92.dragalialost.domain.repositories.DragaliaLostRepositor
 import com.github.lamba92.dragalialost.domain.repositories.searchAdventurers
 import com.github.lamba92.dragalialost.domain.repositories.searchDragons
 import com.github.lamba92.dragalialost.domain.repositories.searchWyrmprints
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class SearchAllByNameUseCase(
     private val repo: DragaliaLostRepository
 ) : UseCaseWithParams<String, List<DragaliaEntity>> {
 
-    override suspend fun buildAction(params: String) = coroutineScope {
-        val a = async { repo.searchAdventurers { name = params } }
-        val d = async { repo.searchDragons { name = params } }
-        val w = async { repo.searchWyrmprints { name = params } }
-        (a.await() + d.await() + w.await()).sortedBy { it.name }
-    }
+    @OptIn(FlowPreview::class)
+    override suspend fun buildAction(params: String) =
+        flowOf(
+            repo.searchAdventurers { name = params },
+            repo.searchDragons { name = params },
+            repo.searchWyrmprints { name = params }
+        ).flattenMerge(3).toList()
 
 }

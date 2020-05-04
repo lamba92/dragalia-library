@@ -1,5 +1,7 @@
 package com.github.lamba92.dragalialost.data.utils
 
+import com.github.lamba92.dragalialost.data.rawresponses.AdventurerIdJSON
+import com.github.lamba92.dragalialost.domain.entities.DragaliaId
 import kotlinx.coroutines.Deferred
 import kotlin.jvm.JvmName
 
@@ -51,6 +53,7 @@ inline infix fun <T, R> T.with(function: T.() -> R) =
 inline infix fun <T, R, K> T.withPair(function: T.() -> Pair<R, K>) =
     function(this).let { Triple(this, it.first, it.second) }
 
+@Suppress("RegExpRedundantEscape")
 internal val sanitizationRegexes = listOf(
     Regex("\\[\\[.*\\|(.*)\\]\\]") to "$1",
     Regex("\\[\\[(.*)\\]\\]") to "$1",
@@ -96,3 +99,9 @@ fun String.sanitize(): String {
         .replace("  ", " ")
 
 }
+
+fun AdventurerIdJSON.asDragaliaId() =
+    DragaliaId(Id, VariationId)
+
+fun asDragaliaId(id: String) =
+    DragaliaId(id)

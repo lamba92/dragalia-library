@@ -1,5 +1,8 @@
 package com.github.lamba92.dragalialost.core.datasource
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 enum class DatasourceTables(val tableName: String) {
 
     ADVENTURERS_TABLE("Adventurers"), DRAGONS_TABLE("Dragons"),

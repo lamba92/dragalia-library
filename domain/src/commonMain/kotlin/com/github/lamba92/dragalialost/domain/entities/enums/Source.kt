@@ -34,7 +34,8 @@ sealed class Source {
 
     @Serializable
     data class Quest(val difficulty: Difficulty = Difficulty.NORMAL) : Source() {
-        enum class Difficulty {
+        @Serializable
+enum class Difficulty {
             NORMAL, HARD
         }
 
