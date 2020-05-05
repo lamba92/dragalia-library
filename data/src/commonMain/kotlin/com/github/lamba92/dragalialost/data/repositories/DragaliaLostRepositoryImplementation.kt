@@ -35,21 +35,21 @@ class DragaliaLostRepositoryImplementation(
 ) : DragaliaLostRepository {
 
     override suspend fun getAdventurerById(id: DragaliaId) = try {
-        repoCache?.getAdventurerById(id) ?: getAndCacheAdventurerJson(id)
+        repoCache?.getAdventurerById(id) ?: getAndCacheAdventurerEntity(id)
             .also { repoCache?.cache(it) }
     } catch (e: Throwable) {
         throw DragaliaRepositoryError.AdventurerAssemblingException(id, e)
     }
 
     override suspend fun getDragonById(id: DragaliaId) = try {
-        repoCache?.getDragonById(id) ?: getAndCacheDragonJson(id)
+        repoCache?.getDragonById(id) ?: getAndCacheDragonEntity(id)
             .also { repoCache?.cache(it) }
     } catch (e: Throwable) {
         throw DragaliaRepositoryError.DragonAssemblingException(id, e)
     }
 
     override suspend fun getWyrmprintById(id: DragaliaId) = try {
-        repoCache?.getWyrmprintById(id) ?: getAndCacheWyrmprintJson(id)
+        repoCache?.getWyrmprintById(id) ?: getAndCacheWyrmprintEntity(id)
             .also { repoCache?.cache(it) }
     } catch (e: Throwable) {
         throw DragaliaRepositoryError.WyrmprintAssemblingException(id, e)
@@ -285,15 +285,15 @@ class DragaliaLostRepositoryImplementation(
         )
     }
 
-    private suspend fun getAndCacheAdventurerJson(id: DragaliaId) =
+    private suspend fun getAndCacheAdventurerEntity(id: DragaliaId) =
         (dsCache?.getAdventurerById(id) ?: datasource.getAdventurerById(id).also { dsCache?.cacheAdventurer(it) })
             .asEntity()
 
-    private suspend fun getAndCacheDragonJson(id: DragaliaId) =
+    private suspend fun getAndCacheDragonEntity(id: DragaliaId) =
         (dsCache?.getDragonById(id) ?: datasource.getDragonById(id).also { dsCache?.cacheDragon(it) })
             .asEntity()
 
-    private suspend fun getAndCacheWyrmprintJson(id: DragaliaId) =
+    private suspend fun getAndCacheWyrmprintEntity(id: DragaliaId) =
         (dsCache?.getWyrmprintById(id) ?: datasource.getWyrmprintById(id).also { dsCache?.cacheWyrmprint(it) })
             .asEntity()
 
