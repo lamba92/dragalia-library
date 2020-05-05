@@ -14,5 +14,7 @@ fun dragaliaLostModule(isDebug: Boolean = false, httpLogLevel: LogLevel = LogLev
         import(UseCasesModule)
         import(ConstantsModule)
         constant(DITags.IS_DEBUG) with isDebug
-        if (isDebug) constant(DITags.HTTP_LOG_LEVEL) with httpLogLevel
+        if (isDebug) {
+            constant(DITags.HTTP_LOG_LEVEL) with httpLogLevel
+        }
     }

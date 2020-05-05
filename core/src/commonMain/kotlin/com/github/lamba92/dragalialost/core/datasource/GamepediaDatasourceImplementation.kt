@@ -1,6 +1,7 @@
 package com.github.lamba92.dragalialost.core.datasource
 
-import com.github.lamba92.dragalialost.data.DragaliaError
+import com.github.lamba92.dragalialost.core.GamepediaDatasourceErrors
+import com.github.lamba92.dragalialost.data.DragaliaRepositoryError
 import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasource
 import com.github.lamba92.dragalialost.data.datasource.queries.*
 import com.github.lamba92.dragalialost.data.rawresponses.*
@@ -77,7 +78,7 @@ class GamepediaDatasourceImplementation(
     override suspend fun getAbilityById(id: String) = try {
         httpClient.get<AbilityCargoJSON>(endpoints.getAbilityByIdUrl(id)).cargoquery.first().title
     } catch (e: Throwable) {
-        throw DragaliaError.AbilityNotFoundException(asDragaliaId(id), e)
+        throw GamepediaDatasourceErrors.AbilityNotFoundException(id, endpoints.getAbilityByIdUrl(id), e)
     }
 
     override suspend fun getCoAbilityById(id: String) =

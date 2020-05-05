@@ -12,6 +12,7 @@ import org.litote.kmongo.coroutine.CoroutineClient
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
+import java.util.logging.Logger
 
 fun dragaliaMongoDBCacheModule(host: String = "localhost", port: Int = 27017, dbName: String = "dragalia") =
     Kodein.Module("Dragalia Lost Cache Module") {

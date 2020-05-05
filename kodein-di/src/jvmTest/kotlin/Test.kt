@@ -17,9 +17,9 @@ class Testotron : KodeinAware {
 
     val uv by instance<SearchAllByNameUseCase>()
 
-    @Test
+//    @Test
     fun testtttttttttttt() = runBlocking {
-        val t = uv.buildAction("")
+        val t = uv.buildAction("tsu")
     }
 
 }

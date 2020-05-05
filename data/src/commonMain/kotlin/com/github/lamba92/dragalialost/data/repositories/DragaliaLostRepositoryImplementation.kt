@@ -1,11 +1,10 @@
 package com.github.lamba92.dragalialost.data.repositories
 
 import com.github.aakira.napier.Napier
-import com.github.lamba92.dragalialost.data.DragaliaError
+import com.github.lamba92.dragalialost.data.DragaliaRepositoryError
 import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasource
 import com.github.lamba92.dragalialost.data.datasource.GamepediaDatasourceCache
 import com.github.lamba92.dragalialost.data.mappers.*
-import com.github.lamba92.dragalialost.data.rawresponses.AdventurerIdJSON
 import com.github.lamba92.dragalialost.data.rawresponses.AdventurerJSON
 import com.github.lamba92.dragalialost.data.rawresponses.DragonJSON
 import com.github.lamba92.dragalialost.data.rawresponses.WyrmprintJSON
@@ -39,21 +38,21 @@ class DragaliaLostRepositoryImplementation(
         repoCache?.getAdventurerById(id) ?: getAndCacheAdventurerJson(id)
             .also { repoCache?.cache(it) }
     } catch (e: Throwable) {
-        throw DragaliaError.AdventurerAssemblingException(id, e)
+        throw DragaliaRepositoryError.AdventurerAssemblingException(id, e)
     }
 
     override suspend fun getDragonById(id: DragaliaId) = try {
         repoCache?.getDragonById(id) ?: getAndCacheDragonJson(id)
             .also { repoCache?.cache(it) }
     } catch (e: Throwable) {
-        throw DragaliaError.DragonAssemblingException(id, e)
+        throw DragaliaRepositoryError.DragonAssemblingException(id, e)
     }
 
     override suspend fun getWyrmprintById(id: DragaliaId) = try {
         repoCache?.getWyrmprintById(id) ?: getAndCacheWyrmprintJson(id)
             .also { repoCache?.cache(it) }
     } catch (e: Throwable) {
-        throw DragaliaError.WyrmprintAssemblingException(id, e)
+        throw DragaliaRepositoryError.WyrmprintAssemblingException(id, e)
     }
 
     override fun searchAdventurers(query: AdventurersQuery, limit: Int) =
@@ -67,7 +66,7 @@ class DragaliaLostRepositoryImplementation(
             .map { it.asDragaliaId() }
             .map { getAdventurerById(it) }
             .filter { it in query }
-            .catch { Napier.e(it.message ?: "", it) }
+            .catch { Napier.e(it.toString()) }
 
     override fun searchDragons(query: DragonsQuery, limit: Int) =
         dragonsQueryMapper.toRemote(query)
@@ -81,7 +80,7 @@ class DragaliaLostRepositoryImplementation(
             .map { asDragaliaId(it) }
             .map { getDragonById(it) }
             .filter { it in query }
-            .catch { Napier.e(it.message ?: "", it) }
+            .catch { Napier.e(it.toString()) }
 
     override fun searchWyrmprints(query: WyrmprintsQuery, limit: Int) =
         wyrmprintsQueryMapper.toRemote(query)
@@ -95,7 +94,9 @@ class DragaliaLostRepositoryImplementation(
             .map { asDragaliaId(it) }
             .map { getWyrmprintById(it) }
             .filter { it in query }
-            .catch { Napier.e(it.message ?: "", it) }
+            .catch {
+                Napier.e(it.toString())
+            }
 
     private fun CoroutineScope.getAbilityDataAsync(id: String) = async {
         getAndCacheAbilityById(id) withPair {

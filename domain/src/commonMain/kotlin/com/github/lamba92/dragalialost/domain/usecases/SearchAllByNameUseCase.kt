@@ -21,6 +21,6 @@ class SearchAllByNameUseCase(
             repo.searchAdventurers { name = params },
             repo.searchDragons { name = params },
             repo.searchWyrmprints { name = params }
-        ).flattenMerge(3).toList()
+        ).flattenMerge(3).toList().sortedBy { it.name }
 
 }
