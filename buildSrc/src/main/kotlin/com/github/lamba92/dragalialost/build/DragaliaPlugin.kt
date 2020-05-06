@@ -14,7 +14,7 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 
-@Suppress("unused")
+@Suppress("unused", "SuspiciousCollectionReassignment")
 class DragaliaPlugin : Plugin<Project> {
 
     override fun apply(target: Project): Unit = with(target) {
@@ -33,12 +33,18 @@ class DragaliaPlugin : Plugin<Project> {
 
             jvm {
                 compilations.all {
-                    kotlinOptions.jvmTarget = "1.8"
+                    kotlinOptions {
+                        jvmTarget = "1.8"
+                        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+                    }
                 }
             }
 
             js {
                 nodejs()
+                compilations.all {
+                    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+                }
             }
 
         }
